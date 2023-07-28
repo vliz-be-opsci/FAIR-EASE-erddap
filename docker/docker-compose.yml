@@ -13,7 +13,7 @@ services:
       - "../WEB-INF/classes:/usr/local/tomcat/webapps/erddap/WEB-INF/classes"
       - "/tmp/:/usr/local/tomcat/temp/"
     ports:
-      - 9001:8080
+      - 8080:8080
     environment:
       ERDDAP_MIN_MEMORY: '1G'
       ERDDAP_MAX_MEMORY: '2G'

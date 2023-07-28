@@ -26,6 +26,11 @@ ARG BUST_CACHE=1
 COPY erddap.war /erddap.war
 COPY content ${CATALINA_HOME}/content
 
+COPY docker/data/conf/config.sh ${CATALINA_HOME}/bin/
+COPY docker/data/conf/robots.txt ${CATALINA_HOME}/webapps/ROOT/robots.txt
+
+COPY docker/data/datasets /datasets
+
 RUN unzip /erddap.war -d ${CATALINA_HOME}/webapps/erddap/ && \
     rm /erddap.war && \sed -i 's#</Context>#<Resources cachingAllowed="true" cacheMaxSize="100000" />\n&#' ${CATALINA_HOME}/conf/context.xml && \
     rm -rf /tmp/* /var/tmp/* && \
