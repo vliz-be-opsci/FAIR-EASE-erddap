@@ -89,6 +89,7 @@ public class LoadDatasets extends Thread {
     private String datasetsRegex;
     private InputStream inputStream;
     private boolean majorLoad;
+    private boolean isStarting;
     private long lastLuceneUpdate = System.currentTimeMillis();
 
     private static long MAX_MILLIS_BEFORE_LUCENE_UPDATE = 5 * Calendar2.MILLIS_PER_MINUTE;
@@ -119,11 +120,12 @@ public class LoadDatasets extends Thread {
      *     and checks if Daily report should be sent.
      */
     public LoadDatasets(Erddap erddap, String datasetsRegex, InputStream inputStream,
-            boolean majorLoad) {
+            boolean majorLoad, boolean isStarting) {
         this.erddap = erddap;
         this.datasetsRegex = datasetsRegex;
         this.inputStream = inputStream;
         this.majorLoad = majorLoad;
+        this.isStarting = isStarting;
         setName("LoadDatasets");
     }
 
@@ -488,9 +490,11 @@ public class LoadDatasets extends Thread {
 
                         //trigger subscription and dataset.onChange actions (after new dataset is in place)
                         EDD cooDataset = dataset == null? oldDataset : dataset; //currentOrOld, may be null
+                        System.out.println("*************************************************");
+                        System.out.println("===== Interruption detected for : " + tId + ", isStarting ? " + isStarting + "=====");
                         tryToDoActions(erddap, tId, cooDataset, 
                             startError + xmlReader.lineNumber() + " with Subscriptions",
-                            change);
+                            change, isStarting);
                     }
 
                 } else if (tags.equals("<erddapDatasets><angularDegreeUnits>")) {
@@ -1309,19 +1313,21 @@ public class LoadDatasets extends Thread {
      * @param change the change description must be specified or nothing is done
      */
     public static void tryToDoActions(Erddap erddap, String tDatasetID, EDD cooDataset, 
-        String subject, String change) {
+        String subject, String change, boolean isStarting) {
+
         if (String2.isSomething(tDatasetID) && String2.isSomething(change)) {
-            if (!String2.isSomething(subject))
+            if (!String2.isSomething(subject)) {
                 subject = "Change to datasetID=" + tDatasetID;
+            }
             try {
                 StringArray actions = null;
 
-                if (EDStatic.subscriptionSystemActive) { 
+                if (EDStatic.subscriptionSystemActive) {
                     //get subscription actions
                     try { //beware exceptions from subscriptions
                         actions = EDStatic.subscriptions.listActions(tDatasetID);
                     } catch (Throwable listT) {
-                        String content = MustBe.throwableToString(listT); 
+                        String content = MustBe.throwableToString(listT);
                         String2.log(subject + ":\n" + content);
                         EDStatic.email(EDStatic.emailEverythingToCsv, subject, content);
                         actions = new StringArray();
@@ -1330,63 +1336,66 @@ public class LoadDatasets extends Thread {
 
                 //get dataset.onChange actions
                 int nSubscriptionActions = actions.size();
-                if (cooDataset != null && cooDataset.onChange() != null) 
+                if (cooDataset != null && cooDataset.onChange() != null) {
                     actions.append(cooDataset.onChange());
+                }
 
                 //do the actions
                 if (verbose) String2.log("nActions=" + actions.size());
 
                 for (int a = 0; a < actions.size(); a++) {
                     String tAction = actions.get(a);
-                    if (verbose) 
+                    if (verbose) {
                         String2.log("doing action[" + a + "]=" + tAction);
+                    }
                     try {
                         if (tAction.startsWith("http://") ||
                             tAction.startsWith("https://")) {
                             if (tAction.indexOf("/" + EDStatic.warName + "/setDatasetFlag.txt?") > 0 &&
-                                EDStatic.urlIsThisComputer(tAction)) { 
+                                EDStatic.urlIsThisComputer(tAction)) {
                                 //a dataset on this ERDDAP! just set the flag
                                 //e.g., https://coastwatch.pfeg.noaa.gov/erddap/setDatasetFlag.txt?datasetID=ucsdHfrW500&flagKey=##########
                                 String trDatasetID = String2.extractCaptureGroup(tAction, "datasetID=(.+?)&", 1);
-                                if (trDatasetID == null)
-                                    EDStatic.addTouch(tAction); 
+                                if (trDatasetID == null) {
+                                    EDStatic.addTouch(tAction);
+                                }
                                 else EDD.requestReloadASAP(trDatasetID);
 
                             } else {
-                                //but don't get the input stream! I don't need to, 
+                                //but don't get the input stream! I don't need to,
                                 //and it is a big security risk.
-                                EDStatic.addTouch(tAction); 
+                                EDStatic.addTouch(tAction);
                             }
                         } else if (tAction.startsWith("mailto:")) {
                             String tEmail = tAction.substring("mailto:".length());
                             EDStatic.email(tEmail,
-                                "datasetID=" + tDatasetID + " changed.", 
-                                "datasetID=" + tDatasetID + " changed.\n" + 
+                                "datasetID=" + tDatasetID + " changed.",
+                                "datasetID=" + tDatasetID + " changed.\n" +
                                 change + "\n\n*****\n" +
-                                (a < nSubscriptionActions? 
+                                (a < nSubscriptionActions?
                                     EDStatic.subscriptions.messageToRequestList(tEmail) :
-                                    "This action is specified in datasets.xml.\n")); 
-                                    //It would be nice to include unsubscribe 
-                                    //info for this action, 
-                                    //but it isn't easily available.
+                                    "This action is specified in datasets.xml.\n"));
+                            //It would be nice to include unsubscribe
+                            //info for this action,
+                            //but it isn't easily available.
                         } else {
-                            throw new RuntimeException("The startsWith of action=" + 
+                            throw new RuntimeException("The startsWith of action=" +
                                 tAction + " is not allowed!");
                         }
                     } catch (Throwable actionT) {
-                        String2.log(subject + "\n" + 
-                            "action=" + tAction + "\ncaught:\n" + 
+                        String2.log(subject + "\n" +
+                            "action=" + tAction + "\ncaught:\n" +
                             MustBe.throwableToString(actionT));
                     }
                 }
 
-                //trigger RSS action 
+                //trigger RSS action
                 // (after new dataset is in place and if there is either a current or older dataset)
-                if (cooDataset != null && erddap != null) 
-                    cooDataset.updateRSS(erddap, change);
+                if (cooDataset != null && erddap != null)
+                    cooDataset.updateRSS(erddap, change, !(isStarting && change.equals(EDStatic.EDDChangedWasnt)));
 
             } catch (Throwable subT) {
-                String content = MustBe.throwableToString(subT); 
+                String content = MustBe.throwableToString(subT);
                 String2.log(subject + ":\n" + content);
                 EDStatic.email(EDStatic.emailEverythingToCsv, subject, content);
             }
@@ -1534,8 +1543,9 @@ public class LoadDatasets extends Thread {
         if (needToUpdateLucene)
             updateLucene(erddap, changedDatasetIDs);
         //do dataset actions so subscribers know it is gone
+        System.out.println("Berytodocations false");
         tryToDoActions(erddap, tId, oldEdd, null,  //default subject
-            "This dataset is currently unavailable.");
+            "This dataset is currently unavailable.", false);
 
         return true;
     }

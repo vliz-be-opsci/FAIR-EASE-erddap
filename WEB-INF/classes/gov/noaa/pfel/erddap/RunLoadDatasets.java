@@ -87,7 +87,7 @@ public class RunLoadDatasets extends Thread {
         //   otherwise datasets will never be reloaded.
         //But I don't want to hinder application (including RunLoadDatasets) from
         //   being shut down (via Thread.interrupt or ThreadDeath).
-
+        boolean isStarting = true;
         whileNotInterrupted:
         while (!isInterrupted()) {
             //this loop runs roughly every loadDatasetsMinMinutes
@@ -112,14 +112,15 @@ public class RunLoadDatasets extends Thread {
                 //start a new loadDatasets thread
                 lastMajorLoadDatasetsStartTimeMillis = System.currentTimeMillis();
                 EDStatic.lastMajorLoadDatasetsStartTimeMillis = lastMajorLoadDatasetsStartTimeMillis;
-                loadDatasets = new LoadDatasets(erddap, EDStatic.datasetsRegex, null, true);
+                loadDatasets = new LoadDatasets(erddap, EDStatic.datasetsRegex, null, true, isStarting);
                 //make a lower priority    
                 //[commented out: why lower priority?  It may be causing infrequent problems with a dataset not available in a CWBrowser
                 //-2 since on some OS's, adjacent priority levels map to same internal level.
                 //loadDatasets.setPriority(Math.max(Thread.MIN_PRIORITY, Thread.currentThread().getPriority() - 2));
+                System.out.println("***** Start Major Thead *****");
                 EDStatic.runningThreads.put("loadDatasets", loadDatasets); 
                 loadDatasets.start(); //starts the thread and calls run() 
-
+                isStarting = false;
             } catch (Throwable t) {
                 if (Thread.currentThread().isInterrupted() ||
                     t instanceof InterruptedException) {
@@ -269,11 +270,12 @@ public class RunLoadDatasets extends Thread {
                                     String2.log("\n*** RunLoadDatasets is starting a new " + fDirName[hs] + " LoadDatasets thread at " + 
                                         Calendar2.getCurrentISODateTimeStringLocalTZ());
                                     //...StartTimeMillis = System.currentTimeMillis();
-                                    loadDatasets = new LoadDatasets(erddap, tRegex, null, false);
+                                    loadDatasets = new LoadDatasets(erddap, tRegex, null, false, false);
                                     //make a lower priority    
                                     //[commented out: why lower priority?  It may be causing infrequent problems with a dataset not available in a CWBrowser
                                     //-2 since on some OS's, adjacent priority levels map to same internal level.
                                     //loadDatasets.setPriority(Math.max(Thread.MIN_PRIORITY, Thread.currentThread().getPriority() - 2));
+                                    System.out.println("***** Start non-Major Thead *****");
                                     EDStatic.runningThreads.put("loadDatasets", loadDatasets); 
                                     loadDatasets.start(); //starts the thread and calls run() 
                                 }

@@ -52,6 +52,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -262,6 +263,7 @@ public abstract class EDD {
     public final static String BADFILE_TABLE_FILENAME    = "badFiles.nc";
     public final static String QUICK_RESTART_FILENAME    = "quickRestart.nc";
     public final static String DIMENSION_VALUES_FILENAME = "dimensionValues.nc";
+    public final String HISTORY_FILEPATH                 = EDStatic.bigParentDirectory + "history.json";
     public final static String MIN_SUFFIX = "_min_";  //for min columns in fileTable
     public final static String MAX_SUFFIX = "_max_";  //for max columns in fileTable
     public final static String pngInfoSuffix = "_info.json";
@@ -1034,6 +1036,160 @@ public abstract class EDD {
     }
 
     /**
+     * Read local history file.
+     * If there is an error, this just writes error to log file and returns "". This won't throw an exception.
+     * 
+     * @param change a description of what changed
+     *    (if null or "", nothing will be done and this returns "")
+     * @return the rss document 
+     */
+    public void writeDatasetEDDHistory(String date, String changes) {
+        if (reallyVerbose) String2.log("EDD.initDatasetEDDHistory " + HISTORY_FILEPATH);
+	        long time = System.currentTimeMillis();
+        final String note = "In EDD.initDatasetEDDHistory(" + HISTORY_FILEPATH + "): ";
+        final String errorInMethod = String2.ERROR + " in EDD.initDatasetEDDHistory(" + HISTORY_FILEPATH + "): JSON syntax error: ";
+
+        String[] changesArr = changes.split("\n", 0);
+
+        String line;
+        try {
+            if (!File2.isFile(HISTORY_FILEPATH)) {
+                System.out.println("------ File doesn't exist ------");
+                BufferedWriter writer = File2.getBufferedFileWriterUtf8(HISTORY_FILEPATH);
+                writer.write("{" + OpendapHelper.EOL + "}" + OpendapHelper.EOL);
+                writer.close();
+            }
+
+            BufferedReader bufferedReader = File2.getDecompressedBufferedFileReaderUtf8(HISTORY_FILEPATH);
+            ArrayList<String> liste = new ArrayList<String>();
+            int datasetPosition = -1;
+            while ((line = bufferedReader.readLine()) != null) {
+                liste.add(line);
+                if (line.trim().startsWith("\"" + datasetID + "\": [")) datasetPosition = liste.size();
+            }
+
+            boolean isNew = false;
+            if (datasetPosition == -1) {
+                isNew = true;
+                datasetPosition = 1;
+                liste.add(datasetPosition, "  ]" + (liste.size() > 2 ? "," : ""));
+            }
+
+            liste.add(datasetPosition, "    }" + (isNew ? "" : ","));
+            if (changesArr.length>=6) liste.add(datasetPosition, "      \"newCombined\": \"" + changesArr[5]+ "\"");
+            if (changesArr.length>=5) liste.add(datasetPosition, "      \"oldCombined\": \"" + changesArr[4]+ "\"" + (changesArr.length > 5 ? "," : ""));
+            if (changesArr.length>=4) liste.add(datasetPosition, "      \"combined\": \"" + changesArr[3]+ "\"" + (changesArr.length > 4 ? "," : ""));
+            if (changesArr.length>=3) liste.add(datasetPosition, "      \"new\": \"" + changesArr[2] + "\"" + (changesArr.length > 3 ? "," : ""));
+            if (changesArr.length>=2) liste.add(datasetPosition, "      \"old\": \"" + changesArr[1] + "\",");
+            if (changesArr.length>=1) liste.add(datasetPosition, "      \"description\": \"" + changesArr[0] + "\",");
+            liste.add(datasetPosition, "      \"date\": \"" + date + "\",");
+            liste.add(datasetPosition, "    {");
+
+            if (isNew) liste.add(datasetPosition, "  \"" + datasetID + "\": [");
+
+            BufferedWriter writer = File2.getBufferedFileWriterUtf8(HISTORY_FILEPATH);
+
+            for (int i=0; i < liste.size(); i++) writer.write(liste.get(i) + OpendapHelper.EOL);
+
+            writer.close();
+
+        } catch (Exception e){
+            System.out.println("Error an exception as occur in writeDatasetEDDHistory : " + e);
+        }
+    }
+
+    /**
+     * Read local history file.
+     * If there is an error, this just writes error to log file and returns "". This won't throw an exception.
+     *
+     * @param change a description of what changed
+     *    (if null or "", nothing will be done and this returns "")
+     * @return the rss document
+     */
+    public String[] readEDDHistory() {
+        if (reallyVerbose) String2.log("EDD.readEDDHistory " + HISTORY_FILEPATH);
+        long time = System.currentTimeMillis();
+        final String note = "In EDD.readEDDHistory(" + HISTORY_FILEPATH + "): ";
+        final String errorInMethod = String2.ERROR + " in EDD.readEDDHistory(" + HISTORY_FILEPATH + "): JSON syntax error: ";
+
+        // { "date", "decription", "oldLine", "newLine", "combined", "oldCombined", "newCombined" }
+        String[] result = {"", "", "", "", "", "", ""};
+        try {
+            if (!File2.isFile(HISTORY_FILEPATH)) {
+                System.out.println("------ "+ HISTORY_FILEPATH + " doesn't exist ------");
+                BufferedWriter writer = File2.getBufferedFileWriterUtf8(HISTORY_FILEPATH);
+                writer.write("{" + OpendapHelper.EOL + "}" + OpendapHelper.EOL);
+                writer.close();
+            }
+
+            BufferedReader bufferedReader = File2.getDecompressedBufferedFileReaderUtf8(HISTORY_FILEPATH);
+
+            String line = bufferedReader.readLine();
+            if (line == null || !line.trim().equals("{"))
+                throw new IOException(errorInMethod + "First line of file should have been '{'.\nline=" + line);
+
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("\"" + datasetID + "\": [")) {
+                    System.out.println("record for " + datasetID + " found in history");
+                    for (int i = 0; i <= 6; i++) {
+                        line = bufferedReader.readLine().trim();
+
+                        if (line.startsWith("\"date\""))
+                            result[0] = line.substring(9, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("\"description\""))
+                            result[1] = line.substring(16, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("\"old\""))
+                            result[2] = line.substring(8, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("\"new\""))
+                            result[3] = line.substring(8, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("\"combined\""))
+                            result[4] = line.substring(13, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("\"oldCombined\""))
+                            result[5] = line.substring(16, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("\"newCombined\""))
+                            result[6] = line.substring(16, line.length() - (line.endsWith(",") ? 2 : 1));
+
+                        else if (line.startsWith("[") || line.startsWith("{") || line.startsWith(","))
+                            i--;
+
+                        else if (line.startsWith("}")) break;
+
+                        else
+                            throw new IOException(errorInMethod + "wrong format in line" + line);
+                    }
+                    break;
+                }
+            }
+
+            if (reallyVerbose) String2.log("  EDD.readEDDHistory done. fileName=" + HISTORY_FILEPATH +
+                    " TIME=" + (System.currentTimeMillis() - time) + "ms");
+
+            bufferedReader.close();
+
+        } catch (Throwable rssT) {
+            String2.log(String2.ERROR + " in updateRSS for " + datasetID() + ":\n" +
+                    MustBe.throwableToString(rssT));
+        }
+
+        if (result[0].equals("") && result[1].equals("") && result[2].equals("") && result[3].equals("")){
+            System.out.println("dataset : " + datasetID + " not existing, insert it in the history.json");
+            GregorianCalendar gc = Calendar2.newGCalendarZulu();
+            result[0] = Calendar2.formatAsISODateTimeT(gc);
+            result[1] = "Initial init " + datasetID;
+            writeDatasetEDDHistory(result[0], result[1]);
+        }
+        return result;
+    }
+
+
+    /**
      * Update rss.
      * If there is an error, this just writes error to log file and returns "". This won't throw an exception.
      *
@@ -1041,9 +1197,20 @@ public abstract class EDD {
      *    (if null or "", nothing will be done and this returns "")
      * @return the rss document
      */
-    public String updateRSS(Erddap erddap, String change) {
+    public String updateRSS(Erddap erddap, String change, boolean toUpdate) {
         if (change == null || change.length() == 0)
             return "";
+
+        GregorianCalendar gc = Calendar2.newGCalendarZulu();
+
+        if (toUpdate) writeDatasetEDDHistory(Calendar2.formatAsISODateTimeT(gc), change);
+        else {
+            String[] history = readEDDHistory();
+            change = "";
+            for (String attribute : history) if (!(attribute.equals(""))) change += attribute + "\n";
+            gc = Calendar2.parseISODateTimeZulu(history[0]);
+        }
+
         try {
             //generate the rss xml
             //See general info: https://en.wikipedia.org/wiki/RSS_(file_format)
@@ -1055,7 +1222,6 @@ public abstract class EDD {
             //  So this treats every change as a new item with a different title, 
             //    replacing the previous item.
             StringBuilder rss = new StringBuilder();
-            GregorianCalendar gc = Calendar2.newGCalendarZulu();
             String pubDate = 
                 "    <pubDate>" + Calendar2.formatAsRFC822GMT(gc) + "</pubDate>\n";
             String link = 
@@ -1078,8 +1244,11 @@ public abstract class EDD {
 
             //store the xml
             String rssString = rss.toString();
-            if (erddap != null)
+            if (erddap != null) {
                 erddap.rssHashMap.put(datasetID(), String2.stringToUtf8Bytes(rssString));
+                erddap.updateDateHashMap.put(datasetID(), String2.stringToUtf8Bytes(Calendar2.formatAsISODateTimeT(gc)));
+                erddap.updateChangeHashMap.put(datasetID(), String2.stringToUtf8Bytes(change));
+            }
             return rssString;
 
         } catch (Throwable rssT) {

@@ -196,6 +196,9 @@ public class Erddap extends HttpServlet {
     public ConcurrentHashMap<String,EDDTable> tableDatasetHashMap = new ConcurrentHashMap(16, 0.75f, 4); 
     /** The RSS info: key=datasetId, value=utf8 byte[] of rss xml */
     public ConcurrentHashMap<String,byte[]> rssHashMap  = new ConcurrentHashMap(16, 0.75f, 4); 
+    public ConcurrentHashMap<String,byte[]> updateDateHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
+    public ConcurrentHashMap<String,byte[]> updateChangeHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
+
     public ConcurrentHashMap<String,int[]> failedLogins = new ConcurrentHashMap(16, 0.75f, 4); 
     public ConcurrentHashMap<String,ConcurrentHashMap> categoryInfo = new ConcurrentHashMap(16, 0.75f, 4);  
     public long lastClearedFailedLogins = System.currentTimeMillis();
