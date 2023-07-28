@@ -4,11 +4,14 @@ WEB-INF/ref/
 images/erddapTalk
 images/gadgets
 images/post
-/content/
-/data/
 /target/
+/content/
 download_cache/
+/docker/conf/config.sh
+/docker/data/*
+/docker/datasets/*
 *.class
+erddap.war
 Thumbs.db
 .vscode
 .settings
