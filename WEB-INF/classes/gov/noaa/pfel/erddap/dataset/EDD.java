@@ -399,6 +399,9 @@ public abstract class EDD {
        Such files should be handled via the S3 SDK. */
     protected boolean filesInPrivateS3Bucket = false;
 
+    /** This is used for the RDF Graph **/
+    protected String latestUpdate = null;
+
 
     /**
      * This indicates if the files are in an S3 bucket.
@@ -1207,7 +1210,7 @@ public abstract class EDD {
         else {
             String[] history = readEDDHistory();
             change = "";
-            for (String attribute : history) if (!(attribute.equals(""))) change += attribute + "\n";
+            for (String attribute : history) if (!attribute.isEmpty()) change += attribute + "\n";
             gc = Calendar2.parseISODateTimeZulu(history[0]);
         }
 
@@ -2641,6 +2644,23 @@ public abstract class EDD {
         reloadEveryNMinutes = 
             tReloadEveryNMinutes <= 0 || tReloadEveryNMinutes == Integer.MAX_VALUE?
             DEFAULT_RELOAD_EVERY_N_MINUTES : tReloadEveryNMinutes;
+    }
+
+    /**
+     * latestUpdate indicates when was the last time the dataset schema / construction had changed;
+     * e.g., 2000-01-31T12:00:00
+     *
+     * @return the latest time (in POSIX format)
+     */
+    public String getLatestUpdate() {return latestUpdate;}
+
+    /**
+     * This sets latestUpdate.
+     *
+     * @param tLatestUpdate if not "" or == null.
+     */
+    public void setLatestUpdate(String tLatestUpdate) {
+        latestUpdate = tLatestUpdate.isEmpty()? null : tLatestUpdate;
     }
 
     /** 

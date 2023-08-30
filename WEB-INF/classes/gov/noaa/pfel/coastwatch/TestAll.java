@@ -1096,6 +1096,8 @@ TaskThread tt;
 TouchThread tt2;
 TranslateMessages translateMessages;
 WaitThenTryAgainException wttae; 
+RDFVocab rdfvocab;
+RDFBuilder rdfbuilder;
 
         StringBuilder errorSB = new StringBuilder();
         boolean interactive = false;

@@ -1134,6 +1134,15 @@ public abstract class EDDGrid extends EDD {
      */
     public EDVGridAxis[] axisVariables() {return axisVariables; }
 
+
+    /**
+     * This returns the axisVariables.
+     * This is the internal data structure, so don't change it.
+     *
+     * @return the axisVariables.
+     */
+    public EDV[] dataVariables() {return dataVariables; }
+
     /** 
      * This returns the axis variable which has the specified source name.
      *

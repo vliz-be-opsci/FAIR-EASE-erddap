@@ -292,7 +292,17 @@
     </dependencyManagement>
 
     <dependencies>
-
+        <!-- <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-rdf-api</artifactId>
+            <version>0.5.0</version>
+        </dependency> -->
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <type>pom</type>
+            <version>4.9.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api  -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
