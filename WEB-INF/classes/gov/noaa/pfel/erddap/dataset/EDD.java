@@ -41,6 +41,7 @@ import gov.noaa.pfel.coastwatch.util.SSR;
 import gov.noaa.pfel.coastwatch.util.Tally;
 import gov.noaa.pfel.erddap.Erddap;
 import gov.noaa.pfel.erddap.GenerateDatasetsXml;
+import gov.noaa.pfel.erddap.RDFBuilder;
 import gov.noaa.pfel.erddap.util.*;
 import gov.noaa.pfel.erddap.variable.*;
 
@@ -1262,6 +1263,26 @@ public abstract class EDD {
 
     }
 
+    /**
+     * Update rdf graph.
+     * This won't throw an exception.
+     */
+    public String updateRDF(Erddap erddap) {
+        try {
+            //store the rdf in-mem graph
+            RDFBuilder builder = new RDFBuilder(datasetID());
+            if (erddap != null){
+                builder.setLatestUpdate(new String(erddap.updateDateHashMap.get(datasetID())));
+                builder.buildFullDatasetRDF();
+                erddap.rdfHashMap.put(datasetID, builder);
+            }
+            return "";
+        } catch (Throwable rssT) {
+            String2.log(String2.ERROR + " in updateRDF for " + datasetID() + ":\n" +
+                    MustBe.throwableToString(rssT));
+            return "";
+        }
+    }
 
     /**
      * This returns a list of childDatasetIDs.

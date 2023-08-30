@@ -26902,9 +26902,9 @@ String2.log(table.dataToString());
      *
      * @param nSortColumns (leftmost is most important)
      */
-    public void leftToRightSortIgnoreCase(int nSortColumns) {
+    public void leftToRightSortIgnoreCase(int nSortColumns, boolean ascendingSort) {
         boolean ascending[] = new boolean[nSortColumns];
-        Arrays.fill(ascending, true);
+        Arrays.fill(ascending, ascendingSort);
         sortIgnoreCase((new IntArray(0, nSortColumns-1)).toArray(), ascending); 
     }
 
@@ -31489,7 +31489,7 @@ String2.log(table.dataToString());
             Table dirTable = new Table();
             dirTable.addColumn("names", dirNames);
             dirTable.addColumn("desc", dirDescriptions);
-            dirTable.leftToRightSortIgnoreCase(1);
+            dirTable.leftToRightSortIgnoreCase(1, true); // ascending
         }
         if (keyColumns[0] == 0 && !ascending[0]) { //if sorted by Names, descending order
             dirNames.reverse();

@@ -1391,8 +1391,10 @@ public class LoadDatasets extends Thread {
 
                 //trigger RSS action
                 // (after new dataset is in place and if there is either a current or older dataset)
-                if (cooDataset != null && erddap != null)
+                if (cooDataset != null && erddap != null){
                     cooDataset.updateRSS(erddap, change, !(isStarting && change.equals(EDStatic.EDDChangedWasnt)));
+                    cooDataset.updateRDF(erddap);
+                }
 
             } catch (Throwable subT) {
                 String content = MustBe.throwableToString(subT);

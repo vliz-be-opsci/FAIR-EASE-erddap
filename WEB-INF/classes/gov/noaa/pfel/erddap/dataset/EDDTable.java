@@ -13364,7 +13364,7 @@ public abstract class EDDTable extends EDD {
         Table table = subsetVariablesDataTable(0, EDStatic.loggedInAsSuperuser);  //throws Throwable
         table.reorderColumns(StringArray.fromCSV(sosOfferingDestName + ",longitude,latitude"),
             true); //discardOthers
-        table.leftToRightSortIgnoreCase(3);
+        table.leftToRightSortIgnoreCase(3, true); // ascending
 
         //if subsetVariables includes observations variables (it may), there will be duplicates
         table.removeDuplicates(); 

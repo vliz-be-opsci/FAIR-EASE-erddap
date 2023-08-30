@@ -198,6 +198,7 @@ public class Erddap extends HttpServlet {
     public ConcurrentHashMap<String,byte[]> rssHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
     public ConcurrentHashMap<String,byte[]> updateDateHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
     public ConcurrentHashMap<String,byte[]> updateChangeHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
+    public ConcurrentHashMap<String,RDFBuilder> rdfHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
 
     public ConcurrentHashMap<String,int[]> failedLogins = new ConcurrentHashMap(16, 0.75f, 4);
     public ConcurrentHashMap<String,ConcurrentHashMap> categoryInfo = new ConcurrentHashMap(16, 0.75f, 4);  
@@ -673,8 +674,11 @@ public class Erddap extends HttpServlet {
             } else if (protocol.equals("categorize")) {
                 doCategorize(language, requestNumber, request, response, loggedInAs, 
                     protocol, protocolEnd + 1, endOfRequest, queryString);
+            } else if (endOfRequest.startsWith("info/catalog")) {
+                doCatalog(language, requestNumber, request, response, loggedInAs,
+                    protocol, protocolEnd + 1, endOfRequest, queryString);
             } else if (protocol.equals("info")) {
-                doInfo(language, requestNumber, request, response, loggedInAs, 
+                doInfo(language, requestNumber, request, response, loggedInAs,
                     protocol, protocolEnd + 1, endOfRequest, queryString);
             } else if (endOfRequest.equals("information.html")) {
                 doInformationHtml(language, request, response, loggedInAs, endOfRequest, queryString);
@@ -4716,7 +4720,7 @@ writer.write(EDStatic.dpf_congratulationAr[language]
                 (sourceVersion < 176 && String2.indexOf(FILE_TYPES_176, fileTypeName) >= 0) ||
                 (sourceVersion < 182 && jsonp != null) ||
                 (sourceVersion < 184 && String2.indexOf(FILE_TYPES_184, fileTypeName) >= 0) ||
-                fileTypeName.equals(".subset")) { 
+                fileTypeName.equals(".subset")) {
                 //handle locally
             } else {
                 //redirect the request
@@ -5361,7 +5365,7 @@ writer.write(EDStatic.dpf_congratulationAr[language]
         Table table = new Table();
         table.addColumn("title", titles); 
         table.addColumn("id",    ids);
-        table.leftToRightSortIgnoreCase(2);
+        table.leftToRightSortIgnoreCase(2, true); // ascending
         titles = null;
         table = null;
 
@@ -12562,7 +12566,53 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
                 idPa.add(tID);
             }
         }
-        table.leftToRightSortIgnoreCase(2);
+        table.leftToRightSortIgnoreCase(2, true); // ascending
+        return idPa;
+    }
+
+    /**
+     * This sorts the datasetIDs by the latest update date.
+     *
+     * @param loggedInAs  the name of the logged in user (or null if not logged in).
+     *    This is used to determine if the user has the right to know if a given
+     *    dataset exists. (But dataset will be matched if EDStatic.listPrivateDatasets.)
+     * @param tDatasetIDs  The datasets to be considered (usually allDatasetIDs()).
+     *    The order (sorted or not) is irrelevant.
+     * @param graphOrMetadataRequest use true if this is for a graph or metadata request
+     *    so that graphsAccessibleToPublic() will be used.
+     * @return a StringArray with the matching datasetIDs, sorted by title.
+     */
+    public StringArray sortByUpdateDate(String loggedInAs, StringArray tDatasetIDs,
+                                   boolean graphOrMetadataRequest) {
+
+        String roles[] = EDStatic.getRoles(loggedInAs);
+        Table table = new Table();
+        int n = tDatasetIDs.size();
+        byte[] byteAr;
+        StringArray updatePa = new StringArray(n, false);
+        StringArray idPa    = new StringArray(n, false);
+        table.addColumn("update_date", updatePa);
+        table.addColumn("id", idPa);
+        for (int ds = 0; ds < n; ds++) {
+            String tID = tDatasetIDs.get(ds);
+            EDD edd = gridDatasetHashMap.get(tID);
+            if (edd == null)
+                edd = tableDatasetHashMap.get(tID);
+            if (edd == null)  //just deleted?
+                continue;
+            byteAr = updateDateHashMap.get(tID);
+            if (
+                    (
+                            EDStatic.listPrivateDatasets
+                            || edd.isAccessibleTo(roles)
+                            || (graphOrMetadataRequest && edd.graphsAccessibleToPublic())
+                    ) && (byteAr != null && byteAr.length > 0)
+            ) {
+                updatePa.add(new String(byteAr));
+                idPa.add(tID);
+            }
+        }
+        table.leftToRightSortIgnoreCase(2, false); // descending
         return idPa;
     }
 
@@ -12950,6 +13000,143 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
 
         if (verbose) String2.log(EDStatic.resourceNotFoundAr[language] + "end of doCategorize");
         sendResourceNotFoundError(requestNumber, request, response, "");
+    }
+
+    /**
+     * Process an info request: erddap/info/catalog.xxx
+     *
+     * @param language the index of the selected language
+     * @param requestNumber The requestNumber assigned to this request by doGet().
+     * @param request The user's request.
+     * @param response The response to be written to.
+     * @param loggedInAs  the name of the logged in user (or null if not logged in)
+     * @param datasetIDStartsAt is the position right after the / at the end of the protocol
+     *    (always "info") in the requestUrl
+     * @throws Throwable if trouble
+     */
+    public void doCatalog(int language, int requestNumber, HttpServletRequest request, HttpServletResponse response,
+                          String loggedInAs, String protocol, int datasetIDStartsAt, String endOfRequest, String queryString) throws Throwable {
+        String tErddapUrl = EDStatic.erddapUrl(loggedInAs, language);
+        String requestUrl = request.getRequestURI();  //post EDStatic.baseUrl, pre "?"
+        String requestUrlNoLang = getUrlWithoutLang(request);
+        String endOfRequestUrl = datasetIDStartsAt >= requestUrl.length()? "" :
+                requestUrl.substring(datasetIDStartsAt);
+        String fileTypeName;
+
+        if (requestUrlNoLang.equals("/" + EDStatic.warName + "/info/cat") ||
+            requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog") ||
+            requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog.tt") ||
+            requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog.tll")) {
+            sendRedirect(response, tErddapUrl + "/info/catalog.ttl?" +
+                    EDStatic.passThroughPIppQueryPage1(request));
+            return;
+        }
+
+        String parts[] = String2.split(endOfRequestUrl, '/');
+        int nParts = parts.length;
+        if (nParts == 0 || !parts[nParts - 1].startsWith("index.")) {
+            StringArray sa = new StringArray(parts);
+            sa.add("index.html");
+            parts = sa.toArray();
+            nParts = parts.length;
+            //now last part is "index...."
+        }
+        fileTypeName = File2.getExtension(endOfRequestUrl);
+
+        boolean isTypeNameOk = false;
+        String[] authorizedFileType = {".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"};
+
+        for(String authorizedFileExtension:  authorizedFileType){
+            if (authorizedFileExtension.equals(fileTypeName)) {
+                isTypeNameOk = true;
+                break;
+            }
+        }
+
+        if (!isTypeNameOk) {
+            sendResourceNotFoundError(requestNumber, request, response, EDStatic.bilingual(language,
+                    MessageFormat.format(EDStatic.unsupportedFileTypeAr[0]       , fileTypeName),
+                    MessageFormat.format(EDStatic.unsupportedFileTypeAr[language], fileTypeName)));
+            return;
+        }
+
+        EDStatic.tally.add("Info File Type (since startup)", fileTypeName);
+        EDStatic.tally.add("Info File Type (since last daily report)", fileTypeName);
+
+        if (nParts > 2) {
+            sendResourceNotFoundError(requestNumber, request, response, EDStatic.bilingual(language,
+                    MessageFormat.format(EDStatic.infoRequestFormAr[0]       , EDStatic.warName),
+                    MessageFormat.format(EDStatic.infoRequestFormAr[language], EDStatic.warName)));
+            return;
+        }
+
+        //ensure query has simplistically valid page= itemsPerPage=
+        if (!Arrays.equals(
+                EDStatic.getRawRequestedPIpp(request),
+                EDStatic.getRequestedPIpp(request))) {
+            String requestQuery = EDStatic.passThroughPIppQuery(request);
+            sendRedirect(response,
+                    EDStatic.baseUrl(loggedInAs) + request.getRequestURI() + "?" +
+                            EDStatic.passThroughJsonpQuery(language, request) +
+                            requestQuery.substring(0, requestQuery.length() - 2));
+            return;
+        }
+
+        //get the datasetIDs
+        //(sortByTitle ensures user has right to know dataset exists)
+        StringArray tIDs = sortByUpdateDate(loggedInAs, allDatasetIDs(), true); //info: this is a metadata request
+        int nDatasets = tIDs.size();
+        EDStatic.tally.add("Info (since startup)", "View Catalog");
+        EDStatic.tally.add("Info (since last daily report)", "View Catalog");
+
+        //calculate Page ItemsPerPage and remove other tIDs  (part of: View All Datasets)
+        int pIpp[] = EDStatic.calculatePIpp(request, nDatasets);
+        int page = pIpp[0]; //will be 1...
+        int itemsPerPage = pIpp[1]; //will be 1...
+        int startIndex = pIpp[2]; //will be 0...
+        int lastPage = pIpp[3]; //will be 1...
+
+        //reduce tIDs to ones on requested page
+        //IMPORTANT!!! For this to work correctly, datasetIDs must be
+        //  accessibleTo loggedInAs (or EDStatic.listPrivateDatasets)
+        //  and in final sorted order.
+        //  (True here)
+        //Order of removal: more efficient to remove items at end, then items at beginning.
+        if (startIndex + itemsPerPage < nDatasets)
+            tIDs.removeRange(startIndex + itemsPerPage, nDatasets);
+        tIDs.removeRange(0, Math.min(startIndex, nDatasets));
+        nDatasets = tIDs.size();
+
+        //if non-null, error will be String[2]
+        String[] error = null;
+        if (nDatasets == 0) error = new String[]{MustBe.THERE_IS_NO_DATA, ""};
+        else if (page > lastPage) error = EDStatic.noPage(language, page, lastPage);
+        if (error != null)
+            throw new SimpleException(EDStatic.resourceNotFoundAr[language] + error[0] +
+                    (error.length > 1 ? " " + error[1] : ""));
+
+        OutputStreamSource outputStreamSource = new OutputStreamFromHttpResponse(
+                request, response, "catalog", fileTypeName, fileTypeName);
+
+        RDFBuilder catalogBuilder = new RDFBuilder();
+        RDFBuilder[] list = new RDFBuilder[nDatasets];
+
+        for (int i = 0; i < nDatasets; i++) {
+            RDFBuilder node = rdfHashMap.get(tIDs.get(i));
+            list[i] = node;
+        }
+
+        Writer writer = File2.getBufferedWriter88591(outputStreamSource.outputStream(File2.ISO_8859_1)); //OPeNDAP 2.0 section 3.2.3 says US-ASCII (7bit), so might as well go for compatible common 8bit
+
+        try {
+            catalogBuilder.buildCatalog(list);
+            catalogBuilder.writeRDFSerialized(fileTypeName, outputStreamSource.outputStream(File2.ISO_8859_1));
+            writer.flush();
+            writer.close();
+        } catch(Throwable e) {
+            writer.close();
+            throw new SimpleException(EDStatic.errorInternalAr[language] + e + "");
+        }
     }
 
     /**

@@ -710,7 +710,7 @@ public class EDDTableFromCassandra extends EDDTable{
             twa.finish();
             cumTable = twa.cumulativeTable();
             twa.releaseResources();        
-            cumTable.leftToRightSortIgnoreCase(nPartitionKeys); //useful: now in sorted order
+            cumTable.leftToRightSortIgnoreCase(nPartitionKeys, true); //useful: now in ascending sorted order
 
             //save in flatNc file
             cumTable.saveAsFlatNc(datasetDir() + PartitionKeysDistinctTableName, 
