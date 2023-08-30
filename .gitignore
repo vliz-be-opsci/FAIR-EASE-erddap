@@ -8,8 +8,9 @@ images/post
 /content/
 download_cache/
 /docker/conf/config.sh
-/docker/data/*
-/docker/datasets/*
+/docker/data/conf/*
+/docker/data/data/*
+/docker/data/datasets/*
 *.class
 erddap.war
 Thumbs.db
