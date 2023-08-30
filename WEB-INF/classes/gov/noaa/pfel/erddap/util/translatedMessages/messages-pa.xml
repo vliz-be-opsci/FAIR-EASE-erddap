@@ -2490,6 +2490,13 @@ ERDDAP ਇੱਕ ਡੇਟਾ ਸਰਵਰ ਹੈ ਜੋ ਤੁਹਾਨੂੰ �
 <fileHelp_tsv0>ਕਾਲਮ ਨਾਮਾਂ ਜਾਂ ਇਕਾਈਆਂ ਤੋਂ ਬਿਨਾਂ ISO-8859-1 .tsv ਫਾਈਲ ਡਾਊਨਲੋਡ ਕਰੋ। ਟਾਈਮਜ਼ ISO 8601 ਸਤਰ ਹਨ।</fileHelp_tsv0>
 <fileHelp_wav>ਇੱਕ .wav ਆਡੀਓ ਫਾਈਲ ਡਾਊਨਲੋਡ ਕਰੋ। ਸਾਰੇ ਕਾਲਮ ਸੰਖਿਆਤਮਕ ਅਤੇ ਇੱਕੋ ਕਿਸਮ ਦੇ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ।</fileHelp_wav>
 <fileHelp_xhtml>ਇੱਕ ਸਾਰਣੀ ਵਿੱਚ ਡੇਟਾ ਦੇ ਨਾਲ ਇੱਕ UTF-8 XHTML (XML) ਫਾਈਲ ਵੇਖੋ। ਟਾਈਮਜ਼ ISO 8601 ਸਤਰ ਹਨ।</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>ਇੱਕ ਗ੍ਰੇਸਕੇਲ GeoTIFF .tif ਫਾਈਲ ਦੇਖੋ (ਅਕਸ਼ਾਂਸ਼ ਲੰਬਕਾਰ ਡੇਟਾ ਲਈ; ਲੰਬਕਾਰ 180 ਤੋਂ ਹੇਠਾਂ ਜਾਂ ਸਭ ਤੋਂ ਉੱਪਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ)।</fileHelp_geotif>
 <fileHelpGrid_kml>ਇੱਕ Google Earth .kml ਫਾਈਲ ਵੇਖੋ (ਕੇਵਲ ਵਿਥਕਾਰ, ਲੰਬਕਾਰ ਡੇਟਾ ਲਈ)।</fileHelpGrid_kml>
 <fileHelpTable_kml>Google Earth ਲਈ ਢੁਕਵੀਂ .kml ਫ਼ਾਈਲ ਦੇਖੋ।</fileHelpTable_kml>

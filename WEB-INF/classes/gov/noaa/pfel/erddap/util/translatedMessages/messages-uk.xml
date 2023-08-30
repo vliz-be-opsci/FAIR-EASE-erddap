@@ -2753,6 +2753,13 @@ ERDDAP — це сервер даних, який дає вам простий �
 <fileHelp_tsv0>Завантажте файл ISO-8859-1 .tsv без імен стовпців або одиниць вимірювання. Часи – це рядки ISO 8601.</fileHelp_tsv0>
 <fileHelp_wav>Завантажте аудіофайл .wav. Усі стовпці мають бути числовими та одного типу.</fileHelp_wav>
 <fileHelp_xhtml>Перегляньте файл UTF-8 XHTML (XML) з даними в таблиці. Часи – це рядки ISO 8601.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Перегляньте файл GeoTIFF .tif у відтінках сірого (для даних широти і довготи; довгота має бути нижче або вище 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Перегляд файлу .kml Google Планета Земля (лише для даних широти та довготи).</fileHelpGrid_kml>
 <fileHelpTable_kml>Перегляньте файл .kml, який підходить для Google Планета Земля.</fileHelpTable_kml>

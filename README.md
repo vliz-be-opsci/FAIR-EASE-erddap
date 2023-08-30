@@ -2,7 +2,7 @@ ERDDAP fork, for the FAIR-EASE data provider, running in a docker container,
 
 ## Changes compared to the main ERDDAP repo :
 
-## /!\ Things are still in development, they might change over the time (optimization, security (exception & visibility), typo, etc..) /!\
+## /!\ Things are still under development, they might change over the time (optimization, security (exception & visibility), typo, etc..) /!\
 
 
 ### Known Issues
@@ -64,13 +64,42 @@ In the ERDDAP class, created :
 - `updateChangeHashMap` : link a datasetID to the latest update change.
 I'll be useful for the catalog to get them so we don't have to parse with regex the `rssHashMap` to retrieve date and changes.
 
+--------------------------------------------------------------------------------
+
+### RDF Representation :  
+
+Create the RDF Representation of a Dataset (based on the global variable, column/axis/variable attributes and latestUpdate).  
+
+#### Create RDFBuilder :
+- [Create RDF representation like so](https://app.diagrams.net/#G1P0V9ZJogupb4mZvdCiLTySSyM2gQ6ASm)
+- Based on [Apache Jena](https://jena.apache.org/tutorials/rdf_api.html)
+- Can be serialized in [multiple language](https://www.javadoc.io/doc/org.apache.jena/jena-arq/3.4.0/org/apache/jena/riot/Lang.html)
+
+
+#### Create RDFVocab :
+- Create and RDF vocabulary used by `RDFBuilder`
+
+#### Add access to the new file type (`.jsonld`/`.n3`/`.nt`/`.nq`/`.rdfxml`/`.trig`/`.ttl`) :
+- `EDDTable` & `EDDGrid`: add every new file type.
+- `EDStatic` & `messages-{lang}.xml`: add new file description for every language (not translated in every different language yet).
+- `EDDGrid.respondToDapQuery` & `EDDTable.respondToDapQuery`: authorize access to these new formats & return the corresponding values.
+- `OuputStreamFromHttpResponse`: add new fileExtension MIME type.
+  
+#### Create Catalog :
+- Add ConcurrentHashMap `rdfHashMap`: link a datasetID to this associated RDF representation.
+- In the `erddap.goGet`: add link to the `erddap.doCatalog` on url `{erddap}/info/catalog.{format}`
+- `erddap.doCatalog`: get Latest updated datasetID (via `erddap.sortByUpdateDate`), limit the number of results via the URL query.
+Create a RDF representation, containing all of the node in the node list. Then return the result in the given format.
+- `erddap.sortByUpdateDate`: list every dataset, and return list of datasetID, sort by the latestUpdate date.
+- Had to modify the `table.leftToRightSortIgnoreCase` so we can choose between ascending and descending sort. 
+Had to slightly modify each call to the `table.leftToRightSortIgnoreCase` method.
 
 -----------------------------
-## Global informations :
+## Global information :
 
 copy `/docker/data/config.sh` to `/docker/data/conf/config.sh` and fill it with your infos (`/docker/data/conf/config.sh` is git-ignored)
 
-For further informations or modifications, `content/erddap/setup.xml` (only created after the maven install)
+For further information or modification, `content/erddap/setup.xml` (only created after the maven install)
 
 Running on localhost:8080/erddap (via `docker/createDockerImage.sh; docker run -p 8080:8080 vliz/custom-erddap:latest` or `docker/compile.sh`)
 

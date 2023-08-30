@@ -2879,6 +2879,13 @@ Por ejemplo:
 <fileHelp_tsv0>Descargue un archivo .tsv ISO-8859-1 sin nombres de columna ni unidades. Los tiempos son cadenas ISO 8601.</fileHelp_tsv0>
 <fileHelp_wav>Descarga un archivo de audio .wav. Todas las columnas deben ser numéricas y del mismo tipo.</fileHelp_wav>
 <fileHelp_xhtml>Vea un archivo UTF-8 XHTML (XML) con los datos en una tabla. Los tiempos son cadenas ISO 8601.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Ver un archivo GeoTIFF .tif en escala de grises (para datos de latitud y longitud; la longitud debe estar por debajo o por encima de 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Ver un archivo .kml de Google Earth (solo para datos de latitud y longitud).</fileHelpGrid_kml>
 <fileHelpTable_kml>Vea un archivo .kml, adecuado para Google Earth.</fileHelpTable_kml>

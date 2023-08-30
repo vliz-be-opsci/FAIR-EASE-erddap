@@ -2882,6 +2882,13 @@ Ví dụ:
 <fileHelp_tsv0>Tải xuống tệp .tsv ISO-8859-1 không có tên hoặc đơn vị cột. Thời gian là chuỗi ISO 8601.</fileHelp_tsv0>
 <fileHelp_wav>Tải xuống tệp âm thanh .wav. Tất cả các cột phải là số và cùng loại.</fileHelp_wav>
 <fileHelp_xhtml>Xem tệp UTF-8 XHTML (XML) với dữ liệu trong bảng. Thời gian là chuỗi ISO 8601.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Xem tệp GeoTIFF .tif thang độ xám (đối với dữ liệu kinh độ vĩ độ; kinh độ phải ở dưới hoặc trên 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Xem tệp .kml trên Google Earth (chỉ dành cho dữ liệu kinh độ, vĩ độ).</fileHelpGrid_kml>
 <fileHelpTable_kml>Xem tệp .kml, phù hợp với Google Earth.</fileHelpTable_kml>

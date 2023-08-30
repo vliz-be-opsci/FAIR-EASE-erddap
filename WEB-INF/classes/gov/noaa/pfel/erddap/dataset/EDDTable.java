@@ -46,6 +46,7 @@ import gov.noaa.pfel.coastwatch.sgt.SgtGraph;
 import gov.noaa.pfel.coastwatch.sgt.SgtMap;
 import gov.noaa.pfel.coastwatch.sgt.SgtUtil;
 import gov.noaa.pfel.erddap.Erddap;
+import gov.noaa.pfel.erddap.RDFBuilder;
 import gov.noaa.pfel.erddap.util.*;
 import gov.noaa.pfel.erddap.variable.*;
 
@@ -175,7 +176,9 @@ public abstract class EDDTable extends EDD {
 //        ".nc4", ".nc4Header", 
         ".nccsv", ".nccsvMetadata", ".ncoJson",
         ".odvTxt", ".subset", ".tsv", ".tsvp", ".tsv0", 
-        ".wav", ".xhtml"};
+        ".wav", ".xhtml",
+        ".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"
+    };
     public final static String[] dataFileTypeExtensions = {
         ".asc", ".csv", ".csv", ".csv", ".json", ".das", ".dds", 
         ".dods", ".csv", ".xml", ".json", ".html", ".html", ".html", 
@@ -185,7 +188,9 @@ public abstract class EDDTable extends EDD {
 //        ".nc", ".txt",
         ".csv", ".csv", ".json",
         ".txt", ".html", ".tsv", ".tsv", ".tsv", 
-        ".wav", ".xhtml"};
+        ".wav", ".xhtml",
+        ".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"
+    };
     //These all used to have " (It may take a while. Please be patient.)" at the end.
     public static String[][] dataFileTypeDescriptionsAr; // [lang][n]  see static constructor below
     //These are encoded for use as HTML attributes (href)
@@ -230,7 +235,15 @@ public abstract class EDDTable extends EDD {
         "https://jkorpela.fi/TSV.html",  //tsv
         "https://jkorpela.fi/TSV.html",  //tsv
         "https://en.wikipedia.org/wiki/WAV", //wav
-        "https://www.w3schools.com/html/html_tables.asp"}; //xhtml
+        "https://www.w3schools.com/html/html_tables.asp",  //xhtml
+        "https://www.w3.org/TR/json-ld/", //jsonld
+        "https://www.w3.org/TeamSubmission/n3/", //n3
+        "https://www.w3.org/TR/n-triples/", //nt
+        "https://www.w3.org/TR/n-quads/", //nq
+        "https://www.w3.org/TR/rdf-xml/", //rdfxml
+        "https://www.w3.org/TR/trig/", //trig
+        "https://www.w3.org/TR/turtle/" //ttl
+    };
 
     public final static String[] imageFileTypeNames = {
         ".kml", ".smallPdf", ".pdf", ".largePdf", ".smallPng", ".png", ".largePng", ".transparentPng"};  
@@ -376,7 +389,14 @@ public abstract class EDDTable extends EDD {
                 EDStatic.fileHelp_tsvpAr[tl],
                 EDStatic.fileHelp_tsv0Ar[tl],
                 EDStatic.fileHelp_wavAr[tl],
-                EDStatic.fileHelp_xhtmlAr[tl]
+                EDStatic.fileHelp_xhtmlAr[tl],
+                EDStatic.fileHelp_jsonldAr[tl],
+                EDStatic.fileHelp_n3Ar[tl],
+                EDStatic.fileHelp_ntAr[tl],
+                EDStatic.fileHelp_nqAr[tl],
+                EDStatic.fileHelp_rdfxmlAr[tl],
+                EDStatic.fileHelp_trigAr[tl],
+                EDStatic.fileHelp_ttlAr[tl]
             };
             imageFileTypeDescriptionsAr[tl] = new String[]{
                 EDStatic.fileHelpTable_kmlAr[tl],
@@ -407,7 +427,7 @@ public abstract class EDDTable extends EDD {
             "'sosDataResponseFormats.length' not equal to 'sosTabledapDataResponseTypes.length'.");                                     
         defaultFileTypeOption = String2.indexOf(dataFileTypeNames, ".htmlTable");
 
-        int tExtra = 6;
+        int tExtra = 13;
         publicGraphFileTypeNames = new String[tExtra + nIFTN];
         publicGraphFileTypeNames[0] = ".das";
         publicGraphFileTypeNames[1] = ".dds";
@@ -415,6 +435,13 @@ public abstract class EDDTable extends EDD {
         publicGraphFileTypeNames[3] = ".graph";
         publicGraphFileTypeNames[4] = ".help";
         publicGraphFileTypeNames[5] = ".iso19115";
+        publicGraphFileTypeNames[6] = ".jsonld";
+        publicGraphFileTypeNames[7] = ".n3";
+        publicGraphFileTypeNames[8] = ".nt";
+        publicGraphFileTypeNames[9] = ".nq";
+        publicGraphFileTypeNames[10] = ".rdfxml";
+        publicGraphFileTypeNames[11] = ".trig";
+        publicGraphFileTypeNames[12] = ".ttl";
 
         //construct allFileTypeOptionsAr
         allFileTypeOptionsAr = new String[EDStatic.nLanguages][nDFTN + nIFTN];
@@ -2813,6 +2840,22 @@ public abstract class EDDTable extends EDD {
             "\n  fileTypeName=" + fileTypeName);
         long makeTime = System.currentTimeMillis();
         String tErddapUrl = EDStatic.erddapUrl(loggedInAs, language);
+
+        if (
+                fileTypeName.equals(".jsonld") ||
+                fileTypeName.equals(".n3")     ||
+                fileTypeName.equals(".nt")     ||
+                fileTypeName.equals(".nq")     ||
+                fileTypeName.equals(".rdfxml") ||
+                fileTypeName.equals(".trig")   ||
+                fileTypeName.equals(".ttl")
+        ){
+            RDFBuilder rdfbuilder = new RDFBuilder(this);
+            rdfbuilder.setLatestUpdate(latestUpdate);
+            rdfbuilder.buildFullDatasetRDF();
+            rdfbuilder.writeRDFSerialized(fileTypeName, outputStreamSource.outputStream(File2.ISO_8859_1));
+            return;
+        }
 
         //.das, .dds, and .html requests can be handled without getting data 
         if (fileTypeName.equals(".das")) {
@@ -13321,7 +13364,7 @@ public abstract class EDDTable extends EDD {
         Table table = subsetVariablesDataTable(0, EDStatic.loggedInAsSuperuser);  //throws Throwable
         table.reorderColumns(StringArray.fromCSV(sosOfferingDestName + ",longitude,latitude"),
             true); //discardOthers
-        table.leftToRightSortIgnoreCase(3);
+        table.leftToRightSortIgnoreCase(3, true); // ascending
 
         //if subsetVariables includes observations variables (it may), there will be duplicates
         table.removeDuplicates(); 

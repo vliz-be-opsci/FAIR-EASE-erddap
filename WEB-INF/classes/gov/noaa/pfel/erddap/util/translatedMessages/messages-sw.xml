@@ -2762,6 +2762,13 @@ Kwa mfano:
 <fileHelp_tsv0>Pakua faili ya ISO-8859-1 .tsv bila majina ya safu wima au vitengo. Nyakati ni mifuatano ya ISO 8601.</fileHelp_tsv0>
 <fileHelp_wav>Pakua faili ya sauti ya .wav. Safu wima zote lazima ziwe na nambari na za aina moja.</fileHelp_wav>
 <fileHelp_xhtml>Tazama faili ya UTF-8 XHTML (XML) yenye data kwenye jedwali. Nyakati ni mifuatano ya ISO 8601.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Tazama faili ya kijivujivu ya GeoTIFF .tif (kwa data ya longitudo ya latitudo; longitudo lazima ziwe chini au zote zaidi ya 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Tazama faili ya .kml ya Google Earth (kwa data ya latitudo, longitudo pekee).</fileHelpGrid_kml>
 <fileHelpTable_kml>Tazama faili ya .kml, inayofaa kwa Google Earth.</fileHelpTable_kml>

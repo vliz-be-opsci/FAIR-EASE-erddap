@@ -2789,6 +2789,13 @@ Esimerkiksi:
 <fileHelp_tsv0>Lataa ISO-8859-1 .tsv-tiedosto ilman sarakkeiden nimiä tai yksiköitä. Ajat ovat ISO 8601 merkkijonoja.</fileHelp_tsv0>
 <fileHelp_wav>Lataa .wav-äänitiedosto. Kaikkien sarakkeiden on oltava numeerisia ja samantyyppisiä.</fileHelp_wav>
 <fileHelp_xhtml>Tarkastele UTF-8 XHTML (XML) -tiedostoa, jossa tiedot ovat taulukossa. Ajat ovat ISO 8601 merkkijonoja.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Tarkastele harmaasävyistä GeoTIFF .tif-tiedostoa (leveysaste-pituusastetiedot; pituusasteen kaikkien on oltava alle tai yli 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Tarkastele Google Earthin .kml-tiedostoa (vain leveys- ja pituusastetiedot).</fileHelpGrid_kml>
 <fileHelpTable_kml>Tarkastele Google Earthiin sopivaa .kml-tiedostoa.</fileHelpTable_kml>

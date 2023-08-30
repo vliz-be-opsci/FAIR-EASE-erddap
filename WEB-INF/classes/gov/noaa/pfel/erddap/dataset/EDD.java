@@ -41,6 +41,7 @@ import gov.noaa.pfel.coastwatch.util.SSR;
 import gov.noaa.pfel.coastwatch.util.Tally;
 import gov.noaa.pfel.erddap.Erddap;
 import gov.noaa.pfel.erddap.GenerateDatasetsXml;
+import gov.noaa.pfel.erddap.RDFBuilder;
 import gov.noaa.pfel.erddap.util.*;
 import gov.noaa.pfel.erddap.variable.*;
 
@@ -398,6 +399,9 @@ public abstract class EDD {
     /* This source of data is files in a private S3 bucket. 
        Such files should be handled via the S3 SDK. */
     protected boolean filesInPrivateS3Bucket = false;
+
+    /** This is used for the RDF Graph **/
+    protected String latestUpdate = null;
 
 
     /**
@@ -1207,7 +1211,7 @@ public abstract class EDD {
         else {
             String[] history = readEDDHistory();
             change = "";
-            for (String attribute : history) if (!(attribute.equals(""))) change += attribute + "\n";
+            for (String attribute : history) if (!attribute.isEmpty()) change += attribute + "\n";
             gc = Calendar2.parseISODateTimeZulu(history[0]);
         }
 
@@ -1259,6 +1263,26 @@ public abstract class EDD {
 
     }
 
+    /**
+     * Update rdf graph.
+     * This won't throw an exception.
+     */
+    public String updateRDF(Erddap erddap) {
+        try {
+            //store the rdf in-mem graph
+            RDFBuilder builder = new RDFBuilder(datasetID());
+            if (erddap != null){
+                builder.setLatestUpdate(new String(erddap.updateDateHashMap.get(datasetID())));
+                builder.buildFullDatasetRDF();
+                erddap.rdfHashMap.put(datasetID, builder);
+            }
+            return "";
+        } catch (Throwable rssT) {
+            String2.log(String2.ERROR + " in updateRDF for " + datasetID() + ":\n" +
+                    MustBe.throwableToString(rssT));
+            return "";
+        }
+    }
 
     /**
      * This returns a list of childDatasetIDs.
@@ -2641,6 +2665,23 @@ public abstract class EDD {
         reloadEveryNMinutes = 
             tReloadEveryNMinutes <= 0 || tReloadEveryNMinutes == Integer.MAX_VALUE?
             DEFAULT_RELOAD_EVERY_N_MINUTES : tReloadEveryNMinutes;
+    }
+
+    /**
+     * latestUpdate indicates when was the last time the dataset schema / construction had changed;
+     * e.g., 2000-01-31T12:00:00
+     *
+     * @return the latest time (in POSIX format)
+     */
+    public String getLatestUpdate() {return latestUpdate;}
+
+    /**
+     * This sets latestUpdate.
+     *
+     * @param tLatestUpdate if not "" or == null.
+     */
+    public void setLatestUpdate(String tLatestUpdate) {
+        latestUpdate = tLatestUpdate.isEmpty()? null : tLatestUpdate;
     }
 
     /** 

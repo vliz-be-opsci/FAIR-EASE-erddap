@@ -2480,6 +2480,13 @@ ERDDAP एक डेटा सर्वर है जो आपको साम�
 <fileHelp_tsv0>स्तंभ नाम या इकाइयों के बिना ISO-8859-1 .tsv फ़ाइल डाउनलोड करें। टाइम्स आईएसओ 8601 स्ट्रिंग्स हैं।</fileHelp_tsv0>
 <fileHelp_wav>एक .wav ऑडियो फ़ाइल डाउनलोड करें। सभी कॉलम संख्यात्मक और एक ही प्रकार के होने चाहिए।</fileHelp_wav>
 <fileHelp_xhtml>तालिका में डेटा के साथ UTF-8 XHTML (XML) फ़ाइल देखें। टाइम्स आईएसओ 8601 स्ट्रिंग्स हैं।</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>एक ग्रेस्केल GeoTIFF .tif फ़ाइल देखें (अक्षांश देशांतर डेटा के लिए; देशांतर सभी नीचे या सभी 180 से ऊपर होना चाहिए)।</fileHelp_geotif>
 <fileHelpGrid_kml>एक Google धरती .kml फ़ाइल देखें (केवल अक्षांश, देशांतर डेटा के लिए)।</fileHelpGrid_kml>
 <fileHelpTable_kml>Google धरती के लिए उपयुक्त .kml फ़ाइल देखें।</fileHelpTable_kml>

@@ -2784,6 +2784,13 @@ Bijvoorbeeld:
 <fileHelp_tsv0>Download een ISO-8859-1 .tsv-bestand zonder kolomnamen of eenheden. Tijden zijn ISO 8601 strings.</fileHelp_tsv0>
 <fileHelp_wav>Download een .wav-audiobestand. Alle kolommen moeten numeriek zijn en van hetzelfde type zijn.</fileHelp_wav>
 <fileHelp_xhtml>Bekijk een UTF-8 XHTML (XML) bestand met de gegevens in een tabel. Tijden zijn ISO 8601 strings.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Bekijk een grijswaarden GeoTIFF .tif-bestand (voor gegevens over de breedtegraad en de lengtegraad moet de lengtegraad allemaal onder of boven 180 zijn).</fileHelp_geotif>
 <fileHelpGrid_kml>Bekijk een Google Earth .kml-bestand (alleen voor breedte- en lengtegraadgegevens).</fileHelpGrid_kml>
 <fileHelpTable_kml>Bekijk een .kml-bestand, geschikt voor Google Earth.</fileHelpTable_kml>

@@ -2804,6 +2804,13 @@ Zum Beispiel:
 <fileHelp_tsv0>Laden Sie eine ISO-8859-1 .tsv-Datei ohne Spaltennamen oder Einheiten herunter. Die Zeiten sind ISO 8601-Strings.</fileHelp_tsv0>
 <fileHelp_wav>Laden Sie eine .wav-Audiodatei herunter. Alle Spalten müssen numerisch und vom gleichen Typ sein.</fileHelp_wav>
 <fileHelp_xhtml>Zeigen Sie eine UTF-8-XHTML-Datei (XML) mit den Daten in einer Tabelle an. Die Zeiten sind ISO 8601-Strings.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Zeigen Sie eine Graustufen-GeoTIFF-.tif-Datei an (für Breitengrad-Längengrad-Daten muss der Längengrad alle unter oder alle über 180 liegen).</fileHelp_geotif>
 <fileHelpGrid_kml>Zeigen Sie eine .kml-Datei von Google Earth an (nur für Breiten- und Längengraddaten).</fileHelpGrid_kml>
 <fileHelpTable_kml>Zeigen Sie eine .kml-Datei an, die für Google Earth geeignet ist.</fileHelpTable_kml>

@@ -1258,6 +1258,13 @@ public static boolean developmentMode = false;
         fileHelp_tsv0Ar,
         fileHelp_wavAr,
         fileHelp_xhtmlAr,
+        fileHelp_jsonldAr,
+        fileHelp_n3Ar,
+        fileHelp_ntAr,
+        fileHelp_nqAr,
+        fileHelp_rdfxmlAr,
+        fileHelp_trigAr,
+        fileHelp_ttlAr,
         fileHelp_geotifAr,  //graphical
         fileHelpGrid_kmlAr,
         fileHelpTable_kmlAr,
@@ -2896,6 +2903,13 @@ wcsActive = false; //getSetupEVBoolean(setup, ev,          "wcsActive",         
         fileHelp_tsv0Ar              = getNotNothingString(messagesAr, "fileHelp_tsv0",              errorInMethod);
         fileHelp_wavAr               = getNotNothingString(messagesAr, "fileHelp_wav",               errorInMethod);
         fileHelp_xhtmlAr             = getNotNothingString(messagesAr, "fileHelp_xhtml",             errorInMethod);
+        fileHelp_jsonldAr            = getNotNothingString(messagesAr, "fileHelp_jsonld",            errorInMethod);
+        fileHelp_n3Ar                = getNotNothingString(messagesAr, "fileHelp_n3",                errorInMethod);
+        fileHelp_ntAr                = getNotNothingString(messagesAr, "fileHelp_nt",                errorInMethod);
+        fileHelp_nqAr                = getNotNothingString(messagesAr, "fileHelp_nq",                errorInMethod);
+        fileHelp_rdfxmlAr            = getNotNothingString(messagesAr, "fileHelp_rdfxml",            errorInMethod);
+        fileHelp_trigAr              = getNotNothingString(messagesAr, "fileHelp_trig",              errorInMethod);
+        fileHelp_ttlAr               = getNotNothingString(messagesAr, "fileHelp_ttl",               errorInMethod);
         fileHelp_geotifAr            = getNotNothingString(messagesAr, "fileHelp_geotif",            errorInMethod);
         fileHelpGrid_kmlAr           = getNotNothingString(messagesAr, "fileHelpGrid_kml",           errorInMethod);
         fileHelpTable_kmlAr          = getNotNothingString(messagesAr, "fileHelpTable_kml",          errorInMethod);

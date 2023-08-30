@@ -2370,6 +2370,13 @@ ERDDAPは、科学データセットのサブセットを一般的なファイ�
 <fileHelp_tsv0>列名や単位を含まないISO-8859-1.tsvファイルをダウンロードします。時間はISO8601文字列です。</fileHelp_tsv0>
 <fileHelp_wav>.wavオーディオファイルをダウンロードします。すべての列は数値であり、同じタイプである必要があります。</fileHelp_wav>
 <fileHelp_xhtml>テーブル内のデータを含むUTF-8XHTML（XML）ファイルを表示します。時間はISO8601文字列です。</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>グレースケールのGeoTIFF.tifファイルを表示します（緯度経度データの場合。経度はすべて180未満またはすべて180を超える必要があります）。</fileHelp_geotif>
 <fileHelpGrid_kml>Google Earthの.kmlファイルを表示します（緯度、経度のデータのみ）。</fileHelpGrid_kml>
 <fileHelpTable_kml>GoogleEarthに適した.kmlファイルを表示します。</fileHelpTable_kml>

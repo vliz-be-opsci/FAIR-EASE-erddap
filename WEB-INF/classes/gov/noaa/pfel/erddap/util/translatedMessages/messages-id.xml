@@ -2732,6 +2732,13 @@ Sebagai contoh:
 <fileHelp_tsv0>Unduh file .tsv ISO-8859-1 tanpa nama kolom atau unit. Waktu adalah string ISO 8601.</fileHelp_tsv0>
 <fileHelp_wav>Unduh file audio .wav. Semua kolom harus numerik dan bertipe sama.</fileHelp_wav>
 <fileHelp_xhtml>Lihat file UTF-8 XHTML (XML) dengan data dalam tabel. Waktu adalah string ISO 8601.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Lihat file GeoTIFF .tif skala abu-abu (untuk data lintang bujur; bujur harus semuanya di bawah atau semua di atas 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Lihat file .kml Google Earth (hanya untuk data lintang dan bujur).</fileHelpGrid_kml>
 <fileHelpTable_kml>Lihat file .kml, cocok untuk Google Earth.</fileHelpTable_kml>

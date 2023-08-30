@@ -2780,6 +2780,13 @@ For eksempel:
 <fileHelp_tsv0>Last ned en ISO-8859-1 .tsv-fil uten kolonnenavn eller enheter. Tidene er ISO 8601-strenger.</fileHelp_tsv0>
 <fileHelp_wav>Last ned en .wav-lydfil. Alle kolonner må være numeriske og av samme type.</fileHelp_wav>
 <fileHelp_xhtml>Vis en UTF-8 XHTML (XML)-fil med dataene i en tabell. Tidene er ISO 8601-strenger.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Vis en GeoTIFF .tif-fil i gråskala (for breddegradslengdegradsdata; lengdegrad må være under eller over 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Vis en Google Earth .kml-fil (kun for breddegrad, lengdegradsdata).</fileHelpGrid_kml>
 <fileHelpTable_kml>Se en .kml-fil som passer for Google Earth.</fileHelpTable_kml>

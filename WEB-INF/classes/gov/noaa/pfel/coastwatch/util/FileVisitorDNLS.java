@@ -531,7 +531,7 @@ public class FileVisitorDNLS extends SimpleFileVisitor<Path> {
                         }
                     }
 
-                    table.leftToRightSortIgnoreCase(2);
+                    table.leftToRightSortIgnoreCase(2, true); // ascending
                     return table;
 
                 } catch (Exception e) {
@@ -565,7 +565,7 @@ public class FileVisitorDNLS extends SimpleFileVisitor<Path> {
                         lastModifiedPA.add(Math2.roundToLong(lastModDA.get(i) * 1000.0)); //to long epochMillis
                     }
 
-                    table.leftToRightSortIgnoreCase(2);
+                    table.leftToRightSortIgnoreCase(2, true); // ascending
                     return table;
                 } catch (Throwable t) {
                     throw new IOException(t.getMessage(), t);
@@ -598,7 +598,7 @@ public class FileVisitorDNLS extends SimpleFileVisitor<Path> {
                         lastModifiedPA.add(Math2.roundToLong(lastModDA.get(i) * 1000.0));  //to long epochMillis
                     }
 
-                    table.leftToRightSortIgnoreCase(2);
+                    table.leftToRightSortIgnoreCase(2, true); // ascending
                     return table;
                 } catch (Throwable t) {
                     throw new IOException(t.getMessage(), t);
@@ -621,7 +621,7 @@ public class FileVisitorDNLS extends SimpleFileVisitor<Path> {
                 addToWAFUrlList( //does its best.  returns list of errors (or "")
                     tDir, tFileNameRegex, tRecursive, tPathRegex, 
                     tDirectoriesToo, directorySA, nameSA, lastModLA, sizeLA);
-                table.leftToRightSortIgnoreCase(2);
+                table.leftToRightSortIgnoreCase(2, true); // ascending
                 return table;
             } catch (Throwable t) {
                 throw new IOException(t.getMessage(), t);
@@ -640,7 +640,7 @@ public class FileVisitorDNLS extends SimpleFileVisitor<Path> {
             opts,               //follow symbolic links
             Integer.MAX_VALUE,  //maxDepth
             fv);
-        fv.table.leftToRightSortIgnoreCase(2);
+        fv.table.leftToRightSortIgnoreCase(2, true); // ascending
         if (verbose) String2.log("FileVisitorDNLS.oneStep(" + tDir + ") finished successfully. n=" + 
             fv.directoryPA.size() + " time=" +
             (System.currentTimeMillis() - time) + "ms" 
