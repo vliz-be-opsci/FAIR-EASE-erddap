@@ -2802,6 +2802,13 @@ Mar shampla:
 <fileHelp_tsv0>Íoslódáil comhad ISO-8859-1 .tsv gan ainmneacha nó aonaid cholún. Is teaghráin ISO 8601 iad na hamanna.</fileHelp_tsv0>
 <fileHelp_wav>Íoslódáil comhad fuaime .wav. Caithfidh gach colún a bheith uimhriúil agus den chineál céanna.</fileHelp_wav>
 <fileHelp_xhtml>Féach ar chomhad UTF-8 XHTML (XML) leis na sonraí i dtábla. Is teaghráin ISO 8601 iad na hamanna.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Féach ar chomhad liathscála GeoTIFF .tif (le haghaidh sonraí domhanfhad domhanleithead; caithfidh domhanfhad a bheith faoi bhun 180 nó os cionn 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Féach ar chomhad .kml Google Earth (le haghaidh sonraí domhanleithead, domhanfhad amháin).</fileHelpGrid_kml>
 <fileHelpTable_kml>Féach ar chomhad .kml, oiriúnach do Google Earth.</fileHelpTable_kml>

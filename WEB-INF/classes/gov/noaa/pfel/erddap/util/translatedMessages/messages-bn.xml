@@ -2510,6 +2510,13 @@ ERDDAP হল একটি ডেটা সার্ভার যা আপন�
 <fileHelp_tsv0>কলামের নাম বা ইউনিট ছাড়া একটি ISO-8859-1 .tsv ফাইল ডাউনলোড করুন। সময়গুলি হল ISO 8601 স্ট্রিং৷</fileHelp_tsv0>
 <fileHelp_wav>একটি .wav অডিও ফাইল ডাউনলোড করুন। সমস্ত কলাম সংখ্যাসূচক এবং একই ধরনের হতে হবে।</fileHelp_wav>
 <fileHelp_xhtml>একটি টেবিলে ডেটা সহ একটি UTF-8 XHTML (XML) ফাইল দেখুন৷ সময়গুলি হল ISO 8601 স্ট্রিং৷</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>একটি গ্রেস্কেল জিওটিআইএফএফ .টিআইএফ ফাইল দেখুন (অক্ষাংশ দ্রাঘিমাংশ ডেটার জন্য; দ্রাঘিমাংশ অবশ্যই 180 এর নীচে বা সমস্ত কিছুর উপরে হতে হবে)।</fileHelp_geotif>
 <fileHelpGrid_kml>একটি Google Earth .kml ফাইল দেখুন (শুধুমাত্র অক্ষাংশ, দ্রাঘিমাংশ ডেটার জন্য)।</fileHelpGrid_kml>
 <fileHelpTable_kml>Google Earth-এর জন্য উপযুক্ত একটি .kml ফাইল দেখুন।</fileHelpTable_kml>

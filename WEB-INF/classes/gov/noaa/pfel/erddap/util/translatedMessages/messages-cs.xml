@@ -2794,6 +2794,13 @@ Například:
 <fileHelp_tsv0>Stáhněte si soubor ISO-8859-1 .tsv bez názvů sloupců nebo jednotek. Časy jsou řetězce ISO 8601.</fileHelp_tsv0>
 <fileHelp_wav>Stáhněte si zvukový soubor .wav. Všechny sloupce musí být číselné a stejného typu.</fileHelp_wav>
 <fileHelp_xhtml>Zobrazte soubor UTF-8 XHTML (XML) s daty v tabulce. Časy jsou řetězce ISO 8601.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Zobrazte soubor .tif GeoTIFF ve stupních šedi (pro data zeměpisné šířky a délky; délka musí být celá pod nebo nad 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Zobrazit soubor .kml aplikace Google Earth (pouze pro údaje o zeměpisné šířce a délce).</fileHelpGrid_kml>
 <fileHelpTable_kml>Zobrazit soubor .kml, vhodný pro Google Earth.</fileHelpTable_kml>

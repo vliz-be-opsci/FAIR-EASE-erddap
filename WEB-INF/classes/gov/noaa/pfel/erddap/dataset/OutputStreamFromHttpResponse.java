@@ -166,10 +166,34 @@ public class OutputStreamFromHttpResponse implements OutputStreamSource {
             contentType = "text/plain";
             headerMap.put("Content-Description", "dods-das"); //DAP 2.0, 7.1.1  ???!!!DConnect (that's JPL -- ignore it) has 'c' 'd', BUT spec (follow the spec) and THREDDS have 'C' 'D'-- but HTTP header names are case-insensitive
             //until ERDDAP v1.84, was "content-description", "dods_das": c d _ !
-            
+
         } else if (extension.equals(".dds")) {
             contentType = "text/plain";
             headerMap.put("Content-Description", "dods-dds"); //DAP 2.0, 7.1.1
+
+        } else if (extension.equals(".jsonld")) {
+            contentType = " application/ld+json";
+            // headerMap.put("Content-Description", "dods-das");
+
+        } else if (extension.equals(".n3")) {
+            contentType = "text/n3";
+            // headerMap.put("Content-Description", "dods-das");
+
+        } else if (extension.equals(".nt")) {
+            contentType = "application/n-triples";
+            // headerMap.put("Content-Description", "dods-das");
+
+        } else if (extension.equals(".nq")) {
+            contentType = "application/n-nquads";
+            // headerMap.put("Content-Description", "dods-das");
+
+        } else if (extension.equals(".rdfxml")) {
+            contentType = "application/rdf+xml";
+            // headerMap.put("Content-Description", "dods-das");
+
+        } else if (extension.equals(".trig")) {
+            contentType = "application/trig";
+            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".der")) {
             contentType = "application/x-x509-ca-cert"; 

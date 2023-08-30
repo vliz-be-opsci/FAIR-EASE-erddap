@@ -2469,6 +2469,13 @@ ERDDAP เป็นเซิร์ฟเวอร์ข้อมูลที่�
 <fileHelp_tsv0>ดาวน์โหลดไฟล์ ISO-8859-1 .tsv ที่ไม่มีชื่อคอลัมน์หรือหน่วย เวลาคือสตริง ISO 8601</fileHelp_tsv0>
 <fileHelp_wav>ดาวน์โหลดไฟล์เสียง .wav คอลัมน์ทั้งหมดต้องเป็นตัวเลขและเป็นประเภทเดียวกัน</fileHelp_wav>
 <fileHelp_xhtml>ดูไฟล์ UTF-8 XHTML (XML) พร้อมข้อมูลในตาราง เวลาคือสตริง ISO 8601</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>ดูไฟล์ GeoTIFF .tif ระดับสีเทา (สำหรับข้อมูลละติจูด ลองจิจูด ลองจิจูดทั้งหมดต้องต่ำกว่าหรือสูงกว่า 180 ทั้งหมด)</fileHelp_geotif>
 <fileHelpGrid_kml>ดูไฟล์ .kml ของ Google Earth (สำหรับข้อมูลละติจูด ลองจิจูดเท่านั้น)</fileHelpGrid_kml>
 <fileHelpTable_kml>ดูไฟล์ .kml เหมาะสำหรับ Google Earth</fileHelpTable_kml>

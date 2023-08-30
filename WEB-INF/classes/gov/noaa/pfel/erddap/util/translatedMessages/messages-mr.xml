@@ -2817,6 +2817,13 @@ ERDDAP हा डेटा सर्व्हर आहे जो तुम्�
 <fileHelp_tsv0>कॉलम नाव किंवा युनिट्सशिवाय ISO-8859-1 .tsv फाइल डाउनलोड करा. वेळा ISO 8601 स्ट्रिंग आहेत.</fileHelp_tsv0>
 <fileHelp_wav>.wav ऑडिओ फाइल डाउनलोड करा. सर्व स्तंभ संख्यात्मक आणि समान प्रकारचे असणे आवश्यक आहे.</fileHelp_wav>
 <fileHelp_xhtml>टेबलमधील डेटासह UTF-8 XHTML (XML) फाइल पहा. वेळा ISO 8601 स्ट्रिंग आहेत.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>ग्रेस्केल GeoTIFF .tif फाइल पहा (अक्षांश रेखांश डेटासाठी; रेखांश सर्व खाली किंवा 180 च्या वर असले पाहिजे).</fileHelp_geotif>
 <fileHelpGrid_kml>Google Earth .kml फाइल पहा (केवळ अक्षांश, रेखांश डेटासाठी).</fileHelpGrid_kml>
 <fileHelpTable_kml>Google Earth साठी योग्य असलेली .kml फाइल पहा.</fileHelpTable_kml>

@@ -3118,6 +3118,13 @@ subsets of scientific datasets in common file formats and make graphs and maps.
 <fileHelp_tsv0>Download a ISO-8859-1 .tsv file without column names or units. Times are ISO 8601 strings.</fileHelp_tsv0>
 <fileHelp_wav>Download a .wav audio file. All columns must be numeric and of the same type.</fileHelp_wav>
 <fileHelp_xhtml>View a UTF-8 XHTML (XML) file with the data in a table. Times are ISO 8601 strings.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 
 <fileHelp_geotif>View a grayscale GeoTIFF .tif file (for latitude longitude data; longitude must be all below or all above 180).</fileHelp_geotif>
 <fileHelpGrid_kml>View a Google Earth .kml file (for latitude, longitude data only).</fileHelpGrid_kml>

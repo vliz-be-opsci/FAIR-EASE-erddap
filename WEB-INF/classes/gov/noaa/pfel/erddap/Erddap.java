@@ -195,11 +195,11 @@ public class Erddap extends HttpServlet {
     public ConcurrentHashMap<String,EDDGrid>  gridDatasetHashMap  = new ConcurrentHashMap(16, 0.75f, 4); 
     public ConcurrentHashMap<String,EDDTable> tableDatasetHashMap = new ConcurrentHashMap(16, 0.75f, 4); 
     /** The RSS info: key=datasetId, value=utf8 byte[] of rss xml */
-    public ConcurrentHashMap<String,byte[]> rssHashMap  = new ConcurrentHashMap(16, 0.75f, 4); 
+    public ConcurrentHashMap<String,byte[]> rssHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
     public ConcurrentHashMap<String,byte[]> updateDateHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
     public ConcurrentHashMap<String,byte[]> updateChangeHashMap  = new ConcurrentHashMap(16, 0.75f, 4);
 
-    public ConcurrentHashMap<String,int[]> failedLogins = new ConcurrentHashMap(16, 0.75f, 4); 
+    public ConcurrentHashMap<String,int[]> failedLogins = new ConcurrentHashMap(16, 0.75f, 4);
     public ConcurrentHashMap<String,ConcurrentHashMap> categoryInfo = new ConcurrentHashMap(16, 0.75f, 4);  
     public long lastClearedFailedLogins = System.currentTimeMillis();
 
@@ -4613,6 +4613,8 @@ writer.write(EDStatic.dpf_congratulationAr[language]
                     MessageFormat.format(EDStatic.unknownDatasetIDAr[language], id)));
             return;
         }
+        byte[] bALatestUpdate = updateDateHashMap.get(id);
+        if(bALatestUpdate != null) dataset.setLatestUpdate(new String(bALatestUpdate));
         if (!dataset.isAccessibleTo(EDStatic.getRoles(loggedInAs))) { //listPrivateDatasets doesn't apply
             //exception is graphsAccessibleTo=public
             if (dataset.graphsAccessibleToPublic()) {

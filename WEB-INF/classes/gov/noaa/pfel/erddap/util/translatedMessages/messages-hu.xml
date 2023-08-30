@@ -2861,6 +2861,13 @@ Például:
 <fileHelp_tsv0>Töltsön le egy ISO-8859-1 .tsv fájlt oszlopnevek és mértékegységek nélkül. Az idők ISO 8601 karakterláncok.</fileHelp_tsv0>
 <fileHelp_wav>Töltsön le egy .wav hangfájlt. Minden oszlopnak numerikusnak és azonos típusúnak kell lennie.</fileHelp_wav>
 <fileHelp_xhtml>Tekintse meg az UTF-8 XHTML (XML) fájlt az adatokkal egy táblázatban. Az idők ISO 8601 karakterláncok.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Tekintse meg a szürkeárnyalatos GeoTIFF .tif fájlt (a szélességi és hosszúsági adatokhoz; a hosszúságnak 180 alatt vagy felett kell lennie).</fileHelp_geotif>
 <fileHelpGrid_kml>Tekintse meg a Google Earth .kml fájlját (csak szélességi és hosszúsági adatokhoz).</fileHelpGrid_kml>
 <fileHelpTable_kml>Tekintse meg a Google Föld számára megfelelő .kml fájlt.</fileHelpTable_kml>

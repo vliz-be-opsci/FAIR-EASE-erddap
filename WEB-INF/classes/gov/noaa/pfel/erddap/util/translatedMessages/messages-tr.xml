@@ -2787,6 +2787,13 @@ Uzak bir ERDDAP yeni bir özellik kullanmak istiyorsanız, ERDDAP sürüm numara
 <fileHelp_tsv0>Sütun adları veya birimleri olmayan bir ISO-8859-1 .tsv dosyası indirin. Süreler ISO 8601 dizeleridir.</fileHelp_tsv0>
 <fileHelp_wav>Bir .wav ses dosyası indirin. Tüm sütunlar sayısal ve aynı türden olmalıdır.</fileHelp_wav>
 <fileHelp_xhtml>Tablodaki verilerle bir UTF-8 XHTML (XML) dosyasını görüntüleyin. Süreler ISO 8601 dizeleridir.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Gri tonlamalı bir GeoTIFF .tif dosyasını görüntüleyin (enlem boylam verileri için; boylamın tamamı 180&#39;in altında veya tamamı üzerinde olmalıdır).</fileHelp_geotif>
 <fileHelpGrid_kml>Bir Google Earth .kml dosyasını görüntüleyin (yalnızca enlem, boylam verileri için).</fileHelpGrid_kml>
 <fileHelpTable_kml>Google Earth için uygun bir .kml dosyasını görüntüleyin.</fileHelpTable_kml>

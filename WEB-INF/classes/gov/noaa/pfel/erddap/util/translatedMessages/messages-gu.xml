@@ -2787,6 +2787,13 @@ ERDDAP એ ડેટા સર્વર છે જે તમને સામા�
 <fileHelp_tsv0>કૉલમના નામ અથવા એકમો વિના ISO-8859-1 .tsv ફાઇલ ડાઉનલોડ કરો. ટાઇમ્સ ISO 8601 સ્ટ્રીંગ્સ છે.</fileHelp_tsv0>
 <fileHelp_wav>.wav ઓડિયો ફાઈલ ડાઉનલોડ કરો. બધી કૉલમ સંખ્યાત્મક અને સમાન પ્રકારની હોવી જોઈએ.</fileHelp_wav>
 <fileHelp_xhtml>કોષ્ટકમાં ડેટા સાથે UTF-8 XHTML (XML) ફાઇલ જુઓ. ટાઇમ્સ ISO 8601 સ્ટ્રીંગ્સ છે.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>ગ્રેસ્કેલ GeoTIFF .tif ફાઇલ જુઓ (અક્ષાંશ રેખાંશ ડેટા માટે; રેખાંશ 180 ની નીચે અથવા બધુ જ હોવું જોઈએ).</fileHelp_geotif>
 <fileHelpGrid_kml>Google Earth .kml ફાઇલ જુઓ (ફક્ત અક્ષાંશ, રેખાંશ ડેટા માટે).</fileHelpGrid_kml>
 <fileHelpTable_kml>Google અર્થ માટે યોગ્ય .kml ફાઇલ જુઓ.</fileHelpTable_kml>

@@ -2865,6 +2865,13 @@ ERDDAP 은 과학 데이터 세트의 하위 집합을 공통 파일 형식으�
 <fileHelp_tsv0>열 이름이나 단위가 없는 ISO-8859-1 .tsv 파일을 다운로드합니다. 시간은 ISO 8601 문자열입니다.</fileHelp_tsv0>
 <fileHelp_wav>.wav 오디오 파일을 다운로드합니다. 모든 열은 숫자여야 하며 유형이 동일해야 합니다.</fileHelp_wav>
 <fileHelp_xhtml>테이블의 데이터가 있는 UTF-8 XHTML(XML) 파일을 봅니다. 시간은 ISO 8601 문자열입니다.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>회색조 GeoTIFF .tif 파일을 봅니다(위도 경도 데이터의 경우 경도는 모두 180 미만이거나 모두 위여야 함).</fileHelp_geotif>
 <fileHelpGrid_kml>Google Earth .kml 파일을 봅니다(위도, 경도 데이터 전용).</fileHelpGrid_kml>
 <fileHelpTable_kml>Google 어스에 적합한 .kml 파일을 봅니다.</fileHelpTable_kml>

@@ -41,6 +41,7 @@ import gov.noaa.pfel.coastwatch.sgt.SgtMap;
 import gov.noaa.pfel.coastwatch.sgt.SgtUtil;
 import gov.noaa.pfel.coastwatch.util.HtmlWidgets;
 import gov.noaa.pfel.coastwatch.util.SSR;
+import gov.noaa.pfel.erddap.RDFBuilder;
 import gov.noaa.pfel.erddap.util.*;
 import gov.noaa.pfel.erddap.variable.*;
 
@@ -138,7 +139,9 @@ public abstract class EDDGrid extends EDD {
 //        ".nc4", ".nc4Header", 
         ".nccsv", ".nccsvMetadata", ".ncoJson",
         ".odvTxt", ".timeGaps", ".tsv", ".tsvp", ".tsv0", 
-        ".wav", ".xhtml"};
+        ".wav", ".xhtml",
+        ".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"
+    };
     public final static String[] dataFileTypeExtensions = {
         ".asc", ".csv", ".csv", ".csv", ".das", ".dds", ".dods", 
         ".asc", //".grd", ".hdf", 
@@ -150,7 +153,9 @@ public abstract class EDDGrid extends EDD {
         ".csv", ".csv", ".json",
         //.subset currently isn't included
         ".txt", ".asc", ".tsv", ".tsv", ".tsv", 
-        ".wav", ".xhtml"};
+        ".wav", ".xhtml",
+        ".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"
+    };
     public static String[][] dataFileTypeDescriptionsAr; // [lang][n]  see static constructor below
     //These are encoded for use as HTML attributes (href)
     public static String[] dataFileTypeInfo = {  //"" if not available
@@ -191,7 +196,14 @@ public abstract class EDDGrid extends EDD {
         "https://jkorpela.fi/TSV.html",  //tsv
         "https://jkorpela.fi/TSV.html",  //tsv
         "https://en.wikipedia.org/wiki/WAV", //wav
-        "https://www.w3schools.com/html/html_tables.asp" //xhtml
+        "https://www.w3schools.com/html/html_tables.asp", //xhtml
+        "https://www.w3.org/TR/json-ld/", //jsonld
+        "https://www.w3.org/TeamSubmission/n3/", //n3
+        "https://www.w3.org/TR/n-triples/", //nt
+        "https://www.w3.org/TR/n-quads/", //nq
+        "https://www.w3.org/TR/rdf-xml/", //rdfxml
+        "https://www.w3.org/TR/trig/", //trig
+        "https://www.w3.org/TR/turtle/" //ttl
     };
 
     public final static String[] imageFileTypeNames = {
@@ -277,7 +289,14 @@ public abstract class EDDGrid extends EDD {
                 EDStatic.fileHelp_tsvpAr[tl],
                 EDStatic.fileHelp_tsv0Ar[tl],
                 EDStatic.fileHelp_wavAr[tl],
-                EDStatic.fileHelp_xhtmlAr[tl]
+                EDStatic.fileHelp_xhtmlAr[tl],
+                EDStatic.fileHelp_jsonldAr[tl],
+                EDStatic.fileHelp_n3Ar[tl],
+                EDStatic.fileHelp_ntAr[tl],
+                EDStatic.fileHelp_nqAr[tl],
+                EDStatic.fileHelp_rdfxmlAr[tl],
+                EDStatic.fileHelp_trigAr[tl],
+                EDStatic.fileHelp_ttlAr[tl]
             };
 
             imageFileTypeDescriptionsAr[tl] = new String[]{
@@ -308,14 +327,21 @@ public abstract class EDDGrid extends EDD {
             "'imageFileTypeNames.length' not equal to 'imageFileTypeInfo.length'.");                                     
         defaultFileTypeOption = String2.indexOf(dataFileTypeNames, ".htmlTable");
 
-        int tExtra = 6;
+        int tExtra = 13;
         publicGraphFileTypeNames = new String[tExtra + nIFTN];
-        publicGraphFileTypeNames[0] = ".das";
-        publicGraphFileTypeNames[1] = ".dds";
-        publicGraphFileTypeNames[2] = ".fgdc";
-        publicGraphFileTypeNames[3] = ".graph";
-        publicGraphFileTypeNames[4] = ".help";
-        publicGraphFileTypeNames[5] = ".iso19115";
+        publicGraphFileTypeNames[0]  = ".das";
+        publicGraphFileTypeNames[1]  = ".dds";
+        publicGraphFileTypeNames[2]  = ".fgdc";
+        publicGraphFileTypeNames[3]  = ".graph";
+        publicGraphFileTypeNames[4]  = ".help";
+        publicGraphFileTypeNames[5]  = ".iso19115";
+        publicGraphFileTypeNames[6]  = ".jsonld";
+        publicGraphFileTypeNames[7]  = ".n3";
+        publicGraphFileTypeNames[8]  = ".nt";
+        publicGraphFileTypeNames[9]  = ".nq";
+        publicGraphFileTypeNames[10] = ".rdfxml";
+        publicGraphFileTypeNames[11] = ".trig";
+        publicGraphFileTypeNames[12] = ".ttl";
 
         //construct allFileTypeOptions
         allFileTypeOptionsAr = new String[EDStatic.nLanguages][nDFTN + nIFTN];
@@ -2309,6 +2335,22 @@ public abstract class EDDGrid extends EDD {
             String tErddapUrl = EDStatic.erddapUrl(loggedInAs, language);
 
             //save data to outputStream
+            if (
+                    fileTypeName.equals(".jsonld") ||
+                    fileTypeName.equals(".n3")     ||
+                    fileTypeName.equals(".nt")     ||
+                    fileTypeName.equals(".nq")     ||
+                    fileTypeName.equals(".rdfxml") ||
+                    fileTypeName.equals(".trig")   ||
+                    fileTypeName.equals(".ttl")
+            ){
+                RDFBuilder rdfbuilder = new RDFBuilder(this);
+                rdfbuilder.setLatestUpdate(latestUpdate);
+                rdfbuilder.buildFullDatasetRDF();
+                rdfbuilder.writeRDFSerialized(fileTypeName, outputStreamSource.outputStream(File2.ISO_8859_1));
+                return;
+            }
+
             if (fileTypeName.equals(".asc")) {
                 saveAsAsc(language, requestUrl, userDapQuery, outputStreamSource);
                 return;

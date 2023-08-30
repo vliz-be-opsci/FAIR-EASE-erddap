@@ -2303,6 +2303,13 @@ ERDDAP是一个数据服务器，它为您提供一种简单、一致的方式�
 <fileHelp_tsv0>下载没有列名或单位的 ISO-8859-1 .tsv 文件。时间是 ISO 8601 字符串。</fileHelp_tsv0>
 <fileHelp_wav>下载 .wav 音频文件。所有列都必须是数字且类型相同。</fileHelp_wav>
 <fileHelp_xhtml>查看包含表中数据的 UTF-8 XHTML (XML) 文件。时间是 ISO 8601 字符串。</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>查看灰度 GeoTIFF .tif 文件（对于纬度经度数据；经度必须全部低于或全部高于 180）。</fileHelp_geotif>
 <fileHelpGrid_kml>查看 Google 地球 .kml 文件（仅适用于纬度、经度数据）。</fileHelpGrid_kml>
 <fileHelpTable_kml>查看 .kml 文件，适用于 Google Earth。</fileHelpTable_kml>

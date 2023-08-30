@@ -2769,6 +2769,13 @@ Till exempel:
 <fileHelp_tsv0>Ladda ner en ISO-8859-1 .tsv-fil utan kolumnnamn eller enheter. Tiderna är ISO 8601-strängar.</fileHelp_tsv0>
 <fileHelp_wav>Ladda ner en .wav-ljudfil. Alla kolumner måste vara numeriska och av samma typ.</fileHelp_wav>
 <fileHelp_xhtml>Visa en UTF-8 XHTML (XML)-fil med data i en tabell. Tiderna är ISO 8601-strängar.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Visa en gråskala GeoTIFF .tif-fil (för latitud longituddata; longitud måste vara allt under eller över 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Visa en Google Earth .kml-fil (endast för latitud, longituddata).</fileHelpGrid_kml>
 <fileHelpTable_kml>Visa en .kml-fil, lämplig för Google Earth.</fileHelpTable_kml>

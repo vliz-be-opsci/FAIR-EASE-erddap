@@ -2737,6 +2737,13 @@ Halimbawa:
 <fileHelp_tsv0>Mag-download ng ISO-8859-1 .tsv file na walang mga pangalan ng column o unit. Ang mga oras ay ISO 8601 na mga string.</fileHelp_tsv0>
 <fileHelp_wav>Mag-download ng .wav audio file. Ang lahat ng mga column ay dapat na numero at may parehong uri.</fileHelp_wav>
 <fileHelp_xhtml>Tingnan ang isang UTF-8 XHTML (XML) file na may data sa isang talahanayan. Ang mga oras ay ISO 8601 na mga string.</fileHelp_xhtml>
+<fileHelp_jsonld>View the JSON-LD RDF serialization representation.</fileHelp_jsonld>
+<fileHelp_n3>View the Notation3 RDF serialization representation.</fileHelp_n3>
+<fileHelp_nt>View the N-Triples RDF serialization representation.</fileHelp_nt>
+<fileHelp_nq>View the N-Quads RDF serialization representation.</fileHelp_nq>
+<fileHelp_rdfxml>View the RDF-XML RDF serialization representation.</fileHelp_rdfxml>
+<fileHelp_trig>View the TriG RDF serialization representation.</fileHelp_trig>
+<fileHelp_ttl>View the Turtle RDF serialization representation.</fileHelp_ttl>
 <fileHelp_geotif>Tingnan ang isang grayscale na GeoTIFF .tif na file (para sa data ng latitude longitude; ang longitude ay dapat nasa ibaba o lahat ay nasa itaas ng 180).</fileHelp_geotif>
 <fileHelpGrid_kml>Tingnan ang isang Google Earth .kml file (para sa latitude, longitude data lamang).</fileHelpGrid_kml>
 <fileHelpTable_kml>Tingnan ang isang .kml file, na angkop para sa Google Earth.</fileHelpTable_kml>
