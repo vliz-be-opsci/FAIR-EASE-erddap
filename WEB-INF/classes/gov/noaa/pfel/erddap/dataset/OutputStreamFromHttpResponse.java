@@ -173,27 +173,21 @@ public class OutputStreamFromHttpResponse implements OutputStreamSource {
 
         } else if (extension.equals(".jsonld")) {
             contentType = " application/ld+json";
-            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".n3")) {
             contentType = "text/n3";
-            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".nt")) {
             contentType = "application/n-triples";
-            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".nq")) {
             contentType = "application/n-nquads";
-            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".rdfxml")) {
             contentType = "application/rdf+xml";
-            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".trig")) {
             contentType = "application/trig";
-            // headerMap.put("Content-Description", "dods-das");
 
         } else if (extension.equals(".der")) {
             contentType = "application/x-x509-ca-cert"; 

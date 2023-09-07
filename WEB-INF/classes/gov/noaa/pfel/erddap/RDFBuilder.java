@@ -31,7 +31,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static gov.noaa.pfel.erddap.util.EDStatic.*;
-
+import static gov.noaa.pfel.erddap.RDFVocab.*;
 
 public class RDFBuilder {
 
@@ -126,31 +126,33 @@ public class RDFBuilder {
         hydraSupportedOperationSubsetting = model.createResource();
         Resource hydraEndpointDescriptionSubsetting = model.createResource();
         hydraPropertySubsetting = model.createResource();
-        mainNode.addProperty(RDFVocab.DCAT_distribution, dcatDistributionSubsetting);
+        mainNode.addProperty(DCAT_distribution, dcatDistributionSubsetting);
 
         dcatDistributionSubsetting
-                .addProperty(RDFVocab.RDF_type, RDFVocab.DCAT_Dataservice)
-                .addProperty(RDFVocab.DCAT_servesDataset, mainNode)
-                .addProperty(RDFVocab.HYDRA_entrypoint, globalURI, XSDDatatype.XSDanyURI)
-                .addProperty(RDFVocab.DCAT_endPointDescription, hydraEndpointDescriptionSubsetting)
-                .addProperty(RDFVocab.HYDRA_supportedOperation, hydraSupportedOperationSubsetting)
-//                .addProperty(RDFVocab.SCHEMA_identifier, ..., XSDDatatype.XSD..)
-//                .addProperty(RDFVocab.SCHEMA_description, ..., )
-//                .addProperty(RDFVocab.SCHEMA_datePublished, ..., XSDDatatype.XSDdateTime)
-//                .addProperty(RDFVocab.SCHEMA_dateModified, ..., XSDDatatype.XSDdateTime)
+                .addProperty(RDF_type, DCAT_Dataservice)
+                .addProperty(DCAT_servesDataset, mainNode)
+                .addProperty(HYDRA_entrypoint, globalURI, XSDDatatype.XSDanyURI)
+                .addProperty(DCAT_endPointDescription, hydraEndpointDescriptionSubsetting)
+                .addProperty(HYDRA_supportedOperation, hydraSupportedOperationSubsetting)
+//                .addProperty(SCHEMA_identifier, ..., XSDDatatype.XSD..)
+//                .addProperty(SCHEMA_description, ..., )
+//                .addProperty(SCHEMA_datePublished, ..., XSDDatatype.XSDdateTime)
+//                .addProperty(SCHEMA_dateModified, ..., XSDDatatype.XSDdateTime)
         ;
 
         hydraEndpointDescriptionSubsetting
-                .addProperty(RDFVocab.RDF_type, RDFVocab.HYDRA_ApiDocumentation)
-                .addProperty(RDFVocab.HYDRA_entrypoint, globalURI, XSDDatatype.XSDanyURI)
-                .addProperty(RDFVocab.HYDRA_title, "ERDDAP Api")
-                .addProperty(RDFVocab.HYDRA_description, "ERDDAP Api to get " + edd.datasetID() + ", or subsettings of the "+ edd.datasetID() + " dataset")
+                .addProperty(RDF_type, HYDRA_ApiDocumentation)
+                .addProperty(HYDRA_entrypoint, globalURI, XSDDatatype.XSDanyURI)
+                .addProperty(HYDRA_title, "ERDDAP Api")
+                .addProperty(HYDRA_description, "ERDDAP Api to get " + edd.datasetID() + ", or subsettings of the "+ edd.datasetID() + " dataset")
         ;
 
+        hydraPropertySubsetting.addProperty(RDF_type ,HYDRA_IriTemplate);
+
         hydraSupportedOperationSubsetting
-                .addProperty(RDFVocab.HYDRA_property, hydraPropertySubsetting)
-                .addProperty(RDFVocab.RDF_type, RDFVocab.HYDRA_Operation)
-                .addProperty(RDFVocab.HYDRA_method, "GET", XSDDatatype.XSDstring);
+                .addProperty(HYDRA_property, hydraPropertySubsetting)
+                .addProperty(RDF_type, HYDRA_Operation)
+                .addProperty(HYDRA_method, "GET", XSDDatatype.XSDstring);
     }
 
     /**
@@ -158,10 +160,10 @@ public class RDFBuilder {
      */
     public void setNsPrefixes(){
         SortedMap<String, String> prefix = new TreeMap<>();
-        int lPrefixes = RDFVocab.prefixesName.length;
+        int lPrefixes = prefixesName.length;
 
         for(int i=0; i < lPrefixes; i++)
-            prefix.put(RDFVocab.prefixesName[i], RDFVocab.prefixesURI[i]);
+            prefix.put(prefixesName[i], prefixesURI[i]);
 
         model.setNsPrefixes(prefix);
     }
@@ -182,9 +184,7 @@ public class RDFBuilder {
         EDD edd = gridDatasetHashMap.get(tId);
         Table table = null;
 
-        mainNode.addProperty(RDFVocab.RDF_type,
-                model.createProperty(RDFVocab.DCAT_URI, "Dataset")
-        );
+        mainNode.addProperty(RDF_type, DCAT_Dataset);
 
         Attributes globalAttributes;
         EDVGridAxis[] axisVariables = null;
@@ -230,15 +230,15 @@ public class RDFBuilder {
 
             sValue = globalAttributes.get(gaName).getString(0);
 
-            if (gaName.equals("title")) gaRelation = RDFVocab.DCT_title;
+            if (gaName.equals("title")) gaRelation = DCT_title;
             else if (gaName.equals("license")) {
-                gaRelation = RDFVocab.DCT_license;
+                gaRelation = DCT_license;
                 if(sValue.startsWith("http")){
                     mainNode.addProperty(gaRelation, model.createResource(sValue));
                     continue;
                 }
             }
-            else if (gaName.equals("summary")) gaRelation = RDFVocab.DCT_description;
+            else if (gaName.equals("summary")) gaRelation = DCT_description;
             else if (gaName.equals("time_coverage_start")) timeCoverage[0] = sValue;
             else if (gaName.equals("time_coverage_end"))   timeCoverage[1] = sValue;
             else if (gaName.equals("geospatial_lat_min"))  latitudeCoverage[0]  = sValue;
@@ -246,13 +246,13 @@ public class RDFBuilder {
             else if (gaName.equals("geospatial_lon_min"))  longitudeCoverage[0] = sValue;
             else if (gaName.equals("geospatial_lon_max"))  longitudeCoverage[1] = sValue;
             else if (gaName.equals("date_created")) {
-                gaRelation = RDFVocab.DCT_issued;
+                gaRelation = DCT_issued;
                 gaDataType = XSDDatatype.XSDdateTime;
             } else if (gaName.equals("keywords")) {
                 String[] saKeyword = sValue.split(",", 0);
                 for (String keyword : saKeyword) {
                     if (!keyword.isEmpty())
-                        mainNode.addProperty(RDFVocab.DCAT_keyword, keyword.trim(), XSDDatatype.XSDstring);
+                        mainNode.addProperty(DCAT_keyword, keyword.trim(), XSDDatatype.XSDstring);
                 }
             } else if (gaName.startsWith("contributor") || gaName.startsWith("creator") || gaName.startsWith("publisher")) {
                 String[] saValues = sValue.split(",|;", -1);
@@ -271,10 +271,10 @@ public class RDFBuilder {
                     if (gaName.endsWith("_institution")) typeNode[nPersonRole] = "institution";
 
                     if (gaName.equals("contributor") || gaName.equals("creator") || gaName.equals("publisher"))
-                        lightRelation = RDFVocab.FOAF_name;
-                    else if (gaName.endsWith("_name")) lightRelation = RDFVocab.FOAF_name;
-                    else if (gaName.endsWith("_email")) lightRelation = RDFVocab.FOAF_mbox;
-                    else if (gaName.endsWith("_url")) lightRelation = RDFVocab.FOAF_workplaceHomepage;
+                        lightRelation = FOAF_name;
+                    else if (gaName.endsWith("_name")) lightRelation = FOAF_name;
+                    else if (gaName.endsWith("_email")) lightRelation = FOAF_mbox;
+                    else if (gaName.endsWith("_url")) lightRelation = FOAF_workplaceHomepage;
                     else continue;
 
                     if (nodeCurrent.size()-1 < i)
@@ -323,44 +323,44 @@ public class RDFBuilder {
             }
         }
 
-        mainNode.addProperty(RDFVocab.DCT_identifier, tId)
-                .addProperty(RDFVocab.DCAT_landingPage, model.createResource(globalURI));
+        mainNode.addProperty(DCT_identifier, tId)
+                .addProperty(DCAT_landingPage, model.createResource(globalURI));
 
         if (!datasetValueIRI.isEmpty())
-            mainNode.addProperty(RDFVocab.DCT_type, model.createResource(datasetValueIRI));
+            mainNode.addProperty(DCT_type, model.createResource(datasetValueIRI));
 
         if (!timeCoverage[0].isEmpty() && !timeCoverage[1].isEmpty()){
-            mainNode.addProperty(RDFVocab.DCT_temporal,
+            mainNode.addProperty(DCT_temporal,
                     model.createResource()
-                            .addProperty(RDFVocab.RDF_type, RDFVocab.DCT_PeriodOfTime)
-                            .addProperty(RDFVocab.DCAT_startDate, timeCoverage[0], XSDDatatype.XSDdateTime)
-                            .addProperty(RDFVocab.DCAT_endDate, timeCoverage[1], XSDDatatype.XSDdateTime)
+                            .addProperty(RDF_type, DCT_PeriodOfTime)
+                            .addProperty(DCAT_startDate, timeCoverage[0], XSDDatatype.XSDdateTime)
+                            .addProperty(DCAT_endDate, timeCoverage[1], XSDDatatype.XSDdateTime)
             );
 
             if(!timeVarName.isEmpty()) {
                 Resource temporal = model.createResource();
                 hydraSupportedOperationSubsetting.addProperty(
-                        RDFVocab.DCT_temporal,
-                        temporal.addProperty(RDFVocab.RDF_type, RDFVocab.DCT_Location)
+                        DCT_temporal,
+                        temporal.addProperty(RDF_type, DCT_Location)
                 );
-                addFairEaseGenerator(temporal, "{" + timeVarName + ".max}", XSDDatatype.XSDdateTime, RDFVocab.DCAT_endDate.getURI(), RDFVocab.XSD_date.getURI());
-                addFairEaseGenerator(temporal, "{" + timeVarName + ".min}", XSDDatatype.XSDdateTime, RDFVocab.DCAT_endDate.getURI(), RDFVocab.XSD_date.getURI());
+                addFairEaseGenerator(temporal, "{" + timeVarName + ".max}", null, DCAT_endDate.getURI(), XSD_DateTime.getURI());
+                addFairEaseGenerator(temporal, "{" + timeVarName + ".min}", null, DCAT_endDate.getURI(), XSD_DateTime.getURI());
             }
         }
 
         if (latestUpdate != null && !latestUpdate.isEmpty())
-            mainNode.addProperty(RDFVocab.DCT_modified, latestUpdate);
+            mainNode.addProperty(DCT_modified, latestUpdate, XSDDatatype.XSDdateTime);
 
         if ( (!latitudeCoverage[0].isEmpty() || !latitudeCoverage[1].isEmpty()) &&
                 (!longitudeCoverage[0].isEmpty() || !longitudeCoverage[1].isEmpty()) ) {
-            RDFDatatype wktLiteral = new BaseDatatype(RDFVocab.GSP_URI + "wktLiteral");
+            RDFDatatype wktLiteral = new BaseDatatype(GSP_URI + "wktLiteral");
             TypeMapper.getInstance().registerDatatype(wktLiteral);
 
-            mainNode.addProperty(RDFVocab.DCT_spatial,
+            mainNode.addProperty(DCT_spatial,
                     model.createResource()
-                            .addProperty(RDFVocab.RDF_type, RDFVocab.DCT_Location)
+                            .addProperty(RDF_type, DCT_Location)
                             .addProperty(
-                                    RDFVocab.DCAT_bbox,
+                                    DCAT_bbox,
                                     getWktLiteralString(latitudeCoverage, longitudeCoverage),
                                     wktLiteral
                             )
@@ -370,8 +370,8 @@ public class RDFBuilder {
                 Resource spatial = model.createResource();
 
                 hydraSupportedOperationSubsetting.addProperty(
-                        RDFVocab.DCT_spatial,
-                        spatial.addProperty(RDFVocab.RDF_type, RDFVocab.DCT_PeriodOfTime)
+                        DCT_spatial,
+                        spatial.addProperty(RDF_type, DCT_PeriodOfTime)
                 );
 
                 String[] latitudeVar =  {"{"+latLongVarName[0]+".min}", "{"+latLongVarName[0]+".max}"};
@@ -384,7 +384,7 @@ public class RDFBuilder {
 
                 addFairEaseGenerator(spatial,
                         getWktLiteralString(latitudeVar, longitudeVar),
-                        null, RDFVocab.DCAT_bbox.getURI(), RDFVocab.GSP_WktLiteral.getURI());
+                        null, DCAT_bbox.getURI(), GSP_WktLiteral.getURI());
             }
         }
 
@@ -392,22 +392,22 @@ public class RDFBuilder {
         Property link = null;
         for(int i=0; i < 3; i++) {
             switch (i) {
-                case 0 -> {nodeList = nodeContributor; link = RDFVocab.DCAT_contactPoint; }
-                case 1 -> {nodeList = nodeCreator;     link = RDFVocab.DCT_creator;       }
-                case 2 -> {nodeList = nodePublisher;   link = RDFVocab.DCT_publisher;     }
+                case 0 -> {nodeList = nodeContributor; link = DCAT_contactPoint; }
+                case 1 -> {nodeList = nodeCreator;     link = DCT_creator;       }
+                case 2 -> {nodeList = nodePublisher;   link = DCT_publisher;     }
             }
 
             int lNode = nodeList.size();
             if (lNode == 0 || link == null) continue;
             for (int j = 0; j < lNode; j++) {
-                nodeList.get(j).addProperty(RDFVocab.RDF_type, RDFVocab.FOAF_person);
+                nodeList.get(j).addProperty(RDF_type, FOAF_Person);
 
                 if (typeNode[i].equals("institution") || typeNode[i].equals("organization")) {
                     mainNode.addProperty(link, model.createResource()
                                     .addProperty(
-                                            RDFVocab.RDF_type, (typeNode[i].equals("organization") ?
-                                                            RDFVocab.FOAF_organization : RDFVocab.FOAF_group))
-                                    .addProperty(RDFVocab.FOAF_member, nodeList.get(j))
+                                            RDF_type, (typeNode[i].equals("organization") ?
+                                                            FOAF_Organization : FOAF_Group))
+                                    .addProperty(FOAF_member, nodeList.get(j))
                     );
                 } else if (typeNode[i].equals("person")) mainNode.addProperty(link, nodeList.get(j));
             }
@@ -462,14 +462,14 @@ public class RDFBuilder {
         Resource FAIREASE_generatedValue = model.createResource();
 
         if(valueTemplateDatatype == null)
-            FAIREASE_generatedValue.addProperty(RDFVocab.FAIREASE_valueTemplate, valueTemplate);
+            FAIREASE_generatedValue.addProperty(FAIREASE_valueTemplate, valueTemplate);
         else
-            FAIREASE_generatedValue.addProperty(RDFVocab.FAIREASE_valueTemplate, valueTemplate, valueTemplateDatatype);
+            FAIREASE_generatedValue.addProperty(FAIREASE_valueTemplate, valueTemplate, valueTemplateDatatype);
 
         FAIREASE_generatedValue
-                .addProperty(RDFVocab.RDF_type,                RDFVocab.FAIREASE_TemplateTrick)
-                .addProperty(RDFVocab.FAIREASE_valueType,      model.createResource(valueType))
-                .addProperty(RDFVocab.FAIREASE_targetProperty, model.createResource(targetProperty));
+                .addProperty(RDF_type,                FAIREASE_Template)
+                .addProperty(FAIREASE_valueType,      model.createResource(valueType))
+                .addProperty(FAIREASE_targetProperty, model.createResource(targetProperty));
 
         node.addProperty(RDFVocab.FAIREASE_generatedValue, FAIREASE_generatedValue);
     }
@@ -536,24 +536,24 @@ public class RDFBuilder {
 
             res = switch(typeName.toLowerCase()){
                 case ".csv", ".csvp", ".csv0", ".nccsv", ".nccsvmetadata"
-                               -> RDFVocab.FF_CSV;
+                               -> IANA_CSV;
                 case ".graph", ".help", ".html", ".htmltable"
-                               -> RDFVocab.FF_HTML;
+                               -> IANA_HTML;
                 case ".fgdc", ".iso19115", ".ncml"
-                               -> RDFVocab.FF_XML;
+                               -> IANA_XML;
                 case ".tsv", ".tsvp", ".tsv0"
-                               -> RDFVocab.FF_TSV;
+                               -> IANA_TSV;
                 case ".json", ".ncojson"
-                               -> RDFVocab.FF_JSON;
-                case ".n3"     -> RDFVocab.FF_N3;
-                case ".ttl"    -> RDFVocab.FF_TURTLE;
-                case ".trig"   -> RDFVocab.FF_TRIG;
-                case ".jsonld" -> RDFVocab.FF_JSONLD;
-                case ".nq"     -> RDFVocab.FF_NQ;
-                case ".rdfxml" -> RDFVocab.FF_RDFXML;
-                case ".nt"     -> RDFVocab.FF_NT;
-                case ".xhtml"  -> RDFVocab.FF_XHTML;
-                case ".dods"   -> RDFVocab.FF_DODS;
+                               -> IANA_JSON;
+                case ".n3"     -> IANA_N3;
+                case ".ttl"    -> IANA_TURTLE;
+                case ".trig"   -> IANA_TRIG;
+                case ".jsonld" -> IANA_JSONLD;
+                case ".nq"     -> IANA_NQ;
+                case ".rdfxml" -> IANA_RDFXML;
+                case ".nt"     -> IANA_NT;
+                case ".xhtml"  -> IANA_XHTML;
+                case ".dods"   -> IANA_DODS;
                 default        -> null;
 //              default :
 //                ".jsonlCSV1" ".jsonlCSV" ".jsonlKVP" => "application/x-jsonlines"
@@ -564,13 +564,13 @@ public class RDFBuilder {
             };
 
             Resource localDistrib = model.createResource(globalURI + "#" + typeName)
-                    .addProperty(RDFVocab.RDF_type, RDFVocab.DCAT_Distribution)
-                    .addProperty(RDFVocab.DCAT_downloadURL, globalURI + typeName);
+                    .addProperty(RDF_type, DCAT_Distribution)
+                    .addProperty(DCAT_downloadURL, globalURI + typeName);
 
-            if (res == null) localDistrib.addProperty(RDFVocab.DCT_format, typeName);
-            else localDistrib.addProperty(RDFVocab.DCT_mediaType, res);
+            if (res == null) localDistrib.addProperty(DCT_format, typeName);
+            else localDistrib.addProperty(DCT_mediaType, res);
 
-            mainNode.addProperty(RDFVocab.DCAT_distribution, localDistrib);
+            mainNode.addProperty(DCAT_distribution, localDistrib);
         }
     }
 
@@ -593,8 +593,8 @@ public class RDFBuilder {
         boolean isGrid = true;
 
         blankNodeConformsTo = model.createResource();
-        blankNodeConformsTo.addProperty(RDFVocab.RDF_type, RDFVocab.CSVW_TableSchema);
-        mainNode.addProperty(RDFVocab.DCT_conformsTo, blankNodeConformsTo);
+        blankNodeConformsTo.addProperty(RDF_type, CSVW_TableSchema);
+        mainNode.addProperty(DCT_conformsTo, blankNodeConformsTo);
 
         if (lEdd != null) {
             axisVariables = eddGrid.axisVariables();
@@ -607,7 +607,7 @@ public class RDFBuilder {
                 table = eddTable.makeEmptyDestinationTable(0, "s", "", true); //as if userDapQuery was for everything
                 nVar = table.nColumns();
                 isGrid = false;
-            } catch(Throwable t){System.out.println("In RDFBuilder, Cannot get DestinationTable for : " + tId);}
+            } catch(Throwable t){throw new Exception("in RDFBuilder.addVariablesAttributes, can't create a table from an empty dataset");}
         }
 
         if(lEdd == null || nVar == 0) return;
@@ -672,7 +672,7 @@ public class RDFBuilder {
             queryPattern = sVariable + sConstrain;
         }
 
-        hydraPropertySubsetting.addProperty(RDFVocab.HYDRA_template, globalURI + ".{format}?" + queryPattern);
+        hydraPropertySubsetting.addProperty(HYDRA_template, globalURI + ".{format}?" + queryPattern);
     }
 
     /**
@@ -697,10 +697,10 @@ public class RDFBuilder {
             columnProrityIRI = 99;
 
         Resource rColumn = model.createResource(globalURI + "#" + columnName);
-        blankNodeConformsTo.addProperty(RDFVocab.CSVW_column, rColumn);
+        blankNodeConformsTo.addProperty(CSVW_column, rColumn);
 
-        rColumn.addProperty(RDFVocab.RDF_type, RDFVocab.CSVW_Column)
-                .addProperty(RDFVocab.CSVW_name, columnName);
+        rColumn.addProperty(RDF_type, CSVW_Column)
+                .addProperty(CSVW_name, columnName);
 
 
         for(int iAttr=0; iAttr<nAttr; iAttr++){
@@ -717,14 +717,19 @@ public class RDFBuilder {
                     String tp = attr.getString(EDV.TIME_PRECISION);
                     String beg = Calendar2.epochSecondsToLimitedIsoStringT(tp, pa.getDouble(0), "");
                     String end = Calendar2.epochSecondsToLimitedIsoStringT(tp, pa.getDouble(1), "");
-                    rColumn.addProperty(RDFVocab.QUDT_lowerBound, beg, XSDDatatype.XSDdateTime);
-                    rColumn.addProperty(RDFVocab.QUDT_upperBound, end, XSDDatatype.XSDdateTime);
+                    rColumn.addProperty(QUDT_lowerBound, beg, XSDDatatype.XSDdateTime);
+                    rColumn.addProperty(QUDT_upperBound, end, XSDDatatype.XSDdateTime);
                 } else {
-                    rColumn.addProperty(RDFVocab.QUDT_lowerBound, attrValue, dataType);
-                    rColumn.addProperty(RDFVocab.QUDT_upperBound, attr.get(sAttr).getRawString(1), dataType);
+                    rColumn.addProperty(QUDT_lowerBound, attrValue, dataType);
+                    rColumn.addProperty(QUDT_upperBound, attr.get(sAttr).getRawString(1), dataType);
                 }
             }
-            else if(sAttr.equals("long_name")) relation = RDFVocab.CSVW_titles;
+            else if(sAttr.equals("long_name"))  relation = CSVW_titles;
+            else if(sAttr.equals("comment"))    relation = DCT_description;
+            else if(sAttr.equals("_FillValue")){
+                relation = QUDT_defaultValue;
+                if(attrValue.isEmpty()) rColumn.addProperty(QUDT_defaultValue, "");
+            }
             else if(sAttr.equals("units_uri")) units = attrValue;
             else if(sAttr.equals("sdn_parameter_uri")  && columnProrityIRI > 1){columnProrityIRI=1; columnValueIRI = attrValue;}
             else if(sAttr.equals("sdn_parameter_urn")  && columnProrityIRI > 2){columnProrityIRI=2; columnValueIRI = attrValue;}
@@ -737,15 +742,15 @@ public class RDFBuilder {
                 }
             }
 
-            if (relation != null && !(attrValue.isEmpty())) rColumn.addProperty(relation, attrValue);
+            if (relation != null) rColumn.addProperty(relation, attrValue);
         }
 
         if(units.isEmpty()){
             Resource dataTypeResource = getResourceXsdType(columnType);
-            if (dataTypeResource != null) rColumn.addProperty(RDFVocab.SH_dataType, dataTypeResource);
-        } else rColumn.addProperty(RDFVocab.SH_dataType, model.createResource(units));
+            if (dataTypeResource != null) rColumn.addProperty(SH_dataType, dataTypeResource);
+        } else rColumn.addProperty(SH_dataType, model.createResource(units));
 
-        if(!columnValueIRI.isEmpty()) rColumn.addProperty(RDFVocab.SH_path, model.createResource(columnValueIRI));
+        if(!columnValueIRI.isEmpty()) rColumn.addProperty(DCT_type, model.createResource(columnValueIRI));
     }
 
     /**
@@ -799,38 +804,38 @@ public class RDFBuilder {
             if(i==3) add = "str";
 
             localMappingNode
-                    .addProperty(RDFVocab.RDF_type, RDFVocab.HYDRA_IriTemplateMapping)
-                    .addProperty(RDFVocab.HYDRA_variable, (add.isEmpty() ? columnName : columnName + "." + add),
+                    .addProperty(RDF_type, HYDRA_IriTemplateMapping)
+                    .addProperty(HYDRA_variable, (add.isEmpty() ? columnName : columnName + "." + add),
                             XSDDatatype.XSDstring)
-                    .addProperty(RDFVocab.HYDRA_required, (isRequired ? "true" : "false"), XSDDatatype.XSDboolean);
+                    .addProperty(HYDRA_required, (isRequired ? "true" : "false"), XSDDatatype.XSDboolean);
 
             if (i==0){
-                localMappingNode.addProperty(RDFVocab.SCHEMA_defaultvalue, columnName, XSDDatatype.XSDstring);
+                localMappingNode.addProperty(SCHEMA_defaultvalue, columnName, XSDDatatype.XSDstring);
             } else if (i==1 && !minMax[0].isEmpty()){
-                if(columnDatatype == null) localMappingNode.addProperty(RDFVocab.SCHEMA_defaultvalue, minMax[0]);
-                else localMappingNode.addProperty(RDFVocab.SCHEMA_defaultvalue, minMax[0], columnDatatype);
+                if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[0]);
+                else localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[0], columnDatatype);
             } else if (i==2 && !minMax[1].isEmpty()){
-                if(columnDatatype == null) localMappingNode.addProperty(RDFVocab.SCHEMA_defaultvalue, minMax[1]);
-                else localMappingNode.addProperty(RDFVocab.SCHEMA_defaultvalue, minMax[1], columnDatatype);
-            } else if (i==3) localMappingNode.addProperty(RDFVocab.SCHEMA_defaultvalue, "1");
+                if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[1]);
+                else localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[1], columnDatatype);
+            } else if (i==3) localMappingNode.addProperty(SCHEMA_defaultvalue, "1");
 
             if(!description.isEmpty())
-                localMappingNode.addProperty(RDFVocab.RDFS_label, add + " - " + description);
+                localMappingNode.addProperty(RDFS_label, add + " - " + description);
 
             if(columnDatatype != null)
-                localMappingNode.addProperty(RDFVocab.RDFS_range,
+                localMappingNode.addProperty(RDFS_range,
                         (i == 0 ? XSDDatatype.XSDstring.getURI() : columnDatatype.getURI())
                 );
 
-            hydraPropertySubsetting.addProperty(RDFVocab.HYDRA_mapping, localMappingNode);
+            hydraPropertySubsetting.addProperty(HYDRA_mapping, localMappingNode);
         }
 
-        hydraPropertySubsetting.addProperty(RDFVocab.HYDRA_mapping, model.createResource()
-                .addProperty(RDFVocab.RDF_type, RDFVocab.HYDRA_IriTemplateMapping)
-                .addProperty(RDFVocab.HYDRA_variable, "format")
-                .addProperty(RDFVocab.RDFS_label, "File extension Format")
-                .addProperty(RDFVocab.HYDRA_required, "true")
-                .addProperty(RDFVocab.SCHEMA_defaultvalue, "htmlTable")
+        hydraPropertySubsetting.addProperty(HYDRA_mapping, model.createResource()
+                .addProperty(RDF_type, HYDRA_IriTemplateMapping)
+                .addProperty(HYDRA_variable, "format")
+                .addProperty(RDFS_label, "File extension Format")
+                .addProperty(HYDRA_required, "true")
+                .addProperty(SCHEMA_defaultvalue, "htmlTable")
         );
     }
 
@@ -842,17 +847,17 @@ public class RDFBuilder {
      */
     public Resource getResourceXsdType(String type){
         return switch (type.toLowerCase()) {
-            case "float32", "float"  -> RDFVocab.XSD_float;
-            case "float64", "double" -> RDFVocab.XSD_double;
-            case "int64", "long"     -> RDFVocab.XSD_long;
-            case "uint64", "ulong"   -> RDFVocab.XSD_unsignedLong;
-            case "int32", "int"      -> RDFVocab.XSD_int;
-            case "uint32", "uint"    -> RDFVocab.XSD_unsignedInt;
-            case "int16", "short"    -> RDFVocab.XSD_short;
-            case "uint16", "ushort"  -> RDFVocab.XSD_unsignedShort;
-            case "byte"              -> RDFVocab.XSD_byte;
-            case "ubyte"             -> RDFVocab.XSD_unsignedByte;
-            case "char", "string"    -> RDFVocab.XSD_string;
+            case "byte"              -> XSD_Byte;
+            case "float64", "double" -> XSD_Double;
+            case "float32", "float"  -> XSD_Float;
+            case "int32", "int"      -> XSD_Int;
+            case "int64", "long"     -> XSD_Long;
+            case "int16", "short"    -> XSD_Short;
+            case "char", "string"    -> XSD_String;
+            case "ubyte"             -> XSD_UnsignedByte;
+            case "uint32", "uint"    -> XSD_UnsignedInt;
+            case "uint64", "ulong"   -> XSD_UnsignedLong;
+            case "uint16", "ushort"  -> XSD_UnsignedShort;
             default                  -> null;
         };
     }
@@ -865,17 +870,17 @@ public class RDFBuilder {
      */
     public XSDDatatype getXSDDatatypeXsdType(String type){
         return switch (type.toLowerCase()) {
-            case "float32", "float"  -> XSDDatatype.XSDfloat;
-            case "float64", "double" -> XSDDatatype.XSDdouble;
-            case "int64", "long"     -> XSDDatatype.XSDlong;
-            case "uint64", "ulong"   -> XSDDatatype.XSDunsignedLong;
-            case "int32", "int"      -> XSDDatatype.XSDint;
-            case "uint32", "uint"    -> XSDDatatype.XSDunsignedInt;
-            case "int16", "short"    -> XSDDatatype.XSDshort;
-            case "uint16", "ushort"  -> XSDDatatype.XSDunsignedShort;
             case "byte"              -> XSDDatatype.XSDbyte;
-            case "ubyte"             -> XSDDatatype.XSDunsignedByte;
+            case "float64", "double" -> XSDDatatype.XSDdouble;
+            case "float32", "float"  -> XSDDatatype.XSDfloat;
+            case "int32", "int"      -> XSDDatatype.XSDint;
+            case "int64", "long"     -> XSDDatatype.XSDlong;
+            case "int16", "short"    -> XSDDatatype.XSDshort;
             case "char", "string"    -> XSDDatatype.XSDstring;
+            case "ubyte"             -> XSDDatatype.XSDunsignedByte;
+            case "uint32", "uint"    -> XSDDatatype.XSDunsignedInt;
+            case "uint64", "ulong"   -> XSDDatatype.XSDunsignedLong;
+            case "uint16", "ushort"  -> XSDDatatype.XSDunsignedShort;
             default                  -> null;
         };
     }
@@ -933,11 +938,11 @@ public class RDFBuilder {
     public void buildCatalog(RDFBuilder[] pRdfBuilder) throws Exception {
         globalURI = EDStatic.baseUrl + "/" + warName + "/";
         mainNode = model.createResource(globalURI);
-        mainNode.addProperty(RDFVocab.RDF_type, RDFVocab.DCAT_Catalog);
+        mainNode.addProperty(RDF_type, DCAT_Catalog);
 
         for (RDFBuilder node : pRdfBuilder) {
             model.add(node.getCurrentModel());
-            mainNode.addProperty(RDFVocab.DCAT_dataset, node.getFirstNode());
+            mainNode.addProperty(DCAT_dataset, node.getFirstNode());
         }
     }
 
@@ -957,14 +962,14 @@ public class RDFBuilder {
      */
     public void writeRDFSerialized(String sLang, OutputStream outputStream){
         Lang lLang = switch (sLang) {
-            case ".turtle" -> Lang.TURTLE;       // => turtle
-            case ".ttl"       -> Lang.TTL;       // => ttl
+            case ".ttl"       -> Lang.TTL;       // => turtle
+            case ".turtle"    -> Lang.TURTLE;    // => turtle
             case ".n3"        -> Lang.N3;        // => n3 (looks like turtle)
             case ".trig"      -> Lang.TRIG;      // => trig (look like turtle)
-            case ".ntriples"  -> Lang.NTRIPLES;  // => n-triples
             case ".nt"        -> Lang.NT;        // => n-triples
-            case ".nquads"    -> Lang.NQUADS;    // => nquads
+            case ".ntriples"  -> Lang.NTRIPLES;  // => n-triples
             case ".nq"        -> Lang.NQ;        // => nquads
+            case ".nquads"    -> Lang.NQUADS;    // => nquads
             case ".jsonld"    -> Lang.JSONLD;    // => json-ld
             case ".jsonld10"  -> Lang.JSONLD10;  // => json-ld 10
             case ".jsonld11"  -> Lang.JSONLD11;  // => json-ld 11

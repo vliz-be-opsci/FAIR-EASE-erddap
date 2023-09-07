@@ -1185,7 +1185,7 @@ public abstract class EDD {
         if (result[0].equals("") && result[1].equals("") && result[2].equals("") && result[3].equals("")){
             System.out.println("dataset : " + datasetID + " not existing, insert it in the history.json");
             GregorianCalendar gc = Calendar2.newGCalendarZulu();
-            result[0] = Calendar2.formatAsISODateTimeT(gc);
+            result[0] = Calendar2.formatAsISODateTimeTZ(gc);
             result[1] = "Initial init " + datasetID;
             writeDatasetEDDHistory(result[0], result[1]);
         }
@@ -1206,8 +1206,9 @@ public abstract class EDD {
             return "";
 
         GregorianCalendar gc = Calendar2.newGCalendarZulu();
+        String dateTimeTZ = Calendar2.formatAsISODateTimeTZ(gc);
 
-        if (toUpdate) writeDatasetEDDHistory(Calendar2.formatAsISODateTimeT(gc), change);
+        if (toUpdate) writeDatasetEDDHistory(dateTimeTZ, change);
         else {
             String[] history = readEDDHistory();
             change = "";
@@ -1239,7 +1240,7 @@ public abstract class EDD {
                 link + ".html</link>\n" +
                 pubDate +
                 "    <item>\n" +
-                "      <title>This dataset changed " + Calendar2.formatAsISODateTimeT(gc) + "Z</title>\n" +
+                "      <title>This dataset changed " + dateTimeTZ + "</title>\n" +
                 "  " + link + ".html</link>\n" +
                 "      <description>" + XML.encodeAsXML(change) + "</description>\n" +      
                 "    </item>\n" +
@@ -1250,7 +1251,7 @@ public abstract class EDD {
             String rssString = rss.toString();
             if (erddap != null) {
                 erddap.rssHashMap.put(datasetID(), String2.stringToUtf8Bytes(rssString));
-                erddap.updateDateHashMap.put(datasetID(), String2.stringToUtf8Bytes(Calendar2.formatAsISODateTimeT(gc)));
+                erddap.updateDateHashMap.put(datasetID(), String2.stringToUtf8Bytes(dateTimeTZ));
                 erddap.updateChangeHashMap.put(datasetID(), String2.stringToUtf8Bytes(change));
             }
             return rssString;

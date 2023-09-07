@@ -13042,12 +13042,12 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
 
         String parts[] = String2.split(endOfRequestUrl, '/');
         int nParts = parts.length;
-        if (nParts == 0 || !parts[nParts - 1].startsWith("index.")) {
+        if (nParts == 0 || !parts[nParts - 1].startsWith("catalog.")) {
             StringArray sa = new StringArray(parts);
-            sa.add("index.html");
+            sa.add("catalog.ttl");
             parts = sa.toArray();
             nParts = parts.length;
-            //now last part is "index...."
+            //now last part is "catalog...."
         }
         fileTypeName = File2.getExtension(endOfRequestUrl);
 
