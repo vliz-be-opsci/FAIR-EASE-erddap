@@ -95,6 +95,16 @@ Create a RDF representation, containing all of the node in the node list. Then r
 Had to slightly modify each call to the `table.leftToRightSortIgnoreCase` method.
 
 -----------------------------
+## Content Negotiation :
+- Add kind of a content Negotiation, redirect the user to `redirect_url` URL when the Header of the request explicitly ask for a a specific RDF format
+- Created `erddap.contentNegotiation` : check for the Accept Header, and return the corresponding file extension
+- In the `erddap.doDap` : `/(tabledap | griddap)/{datasetID}.{format}` => `/(tabledap | griddap)/{datasetID}.{header format}`
+- In the `erddap.doCatalog` : `/info/catalog.{format}` => `/info/catalog.{header format}`
+- In the `erddap.doInfo` : 
+  - `/info/index.html` => `/info/catalog.{header format}`
+  - `/(tabledap | griddap)/{datasetID}/index.html` => `/(tabledap | griddap)/{datasetID}.{header format}`
+
+-----------------------------
 ## Global information :
 
 copy `/docker/data/config.sh` to `/docker/data/conf/config.sh` and fill it with your infos (`/docker/data/conf/config.sh` is git-ignored)

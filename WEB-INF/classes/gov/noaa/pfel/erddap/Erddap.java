@@ -4598,6 +4598,14 @@ writer.write(EDStatic.dpf_congratulationAr[language]
         fileTypeName = endOfRequestUrl.substring(dotPo);
         if (reallyVerbose) String2.log("  id=" + id + "\n  fileTypeName=" + fileTypeName);
 
+        String cNExtension = contentNegotiation(request.getHeader("accept"), fileTypeName);
+        if(!cNExtension.isEmpty()) {
+            sendRedirect(
+                    response,
+                    tErddapUrl + "/" + protocol + "/" + endOfRequestUrl.substring(0, dotPo) + cNExtension);
+            return;
+        }
+
         //respond to xxx/index request
         //show list of 'protocol'-supported datasets in .html file
         if (id.equals("index") && nextPath.length() == 0) {
@@ -13046,6 +13054,12 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
         boolean isTypeNameOk = false;
         String[] authorizedFileType = {".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"};
 
+        String cNExtension = contentNegotiation(request.getHeader("accept"), fileTypeName);
+        if(!cNExtension.isEmpty()) {
+            sendRedirect(response, tErddapUrl + "/info/catalog" + cNExtension);
+            return;
+        }
+
         for(String authorizedFileExtension:  authorizedFileType){
             if (authorizedFileExtension.equals(fileTypeName)) {
                 isTypeNameOk = true;
@@ -13188,6 +13202,8 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
         }
         EDStatic.tally.add("Info File Type (since startup)", fileTypeName);
         EDStatic.tally.add("Info File Type (since last daily report)", fileTypeName);
+        String cNExtension = contentNegotiation(request.getHeader("accept"), fileTypeName);
+
         if (nParts < 2) {
             //*** info/index.xxx    view all datasets 
 
@@ -13241,6 +13257,11 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
             if (fileTypeName.equals(".html")) {
                 //make the table with the dataset list
                 Table table = makeHtmlDatasetTable(language, loggedInAs, tIDs, sortByTitle);
+
+                if(!cNExtension.isEmpty()) {
+                    sendRedirect(response, tErddapUrl + "/info/catalog" + cNExtension);
+                    return;
+                }
 
                 //display start of web page
                 OutputStream out = getHtmlOutputStreamUtf8(request, response);
@@ -13488,6 +13509,11 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
 
         //respond to info/tID/index.html request
         if (parts[1].equals("index.html")) {
+            if(!cNExtension.isEmpty()) {
+                sendRedirect(response,
+                        tErddapUrl + (edd instanceof EDDTable ? "/tabledap/" : "/griddap/") + tID + cNExtension);
+                return;
+            }
             //display start of web page
             OutputStream out = getHtmlOutputStreamUtf8(request, response);
             Writer writer = getHtmlWriterUtf8(language, loggedInAs, 
@@ -18592,6 +18618,18 @@ UTC                  m   deg_n    deg_east m s-1
         if (verbose) String2.log("redirected to " + url);
         //String2.log(">> " + MustBe.stackTrace());
         response.sendRedirect(url);
+    }
+
+    public String contentNegotiation(String requestHeader,String oldFileTypeName){
+
+        if(requestHeader == null || requestHeader.isEmpty()) return "";
+        if(requestHeader.contains("text/turtle"))           return oldFileTypeName.equals(".ttl")    ? "" : ".ttl";
+        if(requestHeader.contains("text/n3"))               return oldFileTypeName.equals(".n3")     ? "" : ".n3";
+        if(requestHeader.contains("application/n-triples")) return oldFileTypeName.equals(".nt")     ? "" : ".nt";
+        if(requestHeader.contains("application/n-nquads"))  return oldFileTypeName.equals(".nq")     ? "" : ".nq";
+        if(requestHeader.contains("application/rdf+xml"))   return oldFileTypeName.equals(".rdfxml") ? "" : ".rdfxml";
+        if(requestHeader.contains("application/trig"))      return oldFileTypeName.equals(".trig")   ? "" : ".trig";
+        return "";
     }
 
     /**
