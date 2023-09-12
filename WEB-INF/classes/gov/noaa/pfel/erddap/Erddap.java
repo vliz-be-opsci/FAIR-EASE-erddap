@@ -4479,10 +4479,10 @@ writer.write(EDStatic.dpf_congratulationAr[language]
         if (endOfRequestUrl.equals("") ||
             endOfRequestUrl.equals("index.htm")) {
             sendRedirect(response, tErddapUrl + "/" + protocol + "/index.html?" +
-                EDStatic.passThroughPIppQueryPage1(request));  
+                EDStatic.passThroughPIppQueryPage1(request));
             return;
-        }      
-        
+        }
+
         //respond to a version request (see opendap spec section 7.2.5)
         if (endOfRequestUrl.equals("version") ||
             endOfRequestUrl.startsWith("version.") ||
@@ -13035,8 +13035,7 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
             requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog") ||
             requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog.tt") ||
             requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog.tll")) {
-            sendRedirect(response, tErddapUrl + "/info/catalog.ttl?" +
-                    EDStatic.passThroughPIppQueryPage1(request));
+            sendRedirect(response, tErddapUrl + "/info/catalog.ttl");
             return;
         }
 
@@ -13084,22 +13083,31 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
             return;
         }
 
-        //ensure query has simplistically valid page= itemsPerPage=
-        if (!Arrays.equals(
-                EDStatic.getRawRequestedPIpp(request),
-                EDStatic.getRequestedPIpp(request))) {
-            String requestQuery = EDStatic.passThroughPIppQuery(request);
-            sendRedirect(response,
-                    EDStatic.baseUrl(loggedInAs) + request.getRequestURI() + "?" +
-                            EDStatic.passThroughJsonpQuery(language, request) +
-                            requestQuery.substring(0, requestQuery.length() - 2));
-            return;
-        }
-
         //get the datasetIDs
         //(sortByTitle ensures user has right to know dataset exists)
         StringArray tIDs = sortByUpdateDate(loggedInAs, allDatasetIDs(), true); //info: this is a metadata request
         int nDatasets = tIDs.size();
+
+        //ensure query has simplistically valid page= itemsPerPage=
+        if (!Arrays.equals(EDStatic.getRawRequestedPIpp(request), EDStatic.getRequestedPIpp(request))) {
+            OutputStreamSource outputStreamSource = new OutputStreamFromHttpResponse(
+                    request, response, "catalog", fileTypeName, fileTypeName);
+            Writer writer = File2.getBufferedWriter88591(outputStreamSource.outputStream(File2.ISO_8859_1));
+
+            RDFBuilder catalogBuilder = new RDFBuilder();
+
+            try {
+                catalogBuilder.buildList(nDatasets, EDStatic.defaultItemsPerPageCatalog, fileTypeName);
+                catalogBuilder.writeRDFSerialized(fileTypeName, outputStreamSource.outputStream(File2.ISO_8859_1));
+                writer.flush();
+                writer.close();
+            } catch(Throwable e) {
+                writer.close();
+                throw new SimpleException(EDStatic.errorInternalAr[language] + e + "");
+            }
+            return;
+        }
+
         EDStatic.tally.add("Info (since startup)", "View Catalog");
         EDStatic.tally.add("Info (since last daily report)", "View Catalog");
 
@@ -13216,7 +13224,7 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
                     EDStatic.passThroughJsonpQuery(language, request) +
                     EDStatic.passThroughPIppQuery(request)); 
                 return;
-            }      
+            }
 
             //get the datasetIDs
             //(sortByTitle ensures user has right to know dataset exists)
@@ -13516,11 +13524,11 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
             }
             //display start of web page
             OutputStream out = getHtmlOutputStreamUtf8(request, response);
-            Writer writer = getHtmlWriterUtf8(language, loggedInAs, 
-                "info/" + tID + "/index.html", //was endOfRequest, 
-                queryString, 
-                MessageFormat.format(EDStatic.infoAboutFromAr[language], edd.title(), edd.institution()), 
-                out); 
+            Writer writer = getHtmlWriterUtf8(language, loggedInAs,
+                "info/" + tID + "/index.html", //was endOfRequest,
+                queryString,
+                MessageFormat.format(EDStatic.infoAboutFromAr[language], edd.title(), edd.institution()),
+                out);
             try {
                 writer.write("<div class=\"wide_max_width\">\n");  //not standard_width
                 writer.write(EDStatic.youAreHere(language, loggedInAs, protocol, parts[0]));

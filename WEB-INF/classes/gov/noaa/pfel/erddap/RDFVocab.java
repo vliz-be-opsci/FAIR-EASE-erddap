@@ -291,7 +291,6 @@ public class RDFVocab {
         DCT_identifier =  m.createProperty(DCT_URI, "identifier");
         DCT_issued =      m.createProperty(DCT_URI, "issued");
         DCT_license =     m.createProperty(DCT_URI, "license");
-        DCT_mediaType =   m.createProperty(DCT_URI, "mediatype");
         DCT_modified =    m.createProperty(DCT_URI, "modified");
         DCT_publisher =   m.createProperty(DCT_URI, "publisher");
         DCT_spatial =     m.createProperty(DCT_URI, "spatial");

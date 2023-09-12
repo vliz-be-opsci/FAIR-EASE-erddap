@@ -89,10 +89,13 @@ Create the RDF Representation of a Dataset (based on the global variable, column
 - Add ConcurrentHashMap `rdfHashMap`: link a datasetID to this associated RDF representation.
 - In the `erddap.goGet`: add link to the `erddap.doCatalog` on url `{erddap}/info/catalog.{format}`
 - `erddap.doCatalog`: get Latest updated datasetID (via `erddap.sortByUpdateDate`), limit the number of results via the URL query.
-Create a RDF representation, containing all of the node in the node list. Then return the result in the given format.
+Create a RDF representation, containing all the nodes in the node list. Then return the result in the given format.
 - `erddap.sortByUpdateDate`: list every dataset, and return list of datasetID, sort by the latestUpdate date.
 - Had to modify the `table.leftToRightSortIgnoreCase` so we can choose between ascending and descending sort. 
 Had to slightly modify each call to the `table.leftToRightSortIgnoreCase` method.
+- the `/info/catalog.{format}` generate a list of every 
+`/info/catalog.{format}?page={page number}&itemsPerPage={EDStatic.defaultItemsPerPageCatalog}` available URL
+- Add `EDStatic.defaultItemsPerPageCatalog` for the default number of dataset to show in the catalog.
 
 -----------------------------
 ## Content Negotiation :

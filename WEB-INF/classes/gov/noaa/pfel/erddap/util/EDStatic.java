@@ -558,13 +558,14 @@ public static boolean developmentMode = false;
 
     //also see updateLucene in LoadDatasets
 
-    public final static int    defaultItemsPerPage     = 1000; //1000, for /info/index.xxx and search
-    public final static String defaultPIppQuery        = "page=1&itemsPerPage=" + defaultItemsPerPage;
-    public final static String allPIppQuery            = "page=1&itemsPerPage=1000000000";
+    public final static int    defaultItemsPerPage        = 1000; //1000, for /info/index.xxx and search
+    public final static int    defaultItemsPerPageCatalog = 5; //5, for /info/catalog.xxx
+    public final static String defaultPIppQuery           = "page=1&itemsPerPage=" + defaultItemsPerPage;
+    public final static String allPIppQuery               = "page=1&itemsPerPage=1000000000";
     /** The HTML/XML encoded form */
-    public final static String encodedDefaultPIppQuery = "page=1&#x26;itemsPerPage=" + defaultItemsPerPage;
-    public final static String encodedAllPIppQuery     = "page=1&#x26;itemsPerPage=1000000000";
-    public final static String DONT_LOG_THIS_EMAIL     = "!!! DON'T LOG THIS EMAIL: ";
+    public final static String encodedDefaultPIppQuery    = "page=1&#x26;itemsPerPage=" + defaultItemsPerPage;
+    public final static String encodedAllPIppQuery        = "page=1&#x26;itemsPerPage=1000000000";
+    public final static String DONT_LOG_THIS_EMAIL        = "!!! DON'T LOG THIS EMAIL: ";
 
     /** 
      * These values are loaded from the [contentDirectory]setup.xml file. 

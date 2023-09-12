@@ -948,6 +948,30 @@ public class RDFBuilder {
     }
 
     /**
+     * Build the Catalog, and add the RDF representation of every given dataset in params.
+     *
+     * @param nDataset number of total (public) Dataset
+     * @param nDatasetPerPage number of dataset per page
+     * @throws Exception  if trouble
+     */
+    public void buildList(int nDataset, int nDatasetPerPage, String fileTypeName) throws Exception {
+        globalURI = EDStatic.baseUrl + "/" + warName + "/catalog" + fileTypeName;
+        mainNode = model.createResource(globalURI);
+        mainNode.addProperty(RDF_type, SCHEMA_CreativeWork);
+        String startURI =  globalURI + "?page=";
+        String endURI = "&itemsPerPage=" + nDatasetPerPage;
+
+        int nMax = nDataset/nDatasetPerPage;
+        int i = 1;
+
+        for(; i<=nMax; i++)
+            mainNode.addProperty(SCHEMA_hasPart, startURI + i + endURI);
+
+        if (nDataset%nDatasetPerPage != 0)
+            mainNode.addProperty(SCHEMA_hasPart, startURI + i + "&itemsPerPage=" + (nDataset%nDatasetPerPage));
+    }
+
+    /**
      * Serialize the RDF Representation to RDF-XML and write it on the outputStreamSource.
      *
      * @param outputStream the outputStream where the serialization will be print on
