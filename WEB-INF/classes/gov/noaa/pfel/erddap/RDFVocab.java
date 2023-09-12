@@ -67,6 +67,7 @@ public class RDFVocab {
     public static final Property DCAT_endPointDescription;
     public static final Property DCAT_keyword;
     public static final Property DCAT_landingPage;
+    public static final Property DCAT_mediaType;
     public static final Property DCAT_servesDataset;
     public static final Property DCAT_spatialResolutionInMeters;
     public static final Property DCAT_startDate;
@@ -85,7 +86,6 @@ public class RDFVocab {
     public static final Property DCT_identifier;
     public static final Property DCT_issued;
     public static final Property DCT_license;
-    public static final Property DCT_mediaType;
     public static final Property DCT_modified;
     public static final Property DCT_publisher;
     public static final Property DCT_spatial;
@@ -162,7 +162,10 @@ public class RDFVocab {
     // =======================================================================
     // SCHEMA
     // =======================================================================
-    public static final Property SCHEMA_defaultvalue;
+    public static final Resource SCHEMA_CreativeWork;
+
+    public static final Property SCHEMA_defaultValue;
+    public static final Property SCHEMA_hasPart;
 
     // =======================================================================
     // Shacl
@@ -269,6 +272,7 @@ public class RDFVocab {
         DCAT_endPointDescription =       m.createProperty(DCAT_URI, "endPointDescription");
         DCAT_keyword =                   m.createProperty(DCAT_URI, "keyword");
         DCAT_landingPage =               m.createProperty(DCAT_URI, "landingPage");
+        DCAT_mediaType =                 m.createProperty(DCAT_URI, "mediaType");
         DCAT_servesDataset =             m.createProperty(DCAT_URI, "servesDataset");
         DCAT_spatialResolutionInMeters = m.createProperty(DCAT_URI, "spatialResolutionInMeters");
         DCAT_startDate =                 m.createProperty(DCAT_URI, "startDate");
@@ -308,9 +312,9 @@ public class RDFVocab {
         // =======================================================================
         // Friend-Of-A-Friend
         // =======================================================================
-        FOAF_Group =             m.createResource(FOAF_URI + "group");
-        FOAF_Organization =      m.createResource(FOAF_URI + "organization");
-        FOAF_Person =            m.createResource(FOAF_URI + "person");
+        FOAF_Group =             m.createResource(FOAF_URI + "Group");
+        FOAF_Organization =      m.createResource(FOAF_URI + "Organization");
+        FOAF_Person =            m.createResource(FOAF_URI + "Person");
 
         FOAF_name =              m.createProperty(FOAF_URI,"name");
         FOAF_mbox =              m.createProperty(FOAF_URI,"mbox");
@@ -363,7 +367,11 @@ public class RDFVocab {
         // =======================================================================
         // SCHEMA
         // =======================================================================
-        SCHEMA_defaultvalue = m.createProperty(SCHEMA_URI, "defaultvalue");
+        SCHEMA_CreativeWork = m.createResource(SCHEMA_URI + "CreativeWork");
+
+        SCHEMA_defaultValue = m.createProperty(SCHEMA_URI, "defaultValue");
+        SCHEMA_hasPart = m.createProperty(SCHEMA_URI, "hasPart");
+
 
         // =======================================================================
         // Shacl

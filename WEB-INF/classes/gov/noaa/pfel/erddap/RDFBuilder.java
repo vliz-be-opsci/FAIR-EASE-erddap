@@ -425,7 +425,6 @@ public class RDFBuilder {
     public String getWktLiteralString(String[] latitude, String[] longitude){
         int lLatitude = latitude.length,
             lLongitude = longitude.length,
-            nLocation = lLatitude * lLongitude,
             varFor = 0;
 
         if(latitude[0].equals(latitude[1])) lLatitude = 1;
@@ -433,6 +432,8 @@ public class RDFBuilder {
             lLongitude = 1;
             if(lLatitude == 2) varFor=1;
         }
+
+        int nLocation = lLatitude * lLongitude;
 
         String sLatLong = (lLatitude == 1 && lLongitude == 1) ? "POINT (" :
                           (lLatitude == 1 || lLongitude == 1) ? "LineString (("  :
@@ -568,7 +569,7 @@ public class RDFBuilder {
                     .addProperty(DCAT_downloadURL, globalURI + typeName);
 
             if (res == null) localDistrib.addProperty(DCT_format, typeName);
-            else localDistrib.addProperty(DCT_mediaType, res);
+            else localDistrib.addProperty(DCAT_mediaType, res);
 
             mainNode.addProperty(DCAT_distribution, localDistrib);
         }
@@ -810,14 +811,14 @@ public class RDFBuilder {
                     .addProperty(HYDRA_required, (isRequired ? "true" : "false"), XSDDatatype.XSDboolean);
 
             if (i==0){
-                localMappingNode.addProperty(SCHEMA_defaultvalue, columnName, XSDDatatype.XSDstring);
+                localMappingNode.addProperty(SCHEMA_defaultValue, columnName, XSDDatatype.XSDstring);
             } else if (i==1 && !minMax[0].isEmpty()){
-                if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[0]);
-                else localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[0], columnDatatype);
+                if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultValue, minMax[0]);
+                else localMappingNode.addProperty(SCHEMA_defaultValue, minMax[0], columnDatatype);
             } else if (i==2 && !minMax[1].isEmpty()){
-                if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[1]);
-                else localMappingNode.addProperty(SCHEMA_defaultvalue, minMax[1], columnDatatype);
-            } else if (i==3) localMappingNode.addProperty(SCHEMA_defaultvalue, "1");
+                if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultValue, minMax[1]);
+                else localMappingNode.addProperty(SCHEMA_defaultValue, minMax[1], columnDatatype);
+            } else if (i==3) localMappingNode.addProperty(SCHEMA_defaultValue, "1");
 
             if(!description.isEmpty())
                 localMappingNode.addProperty(RDFS_label, add + " - " + description);
@@ -835,7 +836,7 @@ public class RDFBuilder {
                 .addProperty(HYDRA_variable, "format")
                 .addProperty(RDFS_label, "File extension Format")
                 .addProperty(HYDRA_required, "true")
-                .addProperty(SCHEMA_defaultvalue, "htmlTable")
+                .addProperty(SCHEMA_defaultValue, "htmlTable")
         );
     }
 
