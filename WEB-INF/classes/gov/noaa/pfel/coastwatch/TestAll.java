@@ -1062,6 +1062,8 @@ OutputStreamFromHttpResponseViaAwsS3 osfhrvas;
 OutputStreamViaAwsS3 osvas;
 PersistentTable pert;
 Projects2 proj2;
+RDFVocab rdfvocab;
+RDFBuilder rdfbuilder;
 RunLoadDatasets rld;
 
 Subscriptions sub;
@@ -1095,9 +1097,7 @@ TableWriterUnits twu;
 TaskThread tt;
 TouchThread tt2;
 TranslateMessages translateMessages;
-WaitThenTryAgainException wttae; 
-RDFVocab rdfvocab;
-RDFBuilder rdfbuilder;
+WaitThenTryAgainException wttae;
 
         StringBuilder errorSB = new StringBuilder();
         boolean interactive = false;
@@ -1276,6 +1276,7 @@ RDFBuilder rdfbuilder;
         Erddap.test(                     errorSB, interactive, doSlowTestsToo, 0, -1);
         TranslateMessages.test(          errorSB, interactive, doSlowTestsToo, 0, -1);
         ArchiveADataset.test(            errorSB, interactive, doSlowTestsToo, 0, -1);
+        RDFBuilder.test(                 errorSB, interactive, doSlowTestsToo, 0, -1);
 
         //give antivirus a chance to get caught up
         if (!interactive) for (int i = 0; i < 3; i++) Math2.gc("TestAll (between tests)", 20000); //in TestAll

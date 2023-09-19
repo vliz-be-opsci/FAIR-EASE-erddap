@@ -1266,7 +1266,7 @@ public abstract class EDD {
             RDFBuilder builder = new RDFBuilder(datasetID());
             if (erddap != null){
                 builder.setLatestUpdate(new String(erddap.updateDateHashMap.get(datasetID())));
-                builder.buildFullDatasetRDF();
+                builder.updateFullDatasetRDF();
                 erddap.rdfHashMap.put(datasetID, builder);
             }
             return "";

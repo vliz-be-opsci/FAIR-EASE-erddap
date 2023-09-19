@@ -143,7 +143,6 @@ public class RDFVocab {
     // =======================================================================
     // QUDT
     // =======================================================================
-    public static final Property QUDT_defaultValue;
     public static final Property QUDT_lowerBound;
     public static final Property QUDT_upperBound;
 
@@ -347,7 +346,6 @@ public class RDFVocab {
         // =======================================================================
         // QUDT
         // =======================================================================
-        QUDT_defaultValue = m.createProperty(QUDT_URI, "defaultValue");
         QUDT_lowerBound   = m.createProperty(QUDT_URI, "lowerBound");
         QUDT_upperBound   = m.createProperty(QUDT_URI, "upperBound");
 

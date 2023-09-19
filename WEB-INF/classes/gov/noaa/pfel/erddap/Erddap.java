@@ -18636,6 +18636,7 @@ UTC                  m   deg_n    deg_east m s-1
         if(requestHeader.contains("application/n-triples")) return oldFileTypeName.equals(".nt")     ? "" : ".nt";
         if(requestHeader.contains("application/n-nquads"))  return oldFileTypeName.equals(".nq")     ? "" : ".nq";
         if(requestHeader.contains("application/rdf+xml"))   return oldFileTypeName.equals(".rdfxml") ? "" : ".rdfxml";
+        if(requestHeader.contains("application/ld+json"))   return oldFileTypeName.equals(".jsonld") ? "" : ".jsonld";
         if(requestHeader.contains("application/trig"))      return oldFileTypeName.equals(".trig")   ? "" : ".trig";
         return "";
     }

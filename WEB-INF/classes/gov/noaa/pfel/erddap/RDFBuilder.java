@@ -1,9 +1,7 @@
 package gov.noaa.pfel.erddap;
 
-import com.cohort.array.Attributes;
-import com.cohort.array.PrimitiveArray;
-import com.cohort.array.StringArray;
-import com.cohort.util.Calendar2;
+import com.cohort.array.*;
+import com.cohort.util.*;
 
 import gov.noaa.pfel.coastwatch.griddata.OpendapHelper;
 import gov.noaa.pfel.coastwatch.pointdata.Table;
@@ -27,8 +25,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFWriter;
 
 import java.io.OutputStream;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import static gov.noaa.pfel.erddap.util.EDStatic.*;
 import static gov.noaa.pfel.erddap.RDFVocab.*;
@@ -46,7 +43,6 @@ public class RDFBuilder {
     // ====================================
     // Resource :
     // ====================================
-    // ====================================
     private Resource blankNodeConformsTo = null;
     private Resource hydraPropertySubsetting = null;
     private Resource hydraSupportedOperationSubsetting = null;
@@ -55,7 +51,7 @@ public class RDFBuilder {
     // Specific values :
     // ====================================
     private String latestUpdate = null;
-    private String[] latLongVarName = {"", ""}; // [{latitude}, {longitude] Spatial Position related Column/Axis names //todo add Z/Depth/Height ?
+    private String[] latLongVarName = {"", ""}; // [{latitude}, {longitude}] Spatial Position related Column/Axis names //todo add Z/Depth/Height ?
     private String timeVarName = ""; // Time related Column/Axis name
 
 
@@ -70,6 +66,7 @@ public class RDFBuilder {
         model = new ModelCom(GraphMemFactory.createGraphMem());
     }
 
+
     /**
      * The constructor.
      *
@@ -83,6 +80,7 @@ public class RDFBuilder {
         if(pEdd != null) edd = pEdd;
         model = new ModelCom(GraphMemFactory.createGraphMem());
     }
+
 
     /**
      * The constructor.
@@ -99,6 +97,7 @@ public class RDFBuilder {
         model = new ModelCom(GraphMemFactory.createGraphMem());
     }
 
+
     /**
      * Initialize the model, set the globalURI, prefixes and create the mainNode.
      */
@@ -112,6 +111,7 @@ public class RDFBuilder {
         setNsPrefixes();
         mainNode = model.createResource(globalURI);
     }
+
 
     /**
      * Initialize the Hydra subsettings RDF representation part.
@@ -133,19 +133,14 @@ public class RDFBuilder {
                 .addProperty(DCAT_servesDataset, mainNode)
                 .addProperty(HYDRA_entrypoint, globalURI, XSDDatatype.XSDanyURI)
                 .addProperty(DCAT_endPointDescription, hydraEndpointDescriptionSubsetting)
-                .addProperty(HYDRA_supportedOperation, hydraSupportedOperationSubsetting)
-//                .addProperty(SCHEMA_identifier, ..., XSDDatatype.XSD..)
-//                .addProperty(SCHEMA_description, ..., )
-//                .addProperty(SCHEMA_datePublished, ..., XSDDatatype.XSDdateTime)
-//                .addProperty(SCHEMA_dateModified, ..., XSDDatatype.XSDdateTime)
-        ;
+                .addProperty(HYDRA_supportedOperation, hydraSupportedOperationSubsetting);
 
         hydraEndpointDescriptionSubsetting
                 .addProperty(RDF_type, HYDRA_ApiDocumentation)
                 .addProperty(HYDRA_entrypoint, globalURI, XSDDatatype.XSDanyURI)
                 .addProperty(HYDRA_title, "ERDDAP Api")
-                .addProperty(HYDRA_description, "ERDDAP Api to get " + edd.datasetID() + ", or subsettings of the "+ edd.datasetID() + " dataset")
-        ;
+                .addProperty(HYDRA_description, "ERDDAP Api to get " + edd.datasetID() + ", or subsettings of the "
+                        + edd.datasetID() + " dataset");
 
         hydraPropertySubsetting.addProperty(RDF_type ,HYDRA_IriTemplate);
 
@@ -154,6 +149,7 @@ public class RDFBuilder {
                 .addProperty(RDF_type, HYDRA_Operation)
                 .addProperty(HYDRA_method, "GET", XSDDatatype.XSDstring);
     }
+
 
     /**
      * Set the prefixes of the RDF Representation.
@@ -167,6 +163,7 @@ public class RDFBuilder {
 
         model.setNsPrefixes(prefix);
     }
+
 
     /**
      * Append the Global Attributes from the dataset, to the RDF representation.
@@ -258,17 +255,17 @@ public class RDFBuilder {
                 String[] saValues = sValue.split(",|;", -1);
                 Property lightRelation;
 
-                int nPersonRole = 2;
-                SortedMap<Integer, Resource> nodeCurrent = nodePublisher;
+                int idxPersonRole = 2;
+                SortedMap<Integer, Resource> currentNode = nodePublisher;
 
-                if (gaName.startsWith("contributor")) {  nPersonRole = 0;  nodeCurrent = nodeContributor; }
-                else if (gaName.startsWith("creator")) { nPersonRole = 1;  nodeCurrent = nodeCreator;     }
+                if (gaName.startsWith("contributor")) {  idxPersonRole = 0;  currentNode = nodeContributor; }
+                else if (gaName.startsWith("creator")) { idxPersonRole = 1;  currentNode = nodeCreator;     }
 
                 for (int i = 0; i < saValues.length; i++) {
 
                     if (gaName.endsWith("_type") && !sValue.equalsIgnoreCase("person"))
-                        typeNode[nPersonRole] = sValue.toLowerCase().trim();
-                    if (gaName.endsWith("_institution")) typeNode[nPersonRole] = "institution";
+                        typeNode[idxPersonRole] = sValue.toLowerCase().trim();
+                    if (gaName.endsWith("_institution")) typeNode[idxPersonRole] = "institution";
 
                     if (gaName.equals("contributor") || gaName.equals("creator") || gaName.equals("publisher"))
                         lightRelation = FOAF_name;
@@ -277,10 +274,10 @@ public class RDFBuilder {
                     else if (gaName.endsWith("_url")) lightRelation = FOAF_workplaceHomepage;
                     else continue;
 
-                    if (nodeCurrent.size()-1 < i)
-                        nodeCurrent.put(i, model.createResource());
+                    if (currentNode.size()-1 < i)
+                        currentNode.put(i, model.createResource());
                     if (saValues[i] != null && !saValues[i].isEmpty() && !saValues[i].equalsIgnoreCase("none"))
-                        nodeCurrent.get(i).addProperty(lightRelation, saValues[i]);
+                        currentNode.get(i).addProperty(lightRelation, saValues[i]);
                 }
             }
 
@@ -414,15 +411,17 @@ public class RDFBuilder {
         }
     }
 
+
     /**
      * Return the wktLiteral formated string, based on the given parameters.
+     * see: https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry
      * Does not generate MULTILINE or MULTIPOLYGON or any MULTI.. .
      *
      * @param latitude    contain latitude values [{latitude.min}, {latitude.max}]
      * @param longitude   contain longitude values [{longitude.min}, {longitude.max}]
-     * @return            wktLiteral formated string
+     * @return wktLiteral formated string
      */
-    public String getWktLiteralString(String[] latitude, String[] longitude){
+    static public String getWktLiteralString(String[] latitude, String[] longitude){
         int lLatitude = latitude.length,
             lLongitude = longitude.length,
             varFor = 0;
@@ -434,19 +433,19 @@ public class RDFBuilder {
         }
 
         int nLocation = lLatitude * lLongitude;
-
-        String sLatLong = (lLatitude == 1 && lLongitude == 1) ? "POINT (" :
-                          (lLatitude == 1 || lLongitude == 1) ? "LineString (("  :
-                                "POLYGON ((";
+        String sLatLong = (lLatitude == 1 && lLongitude == 1) ? "POINT(" :
+                          (lLatitude == 1 || lLongitude == 1) ? "LINESTRING("  :
+                                "POLYGON((";
 
         if(lLatitude == 2) nLocation++;
 
         for(; varFor < nLocation; varFor++)
             sLatLong += latitude[(varFor>>1)%2] + " " + longitude[((varFor+1)>>1)%2] + (varFor == nLocation-1 ? "" : ",");
-        sLatLong += nLocation > 1 ? "))" : ")";
+        sLatLong += nLocation == 5 ? "))" : ")";
 
         return sLatLong;
     }
+
 
     /**
      * Create a fairEaseGenerator blank-node node with given params, and append it to the {node}.
@@ -474,6 +473,7 @@ public class RDFBuilder {
 
         node.addProperty(RDFVocab.FAIREASE_generatedValue, FAIREASE_generatedValue);
     }
+
 
     /**
      * Create distribution Resources for each dataFileType available (except graph/picture ones).
@@ -575,6 +575,7 @@ public class RDFBuilder {
         }
     }
 
+
     /**
      * Generate the RDF representation of the column properties, for each column.
      *
@@ -621,9 +622,6 @@ public class RDFBuilder {
         String accessPattern = "";
 
         for (int iVar=0; iVar<nVar; iVar++){
-            attr =  null;
-            columnName = "";
-            columnType = "";
 
             if(isGrid){
                 attr = axisVariables[iVar].combinedAttributes();
@@ -676,6 +674,7 @@ public class RDFBuilder {
         hydraPropertySubsetting.addProperty(HYDRA_template, globalURI + ".{format}?" + queryPattern);
     }
 
+
     /**
      * Generate the RDF representation for the given column.
      *
@@ -713,7 +712,6 @@ public class RDFBuilder {
                 XSDDatatype dataType = getXSDDatatypeXsdType(columnType);
                 if (dataType == null) continue;
                 if(timeVarName.equals(columnName)){
-
                     PrimitiveArray pa = attr.get(sAttr);
                     String tp = attr.getString(EDV.TIME_PRECISION);
                     String beg = Calendar2.epochSecondsToLimitedIsoStringT(tp, pa.getDouble(0), "");
@@ -728,8 +726,8 @@ public class RDFBuilder {
             else if(sAttr.equals("long_name"))  relation = CSVW_titles;
             else if(sAttr.equals("comment"))    relation = DCT_description;
             else if(sAttr.equals("_FillValue")){
-                relation = QUDT_defaultValue;
-                if(attrValue.isEmpty()) rColumn.addProperty(QUDT_defaultValue, "");
+                relation = SCHEMA_defaultValue;
+                if(attrValue.isEmpty()) rColumn.addProperty(SCHEMA_defaultValue, "");
             }
             else if(sAttr.equals("units_uri")) units = attrValue;
             else if(sAttr.equals("sdn_parameter_uri")  && columnProrityIRI > 1){columnProrityIRI=1; columnValueIRI = attrValue;}
@@ -754,6 +752,7 @@ public class RDFBuilder {
         if(!columnValueIRI.isEmpty()) rColumn.addProperty(DCT_type, model.createResource(columnValueIRI));
     }
 
+
     /**
      * Generate the Hydra Mapping part, of the given columnName.
      *
@@ -768,7 +767,7 @@ public class RDFBuilder {
 
         XSDDatatype columnDatatype = getXSDDatatypeXsdType(columnType);
 
-        String   add = "",
+        String  add = "",
                 description = "",
                 sAttr = "";
         String[] minMax = {"", ""};
@@ -840,6 +839,7 @@ public class RDFBuilder {
         );
     }
 
+
     /**
      * Find the XSD resource associated to a variable type.
      *
@@ -862,6 +862,7 @@ public class RDFBuilder {
             default                  -> null;
         };
     }
+
 
     /**
      * Find the XSDDatatype associated to a variable type.
@@ -886,6 +887,7 @@ public class RDFBuilder {
         };
     }
 
+
     /**
      * Set the latestUpdate Global Variable.
      * Need to do it like that, because not all instance have access to this information.
@@ -894,17 +896,20 @@ public class RDFBuilder {
      */
     public void setLatestUpdate(String date){latestUpdate = date;}
 
+
     /**
      * Return the model.
      * @return Model the model of this RDFBuilder instance
      */
     public Model getCurrentModel(){return model;}
 
+
     /**
      * Return the first Node / main Node.
      * @return Resource the mainNode of this RDFBuilder instance
      */
     public Resource getFirstNode(){return mainNode;}
+
 
     /**
      * Update the rdf representation of the dataset (delete everything, and re-create it).
@@ -916,6 +921,7 @@ public class RDFBuilder {
         initModel();
         buildFullDatasetRDF();
     }
+
 
     /**
      * Generate the complet RDF represantation of the current dataset.
@@ -929,6 +935,7 @@ public class RDFBuilder {
         setRDFGlobalAttributes();
         setDistribution();
     }
+
 
     /**
      * Build the Catalog, and add the RDF representation of every given dataset in params.
@@ -947,6 +954,7 @@ public class RDFBuilder {
         }
     }
 
+
     /**
      * Build the Catalog, and add the RDF representation of every given dataset in params.
      *
@@ -955,21 +963,20 @@ public class RDFBuilder {
      * @throws Exception  if trouble
      */
     public void buildList(int nDataset, int nDatasetPerPage, String fileTypeName) throws Exception {
-        globalURI = EDStatic.baseUrl + "/" + warName + "/catalog" + fileTypeName;
+        globalURI = EDStatic.baseUrl + "/" + warName + "/info/catalog" + fileTypeName;
         mainNode = model.createResource(globalURI);
         mainNode.addProperty(RDF_type, SCHEMA_CreativeWork);
         String startURI =  globalURI + "?page=";
         String endURI = "&itemsPerPage=" + nDatasetPerPage;
 
-        int nMax = nDataset/nDatasetPerPage;
         int i = 1;
+        int nMax = nDataset/nDatasetPerPage;
+        if (nDataset%nDatasetPerPage != 0) nMax++;
 
         for(; i<=nMax; i++)
             mainNode.addProperty(SCHEMA_hasPart, startURI + i + endURI);
-
-        if (nDataset%nDatasetPerPage != 0)
-            mainNode.addProperty(SCHEMA_hasPart, startURI + i + "&itemsPerPage=" + (nDataset%nDatasetPerPage));
     }
+
 
     /**
      * Serialize the RDF Representation to RDF-XML and write it on the outputStreamSource.
@@ -978,6 +985,7 @@ public class RDFBuilder {
      */
     public void writeRDFSerialized(OutputStream outputStream){
         writeRDFSerialized(Lang.RDFXML, outputStream);}
+
 
     /**
      * Serialize the RDF Representation to the given Language and write it on the outputStreamSource.
@@ -1009,14 +1017,76 @@ public class RDFBuilder {
         writeRDFSerialized(lLang, outputStream);
     }
 
+
     /**
      * Serialize the RDF Representation to the given Language and write it on the outputStreamSource.
      *
      * @param lang         the Lang to serialize the RDF Representation
      * @param outputStream the outputStream where the serialization will be print on
      */
-
     public void writeRDFSerialized(Lang lang, OutputStream outputStream) {
         RDFWriter.create().source(model).lang(lang).base(globalURI).output(outputStream);
+    }
+
+
+    /**
+     * This tests the wktGenerator in this class.
+     */
+    public static void testWktGeneration() throws Throwable {
+        String2.log("\n*** RDBUILDER.testWktGeneration...");
+
+        String result = getWktLiteralString(new String[]{"6", "6"}, new String[]{"10", "10"});
+        Test.ensureEqual(result, "POINT(6 10)", "get wkt Point");
+
+        result = getWktLiteralString(new String[]{"10", "10"}, new String[]{"50", "60"});
+        Test.ensureEqual(result, "LINESTRING(10 50,10 60)", "get wkt LineString 1");
+
+        result = getWktLiteralString(new String[]{"10", "20"}, new String[]{"50", "50"});
+        Test.ensureEqual(result, "LINESTRING(10 50,20 50)", "get wkt LineString 2");
+
+        result = getWktLiteralString(new String[]{"1", "2"}, new String[]{"3", "4"});
+        Test.ensureEqual(result, "POLYGON((1 3,1 4,2 4,2 3,1 3))", "get wkt Polygon");
+    }
+
+
+    /**
+     * This runs all of the interactive or not interactive tests for this class.
+     *
+     * @param errorSB all caught exceptions are logged to this.
+     * @param interactive  If true, this runs all of the interactive tests;
+     *   otherwise, this runs all of the non-interactive tests.
+     * @param doSlowTestsToo If true, this runs the slow tests, too.
+     * @param firstTest The first test to be run (0...).  Test numbers may change.
+     * @param lastTest The last test to be run, inclusive (0..., or -1 for the last test).
+     *   Test numbers may change.
+     */
+    public static void test(StringBuilder errorSB, boolean interactive,
+                            boolean doSlowTestsToo, int firstTest, int lastTest) {
+        if (lastTest < 0)
+            lastTest = interactive? -1 : 0;
+        String msg = "\n^^^ NcHelper.test(" + interactive + ") test=";
+
+        for (int test = firstTest; test <= lastTest; test++) {
+            try {
+                long time = System.currentTimeMillis();
+                String2.log(msg + test);
+
+                if (interactive) {
+                    //if (test ==  0) ...;
+
+                } else {
+                    if (test ==  0) testWktGeneration();
+                }
+
+                String2.log(msg + test + " finished successfully in " + (System.currentTimeMillis() - time) + " ms.");
+            } catch (Throwable testThrowable) {
+                String eMsg = msg + test + " caught throwable:\n" +
+                        MustBe.throwableToString(testThrowable);
+                errorSB.append(eMsg);
+                String2.log(eMsg);
+                if (interactive)
+                    String2.pressEnterToContinue("");
+            }
+        }
     }
 }
