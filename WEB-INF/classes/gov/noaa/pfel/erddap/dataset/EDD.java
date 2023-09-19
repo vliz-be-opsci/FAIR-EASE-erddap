@@ -1049,13 +1049,12 @@ public abstract class EDD {
      */
     public void writeDatasetEDDHistory(String date, String changes) {
         if (reallyVerbose) String2.log("EDD.initDatasetEDDHistory " + HISTORY_FILEPATH);
-	        long time = System.currentTimeMillis();
-        final String note = "In EDD.initDatasetEDDHistory(" + HISTORY_FILEPATH + "): ";
-        final String errorInMethod = String2.ERROR + " in EDD.initDatasetEDDHistory(" + HISTORY_FILEPATH + "): JSON syntax error: ";
 
+        changes = changes.replace("\"", "\\\"");
         String[] changesArr = changes.split("\n", 0);
-
+        long time = System.currentTimeMillis();
         String line;
+
         try {
             if (!File2.isFile(HISTORY_FILEPATH)) {
                 System.out.println("------ File doesn't exist ------");
@@ -1065,38 +1064,38 @@ public abstract class EDD {
             }
 
             BufferedReader bufferedReader = File2.getDecompressedBufferedFileReaderUtf8(HISTORY_FILEPATH);
-            ArrayList<String> liste = new ArrayList<String>();
+            ArrayList<String> fileContent = new ArrayList<>();
             int datasetPosition = -1;
             while ((line = bufferedReader.readLine()) != null) {
-                liste.add(line);
-                if (line.trim().startsWith("\"" + datasetID + "\": [")) datasetPosition = liste.size();
+                fileContent.add(line);
+                if (line.trim().startsWith("\"" + datasetID + "\": [")) datasetPosition = fileContent.size();
             }
 
             boolean isNew = false;
             if (datasetPosition == -1) {
                 isNew = true;
                 datasetPosition = 1;
-                liste.add(datasetPosition, "  ]" + (liste.size() > 2 ? "," : ""));
+                fileContent.add(datasetPosition, "  ]" + (fileContent.size() > 2 ? "," : ""));
             }
 
-            liste.add(datasetPosition, "    }" + (isNew ? "" : ","));
-            if (changesArr.length>=6) liste.add(datasetPosition, "      \"newCombined\": \"" + changesArr[5]+ "\"");
-            if (changesArr.length>=5) liste.add(datasetPosition, "      \"oldCombined\": \"" + changesArr[4]+ "\"" + (changesArr.length > 5 ? "," : ""));
-            if (changesArr.length>=4) liste.add(datasetPosition, "      \"combined\": \"" + changesArr[3]+ "\"" + (changesArr.length > 4 ? "," : ""));
-            if (changesArr.length>=3) liste.add(datasetPosition, "      \"new\": \"" + changesArr[2] + "\"" + (changesArr.length > 3 ? "," : ""));
-            if (changesArr.length>=2) liste.add(datasetPosition, "      \"old\": \"" + changesArr[1] + "\",");
-            if (changesArr.length>=1) liste.add(datasetPosition, "      \"description\": \"" + changesArr[0] + "\",");
-            liste.add(datasetPosition, "      \"date\": \"" + date + "\",");
-            liste.add(datasetPosition, "    {");
+            fileContent.add(datasetPosition, "    }" + (isNew ? "" : ","));
+            if (changesArr.length>=6) fileContent.add(datasetPosition, "      \"newCombined\": \"" + changesArr[5] + "\"");
+            if (changesArr.length>=5) fileContent.add(datasetPosition, "      \"oldCombined\": \"" + changesArr[4] + (changesArr.length > 5 ? "\"," : "\""));
+            if (changesArr.length>=4) fileContent.add(datasetPosition, "      \"combined\": \""    + changesArr[3] + (changesArr.length > 4 ? "\"," : "\""));
+            if (changesArr.length>=3) fileContent.add(datasetPosition, "      \"new\": \""         + changesArr[2] + (changesArr.length > 3 ? "\"," : "\""));
+            if (changesArr.length>=2) fileContent.add(datasetPosition, "      \"old\": \""         + changesArr[1] + (changesArr.length > 2 ? "\"," : "\""));
+            if (changesArr.length>=1) fileContent.add(datasetPosition, "      \"description\": \"" + changesArr[0] + (changesArr.length > 1 ? "\"," : "\""));
+            fileContent.add(datasetPosition, "      \"date\": \"" + date + "\",");
+            fileContent.add(datasetPosition, "    {");
 
-            if (isNew) liste.add(datasetPosition, "  \"" + datasetID + "\": [");
+            if (isNew) fileContent.add(datasetPosition, "  \"" + datasetID + "\": [");
 
             BufferedWriter writer = File2.getBufferedFileWriterUtf8(HISTORY_FILEPATH);
-
-            for (int i=0; i < liste.size(); i++) writer.write(liste.get(i) + OpendapHelper.EOL);
+            for (String s : fileContent) writer.write(s + OpendapHelper.EOL);
 
             writer.close();
-
+            if (reallyVerbose) String2.log("  EDD.writeDatasetEDDHistory done. fileName=" + HISTORY_FILEPATH +
+                    " TIME=" + (System.currentTimeMillis() - time) + "ms");
         } catch (Exception e){
             System.out.println("Error an exception as occur in writeDatasetEDDHistory : " + e);
         }
@@ -1113,14 +1112,13 @@ public abstract class EDD {
     public String[] readEDDHistory() {
         if (reallyVerbose) String2.log("EDD.readEDDHistory " + HISTORY_FILEPATH);
         long time = System.currentTimeMillis();
-        final String note = "In EDD.readEDDHistory(" + HISTORY_FILEPATH + "): ";
         final String errorInMethod = String2.ERROR + " in EDD.readEDDHistory(" + HISTORY_FILEPATH + "): JSON syntax error: ";
 
         // { "date", "decription", "oldLine", "newLine", "combined", "oldCombined", "newCombined" }
         String[] result = {"", "", "", "", "", "", ""};
         try {
             if (!File2.isFile(HISTORY_FILEPATH)) {
-                System.out.println("------ "+ HISTORY_FILEPATH + " doesn't exist ------");
+                if (reallyVerbose) String2.log("EDD.readEDDHistory : history.json not found, creating it");
                 BufferedWriter writer = File2.getBufferedFileWriterUtf8(HISTORY_FILEPATH);
                 writer.write("{" + OpendapHelper.EOL + "}" + OpendapHelper.EOL);
                 writer.close();
@@ -1135,38 +1133,27 @@ public abstract class EDD {
             while ((line = bufferedReader.readLine()) != null) {
                 line = line.trim();
                 if (line.startsWith("\"" + datasetID + "\": [")) {
-                    System.out.println("record for " + datasetID + " found in history");
+                    if (reallyVerbose) String2.log("EDD.readEDDHistory : " + datasetID + " found in history");
+
                     for (int i = 0; i <= 6; i++) {
                         line = bufferedReader.readLine().trim();
+                        int resultIndex = -1;
+                        int startSubstring = -1;
 
-                        if (line.startsWith("\"date\""))
-                            result[0] = line.substring(9, line.length() - (line.endsWith(",") ? 2 : 1));
+                        if (line.startsWith("\"date\"")) {              resultIndex = 0; startSubstring = 9;  }
+                        else if ( line.startsWith("\"description\"")) { resultIndex = 1; startSubstring = 16; }
+                        else if ( line.startsWith("\"old\"")) {         resultIndex = 2; startSubstring = 8;  }
+                        else if ( line.startsWith("\"new\"")) {         resultIndex = 3; startSubstring = 8;  }
+                        else if ( line.startsWith("\"combined\"")) {    resultIndex = 4; startSubstring = 13; }
+                        else if ( line.startsWith("\"oldCombined\"")) { resultIndex = 5; startSubstring = 16; }
+                        else if ( line.startsWith("\"newCombined\"")) { resultIndex = 6; startSubstring = 16; }
+                        else if ( line.startsWith("[") || line.startsWith("{") || line.startsWith(",")) i--;
+                        else if ( line.startsWith("}")) break;
+                        else throw new IOException(errorInMethod + "wrong format in line" + line);
 
-                        else if (line.startsWith("\"description\""))
-                            result[1] = line.substring(16, line.length() - (line.endsWith(",") ? 2 : 1));
-
-                        else if (line.startsWith("\"old\""))
-                            result[2] = line.substring(8, line.length() - (line.endsWith(",") ? 2 : 1));
-
-                        else if (line.startsWith("\"new\""))
-                            result[3] = line.substring(8, line.length() - (line.endsWith(",") ? 2 : 1));
-
-                        else if (line.startsWith("\"combined\""))
-                            result[4] = line.substring(13, line.length() - (line.endsWith(",") ? 2 : 1));
-
-                        else if (line.startsWith("\"oldCombined\""))
-                            result[5] = line.substring(16, line.length() - (line.endsWith(",") ? 2 : 1));
-
-                        else if (line.startsWith("\"newCombined\""))
-                            result[6] = line.substring(16, line.length() - (line.endsWith(",") ? 2 : 1));
-
-                        else if (line.startsWith("[") || line.startsWith("{") || line.startsWith(","))
-                            i--;
-
-                        else if (line.startsWith("}")) break;
-
-                        else
-                            throw new IOException(errorInMethod + "wrong format in line" + line);
+                        if(resultIndex >= 0 || startSubstring >= 0)
+                            result[resultIndex] = line.substring(
+                                    startSubstring, line.length() - (line.endsWith(",") ? 2 : 1));
                     }
                     break;
                 }
@@ -1178,12 +1165,13 @@ public abstract class EDD {
             bufferedReader.close();
 
         } catch (Throwable rssT) {
-            String2.log(String2.ERROR + " in updateRSS for " + datasetID() + ":\n" +
+            String2.log(String2.ERROR + " in readEDDHistory for " + datasetID() + ":\n" +
                     MustBe.throwableToString(rssT));
+            return new String[]{};
         }
 
-        if (result[0].equals("") && result[1].equals("") && result[2].equals("") && result[3].equals("")){
-            System.out.println("dataset : " + datasetID + " not existing, insert it in the history.json");
+        if (result[0].isEmpty() && result[1].isEmpty() && result[2].isEmpty() && result[3].isEmpty()) {
+            if (reallyVerbose) String2.log("dataset " + datasetID + " not found in history.json, inserting it");
             GregorianCalendar gc = Calendar2.newGCalendarZulu();
             result[0] = Calendar2.formatAsISODateTimeTZ(gc);
             result[1] = "Initial init " + datasetID;
@@ -1202,7 +1190,7 @@ public abstract class EDD {
      * @return the rss document
      */
     public String updateRSS(Erddap erddap, String change, boolean toUpdate) {
-        if (change == null || change.length() == 0)
+        if (change == null || change.isEmpty())
             return "";
 
         GregorianCalendar gc = Calendar2.newGCalendarZulu();
@@ -1212,8 +1200,12 @@ public abstract class EDD {
         else {
             String[] history = readEDDHistory();
             change = "";
-            for (String attribute : history) if (!attribute.isEmpty()) change += attribute + "\n";
             gc = Calendar2.parseISODateTimeZulu(history[0]);
+            dateTimeTZ = Calendar2.formatAsISODateTimeTZ(gc);
+
+            int lAttributes = history.length;
+            for(int nAttributes = 1; nAttributes < lAttributes; nAttributes++)
+                if (!history[nAttributes].isEmpty()) change += history[nAttributes] + "\n";
         }
 
         try {
