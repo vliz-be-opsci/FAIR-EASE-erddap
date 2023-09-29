@@ -244,7 +244,9 @@ public class RDFBuilder {
             else if (gaName.equals("geospatial_lon_max"))  longitudeCoverage[1] = sValue;
             else if (gaName.equals("date_created")) {
                 gaRelation = DCT_issued;
-                gaDataType = XSDDatatype.XSDdateTime;
+                if (sValue.length() > 10) gaDataType = XSDDatatype.XSDdateTime;
+                else if (sValue.length() == 10) gaDataType = XSDDatatype.XSDdate;
+                else if (sValue.length() == 4) gaDataType = XSDDatatype.XSDgYear;
             } else if (gaName.equals("keywords")) {
                 String[] saKeyword = sValue.split(",", 0);
                 for (String keyword : saKeyword) {
@@ -338,10 +340,10 @@ public class RDFBuilder {
                 Resource temporal = model.createResource();
                 hydraSupportedOperationSubsetting.addProperty(
                         DCT_temporal,
-                        temporal.addProperty(RDF_type, DCT_Location)
+                        temporal.addProperty(RDF_type, DCT_PeriodOfTime)
                 );
                 addFairEaseGenerator(temporal, "{" + timeVarName + ".max}", null, DCAT_endDate.getURI(), XSD_DateTime.getURI());
-                addFairEaseGenerator(temporal, "{" + timeVarName + ".min}", null, DCAT_endDate.getURI(), XSD_DateTime.getURI());
+                addFairEaseGenerator(temporal, "{" + timeVarName + ".min}", null, DCAT_startDate.getURI(), XSD_DateTime.getURI());
             }
         }
 
@@ -368,7 +370,7 @@ public class RDFBuilder {
 
                 hydraSupportedOperationSubsetting.addProperty(
                         DCT_spatial,
-                        spatial.addProperty(RDF_type, DCT_PeriodOfTime)
+                        spatial.addProperty(RDF_type, DCT_Location)
                 );
 
                 String[] latitudeVar =  {"{"+latLongVarName[0]+".min}", "{"+latLongVarName[0]+".max}"};
@@ -379,8 +381,7 @@ public class RDFBuilder {
                 if(longitudeCoverage[0].equals(longitudeCoverage[1]))
                     longitudeVar = new String[]{"{"+latLongVarName[1]+".max}", "{"+latLongVarName[1]+".max}"};
 
-                addFairEaseGenerator(spatial,
-                        getWktLiteralString(latitudeVar, longitudeVar),
+                addFairEaseGenerator(spatial, getWktLiteralString(latitudeVar, longitudeVar),
                         null, DCAT_bbox.getURI(), GSP_WktLiteral.getURI());
             }
         }
@@ -440,7 +441,7 @@ public class RDFBuilder {
         if(lLatitude == 2) nLocation++;
 
         for(; varFor < nLocation; varFor++)
-            sLatLong += latitude[(varFor>>1)%2] + " " + longitude[((varFor+1)>>1)%2] + (varFor == nLocation-1 ? "" : ",");
+            sLatLong += longitude[((varFor+1)>>1)%2] + " " + latitude[(varFor>>1)%2] + (varFor == nLocation-1 ? "" : ",");
         sLatLong += nLocation == 5 ? "))" : ")";
 
         return sLatLong;
@@ -534,34 +535,36 @@ public class RDFBuilder {
         for(int i=0; i < nDFTN; i++){
 //            typeName = allFileTypeNames[i];
             typeName = dataFileTypeNames[i];
+            if(typeName.contains(".") && typeName.indexOf('.') == 0)
+                typeName = typeName.substring(1);
 
             res = switch(typeName.toLowerCase()){
-                case ".csv", ".csvp", ".csv0", ".nccsv", ".nccsvmetadata"
+                case "csv", "csvp", "csv0", "nccsv", "nccsvmetadata"
                                -> IANA_CSV;
-                case ".graph", ".help", ".html", ".htmltable"
+                case "graph", "help", "html", "htmltable"
                                -> IANA_HTML;
-                case ".fgdc", ".iso19115", ".ncml"
+                case "fgdc", "iso19115", "ncml"
                                -> IANA_XML;
-                case ".tsv", ".tsvp", ".tsv0"
+                case "tsv", "tsvp", "tsv0"
                                -> IANA_TSV;
-                case ".json", ".ncojson"
+                case "json", "ncojson"
                                -> IANA_JSON;
-                case ".n3"     -> IANA_N3;
-                case ".ttl"    -> IANA_TURTLE;
-                case ".trig"   -> IANA_TRIG;
-                case ".jsonld" -> IANA_JSONLD;
-                case ".nq"     -> IANA_NQ;
-                case ".rdfxml" -> IANA_RDFXML;
-                case ".nt"     -> IANA_NT;
-                case ".xhtml"  -> IANA_XHTML;
-                case ".dods"   -> IANA_DODS;
+                case "n3"     -> IANA_N3;
+                case "ttl"    -> IANA_TURTLE;
+                case "trig"   -> IANA_TRIG;
+                case "jsonld" -> IANA_JSONLD;
+                case "nq"     -> IANA_NQ;
+                case "rdfxml" -> IANA_RDFXML;
+                case "nt"     -> IANA_NT;
+                case "xhtml"  -> IANA_XHTML;
+                case "dods"   -> IANA_DODS;
                 default        -> null;
 //              default :
-//                ".jsonlCSV1" ".jsonlCSV" ".jsonlKVP" => "application/x-jsonlines"
-//                ".nc" => "application/x-netcdf"
-//                ".wav" => "audio/wav" | "audio/x-wav"
-//                ".itx" ".mat" => "application/x-download"
-//                ".asc" ".das" ".dds" ".esriAscii" ".ncHeader" ".odvTxt" ".timeGaps" => "text/plain"
+//                "jsonlCSV1" "jsonlCSV" "jsonlKVP" => "application/x-jsonlines"
+//                "nc" => "application/x-netcdf"
+//                "wav" => "audio/wav" | "audio/x-wav"
+//                "itx" "mat" => "application/x-download"
+//                "asc" "das" "dds" "esriAscii" "ncHeader" "odvTxt" "timeGaps" => "text/plain"
             };
 
             Resource localDistrib = model.createResource(globalURI + "#" + typeName)
@@ -650,7 +653,7 @@ public class RDFBuilder {
                 saAttr = new StringArray(attr.getNames());
                 columnName = dataVariable[iVar].destinationName();
                 columnType = OpendapHelper.getAtomicType(dataVariable[iVar].destinationDataPAType());
-                queryPattern += (iVar > 0 ? ",": "") + columnName + accessPattern;
+                queryPattern += "{{" + columnName + accessPattern + (iVar > 0 ? ",": "") + "}}";
 
                 if(attr.size() > 0 && saAttr.size() > 0 && !columnName.isEmpty() && !columnType.isEmpty()){
                     addHydraMappingForVariable(false, columnType, columnName, saAttr, attr);
@@ -665,13 +668,20 @@ public class RDFBuilder {
 
             for(int i=0; i<lGetColumn; i++) {
                 String variable = table.getColumnNames()[i];
-                sVariable += (i > 0 ? "," : "") + variable;
-                sConstrain += "&" + variable + ">={" + variable + ".min}&"+ variable + "<={" + variable + ".max}";
+                sVariable += "{{" + (i > 0 ? "," : "") + variable + "}}";
+                sConstrain += "{{&" + variable + ">={" + variable + ".min}}}{{&"+ variable + "<={" + variable + ".max}}}";
             }
             queryPattern = sVariable + sConstrain;
         }
 
         hydraPropertySubsetting.addProperty(HYDRA_template, globalURI + ".{format}?" + queryPattern);
+        hydraPropertySubsetting.addProperty(HYDRA_mapping, model.createResource()
+                .addProperty(RDF_type, HYDRA_IriTemplateMapping)
+                .addProperty(HYDRA_variable, "format")
+                .addProperty(RDFS_label, "File extension Format")
+                .addProperty(HYDRA_required, "true", XSDDatatype.XSDboolean)
+                .addProperty(SCHEMA_defaultValue, "csv")
+        );
     }
 
 
@@ -817,7 +827,7 @@ public class RDFBuilder {
             } else if (i==2 && !minMax[1].isEmpty()){
                 if(columnDatatype == null) localMappingNode.addProperty(SCHEMA_defaultValue, minMax[1]);
                 else localMappingNode.addProperty(SCHEMA_defaultValue, minMax[1], columnDatatype);
-            } else if (i==3) localMappingNode.addProperty(SCHEMA_defaultValue, "1");
+            } else if (i==3) localMappingNode.addProperty(SCHEMA_defaultValue, "1", XSDDatatype.XSDdouble);
 
             if(!description.isEmpty())
                 localMappingNode.addProperty(RDFS_label, add + " - " + description);
@@ -829,14 +839,6 @@ public class RDFBuilder {
 
             hydraPropertySubsetting.addProperty(HYDRA_mapping, localMappingNode);
         }
-
-        hydraPropertySubsetting.addProperty(HYDRA_mapping, model.createResource()
-                .addProperty(RDF_type, HYDRA_IriTemplateMapping)
-                .addProperty(HYDRA_variable, "format")
-                .addProperty(RDFS_label, "File extension Format")
-                .addProperty(HYDRA_required, "true")
-                .addProperty(SCHEMA_defaultValue, "htmlTable")
-        );
     }
 
 
@@ -963,10 +965,10 @@ public class RDFBuilder {
      * @throws Exception  if trouble
      */
     public void buildList(int nDataset, int nDatasetPerPage, String fileTypeName) throws Exception {
-        globalURI = EDStatic.baseUrl + "/" + warName + "/info/catalog" + fileTypeName;
+        globalURI = EDStatic.baseUrl + "/" + warName + "/info/";
         mainNode = model.createResource(globalURI);
         mainNode.addProperty(RDF_type, SCHEMA_CreativeWork);
-        String startURI =  globalURI + "?page=";
+	    String startURI =  globalURI + "catalog" + fileTypeName + "?page=";
         String endURI = "&itemsPerPage=" + nDatasetPerPage;
 
         int i = 1;
@@ -974,7 +976,7 @@ public class RDFBuilder {
         if (nDataset%nDatasetPerPage != 0) nMax++;
 
         for(; i<=nMax; i++)
-            mainNode.addProperty(SCHEMA_hasPart, startURI + i + endURI);
+            mainNode.addProperty(SCHEMA_hasPart, model.createResource(startURI + i + endURI));
     }
 
 

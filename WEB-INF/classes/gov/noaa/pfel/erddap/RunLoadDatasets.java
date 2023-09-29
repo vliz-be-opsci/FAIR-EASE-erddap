@@ -117,8 +117,7 @@ public class RunLoadDatasets extends Thread {
                 //[commented out: why lower priority?  It may be causing infrequent problems with a dataset not available in a CWBrowser
                 //-2 since on some OS's, adjacent priority levels map to same internal level.
                 //loadDatasets.setPriority(Math.max(Thread.MIN_PRIORITY, Thread.currentThread().getPriority() - 2));
-                System.out.println("***** Start Major Thead *****");
-                EDStatic.runningThreads.put("loadDatasets", loadDatasets); 
+                EDStatic.runningThreads.put("loadDatasets", loadDatasets);
                 loadDatasets.start(); //starts the thread and calls run() 
                 isStarting = false;
             } catch (Throwable t) {
@@ -275,8 +274,7 @@ public class RunLoadDatasets extends Thread {
                                     //[commented out: why lower priority?  It may be causing infrequent problems with a dataset not available in a CWBrowser
                                     //-2 since on some OS's, adjacent priority levels map to same internal level.
                                     //loadDatasets.setPriority(Math.max(Thread.MIN_PRIORITY, Thread.currentThread().getPriority() - 2));
-                                    System.out.println("***** Start non-Major Thead *****");
-                                    EDStatic.runningThreads.put("loadDatasets", loadDatasets); 
+                                    EDStatic.runningThreads.put("loadDatasets", loadDatasets);
                                     loadDatasets.start(); //starts the thread and calls run() 
                                 }
                             }

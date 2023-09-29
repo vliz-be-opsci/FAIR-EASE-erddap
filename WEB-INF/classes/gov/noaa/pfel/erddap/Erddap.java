@@ -13029,7 +13029,6 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
         String requestUrlNoLang = getUrlWithoutLang(request);
         String endOfRequestUrl = datasetIDStartsAt >= requestUrl.length()? "" :
                 requestUrl.substring(datasetIDStartsAt);
-        String fileTypeName;
 
         if (requestUrlNoLang.equals("/" + EDStatic.warName + "/info/cat") ||
             requestUrlNoLang.equals("/" + EDStatic.warName + "/info/catalog") ||
@@ -13048,7 +13047,7 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
             nParts = parts.length;
             //now last part is "catalog...."
         }
-        fileTypeName = File2.getExtension(endOfRequestUrl);
+        String fileTypeName = File2.getExtension(endOfRequestUrl);
 
         boolean isTypeNameOk = false;
         String[] authorizedFileType = {".jsonld", ".n3", ".nt", ".nq", ".rdfxml", ".trig", ".ttl"};
@@ -13059,7 +13058,7 @@ XML.encodeAsXML(String2.noLongerThanDots(EDStatic.adminInstitution, 256)) + "</A
             return;
         }
 
-        for(String authorizedFileExtension:  authorizedFileType){
+        for(String authorizedFileExtension : authorizedFileType){
             if (authorizedFileExtension.equals(fileTypeName)) {
                 isTypeNameOk = true;
                 break;

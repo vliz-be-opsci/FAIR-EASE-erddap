@@ -490,9 +490,7 @@ public class LoadDatasets extends Thread {
 
                         //trigger subscription and dataset.onChange actions (after new dataset is in place)
                         EDD cooDataset = dataset == null? oldDataset : dataset; //currentOrOld, may be null
-                        System.out.println("*************************************************");
-                        System.out.println("===== Interruption detected for : " + tId + ", isStarting ? " + isStarting + "=====");
-                        tryToDoActions(erddap, tId, cooDataset, 
+                        tryToDoActions(erddap, tId, cooDataset,
                             startError + xmlReader.lineNumber() + " with Subscriptions",
                             change, isStarting);
                     }

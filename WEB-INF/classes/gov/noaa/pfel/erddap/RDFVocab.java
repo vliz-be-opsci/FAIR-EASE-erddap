@@ -243,81 +243,81 @@ public class RDFVocab {
         // =======================================================================
         // CSVW
         // =======================================================================
-        CSVW_Column =      m.createResource(CSVW_URI + "Column");
-        CSVW_Row =         m.createResource(CSVW_URI + "Row");
-        CSVW_TableSchema = m.createResource(CSVW_URI + "TableSchema");
-        CSVW_Table =       m.createResource(CSVW_URI + "Table");
+        CSVW_Column      = m.createResource(CSVW_URI + "Column"      );
+        CSVW_Row         = m.createResource(CSVW_URI + "Row"         );
+        CSVW_TableSchema = m.createResource(CSVW_URI + "TableSchema" );
+        CSVW_Table       = m.createResource(CSVW_URI + "Table"       );
 
-        CSVW_column = m.createProperty(CSVW_URI, "column");
-        CSVW_name =   m.createProperty(CSVW_URI, "name");
-        CSVW_row =    m.createProperty(CSVW_URI, "row");
-        CSVW_rownum = m.createProperty(CSVW_URI, "rownum");
-        CSVW_titles = m.createProperty(CSVW_URI, "titles");
+        CSVW_column = m.createProperty(CSVW_URI, "column" );
+        CSVW_name   = m.createProperty(CSVW_URI, "name"   );
+        CSVW_row    = m.createProperty(CSVW_URI, "row"    );
+        CSVW_rownum = m.createProperty(CSVW_URI, "rownum" );
+        CSVW_titles = m.createProperty(CSVW_URI, "titles" );
 
         // =======================================================================
         // DCAT related
         // =======================================================================
-        DCAT_Catalog =      m.createResource(DCAT_URI + "Catalog");
-        DCAT_Dataset =      m.createResource(DCAT_URI + "Dataset");
-        DCAT_Dataservice =  m.createResource(DCAT_URI + "Dataservice");
-        DCAT_Distribution = m.createResource(DCAT_URI + "Distribution");
+        DCAT_Catalog      = m.createResource(DCAT_URI + "Catalog"      );
+        DCAT_Dataset      = m.createResource(DCAT_URI + "Dataset"      );
+        DCAT_Dataservice  = m.createResource(DCAT_URI + "Dataservice"  );
+        DCAT_Distribution = m.createResource(DCAT_URI + "Distribution" );
 
-        DCAT_bbox =                      m.createProperty(DCAT_URI, "bbox");
-        DCAT_contactPoint =              m.createProperty(DCAT_URI, "contactPoint");
-        DCAT_dataset =                   m.createProperty(DCAT_URI, "dataset");
-        DCAT_distribution =              m.createProperty(DCAT_URI, "distribution");
-        DCAT_downloadURL =               m.createProperty(DCAT_URI, "downloadURL");
-        DCAT_endDate =                   m.createProperty(DCAT_URI, "endDate");
-        DCAT_endPointDescription =       m.createProperty(DCAT_URI, "endPointDescription");
-        DCAT_keyword =                   m.createProperty(DCAT_URI, "keyword");
-        DCAT_landingPage =               m.createProperty(DCAT_URI, "landingPage");
-        DCAT_mediaType =                 m.createProperty(DCAT_URI, "mediaType");
-        DCAT_servesDataset =             m.createProperty(DCAT_URI, "servesDataset");
-        DCAT_spatialResolutionInMeters = m.createProperty(DCAT_URI, "spatialResolutionInMeters");
-        DCAT_startDate =                 m.createProperty(DCAT_URI, "startDate");
-        DCAT_temporalResolution =        m.createProperty(DCAT_URI, "temporalResolution");
+        DCAT_bbox                      = m.createProperty(DCAT_URI, "bbox"                      );
+        DCAT_contactPoint              = m.createProperty(DCAT_URI, "contactPoint"              );
+        DCAT_dataset                   = m.createProperty(DCAT_URI, "dataset"                   );
+        DCAT_distribution              = m.createProperty(DCAT_URI, "distribution"              );
+        DCAT_downloadURL               = m.createProperty(DCAT_URI, "downloadURL"               );
+        DCAT_endDate                   = m.createProperty(DCAT_URI, "endDate"                   );
+        DCAT_endPointDescription       = m.createProperty(DCAT_URI, "endPointDescription"       );
+        DCAT_keyword                   = m.createProperty(DCAT_URI, "keyword"                   );
+        DCAT_landingPage               = m.createProperty(DCAT_URI, "landingPage"               );
+        DCAT_mediaType                 = m.createProperty(DCAT_URI, "mediaType"                 );
+        DCAT_servesDataset             = m.createProperty(DCAT_URI, "servesDataset"             );
+        DCAT_spatialResolutionInMeters = m.createProperty(DCAT_URI, "spatialResolutionInMeters" );
+        DCAT_startDate                 = m.createProperty(DCAT_URI, "startDate"                 );
+        DCAT_temporalResolution        = m.createProperty(DCAT_URI, "temporalResolution"        );
 
         // =======================================================================
         // DCT relation
         // =======================================================================
-        DCT_PeriodOfTime = m.createResource(DCT_URI + "PeriodOfTime");
-        DCT_Location =     m.createResource(DCT_URI + "Location");
+        DCT_PeriodOfTime = m.createResource(DCT_URI + "PeriodOfTime" );
+        DCT_Location     = m.createResource(DCT_URI + "Location"     );
 
-        DCT_conformsTo =  m.createProperty(DCT_URI, "conformsTo");
-        DCT_creator =     m.createProperty(DCT_URI, "creator");
-        DCT_description = m.createProperty(DCT_URI, "description");
-        DCT_format =      m.createProperty(DCT_URI, "format");
-        DCT_identifier =  m.createProperty(DCT_URI, "identifier");
-        DCT_issued =      m.createProperty(DCT_URI, "issued");
-        DCT_license =     m.createProperty(DCT_URI, "license");
-        DCT_modified =    m.createProperty(DCT_URI, "modified");
-        DCT_publisher =   m.createProperty(DCT_URI, "publisher");
-        DCT_spatial =     m.createProperty(DCT_URI, "spatial");
-        DCT_temporal =    m.createProperty(DCT_URI, "temporal");
-        DCT_title =       m.createProperty(DCT_URI, "title");
-        DCT_type =        m.createProperty(DCT_URI, "type");
+        DCT_conformsTo  = m.createProperty(DCT_URI, "conformsTo"  );
+        DCT_creator     = m.createProperty(DCT_URI, "creator"     );
+        DCT_description = m.createProperty(DCT_URI, "description" );
+        DCT_format      = m.createProperty(DCT_URI, "format"      );
+        DCT_identifier  = m.createProperty(DCT_URI, "identifier"  );
+        DCT_issued      = m.createProperty(DCT_URI, "issued"      );
+        DCT_license     = m.createProperty(DCT_URI, "license"     );
+        DCT_modified    = m.createProperty(DCT_URI, "modified"    );
+        DCT_publisher   = m.createProperty(DCT_URI, "publisher"   );
+        DCT_spatial     = m.createProperty(DCT_URI, "spatial"     );
+        DCT_temporal    = m.createProperty(DCT_URI, "temporal"    );
+        DCT_title       = m.createProperty(DCT_URI, "title"       );
+        DCT_type        = m.createProperty(DCT_URI, "type"        );
 
         // =======================================================================
         // FairEase
         // =======================================================================
-        FAIREASE_Template = m.createResource(FAIREASE_URI + "Template");
+        FAIREASE_Template = m.createResource(FAIREASE_URI + "Template" );
 
-        FAIREASE_generatedValue = m.createProperty(FAIREASE_URI, "generateValue");
-        FAIREASE_targetProperty = m.createProperty(FAIREASE_URI, "targetProperty");
-        FAIREASE_valueTemplate =  m.createProperty(FAIREASE_URI, "valueTemplate");
-        FAIREASE_valueType =      m.createProperty(FAIREASE_URI, "valueType");
+        FAIREASE_generatedValue = m.createProperty(FAIREASE_URI, "generatedValue" );
+        FAIREASE_targetProperty = m.createProperty(FAIREASE_URI, "targetProperty" );
+        FAIREASE_valueTemplate  = m.createProperty(FAIREASE_URI, "valueTemplate"  );
+        FAIREASE_valueType      = m.createProperty(FAIREASE_URI, "valueType"      );
 
         // =======================================================================
         // Friend-Of-A-Friend
         // =======================================================================
-        FOAF_Group =             m.createResource(FOAF_URI + "Group");
-        FOAF_Organization =      m.createResource(FOAF_URI + "Organization");
-        FOAF_Person =            m.createResource(FOAF_URI + "Person");
+        FOAF_Group        = m.createResource(FOAF_URI + "Group"        );
+        FOAF_Organization = m.createResource(FOAF_URI + "Organization" );
+        FOAF_Person       = m.createResource(FOAF_URI + "Person"       );
 
-        FOAF_name =              m.createProperty(FOAF_URI,"name");
-        FOAF_mbox =              m.createProperty(FOAF_URI,"mbox");
-        FOAF_member =            m.createProperty(FOAF_URI,"member");
-        FOAF_workplaceHomepage = m.createProperty(FOAF_URI,"workplaceHomepage");
+        FOAF_name              = m.createProperty(FOAF_URI, "name");
+        FOAF_mbox              = m.createProperty(FOAF_URI, "mbox");
+        FOAF_member            = m.createProperty(FOAF_URI, "member");
+        FOAF_workplaceHomepage = m.createProperty(FOAF_URI, "workplaceHomepage");
 
         // =======================================================================
         // GeoSparql
@@ -327,27 +327,27 @@ public class RDFVocab {
         // =======================================================================
         // HYDRA
         // =======================================================================
-        HYDRA_ApiDocumentation =   m.createResource(HYDRA_URI + "ApiDocumentation");
-        HYDRA_Operation =          m.createResource(HYDRA_URI +  "Operation");
-        HYDRA_IriTemplate =        m.createResource(HYDRA_URI +  "IriTemplate");
-        HYDRA_IriTemplateMapping = m.createResource(HYDRA_URI +  "IriTemplateMapping");
+        HYDRA_ApiDocumentation   = m.createResource(HYDRA_URI + "ApiDocumentation"            );
+        HYDRA_Operation          = m.createResource(HYDRA_URI +  "Operation"                  );
+        HYDRA_IriTemplate        = m.createResource(HYDRA_URI +  "IriTemplate"                );
+        HYDRA_IriTemplateMapping = m.createResource(HYDRA_URI +  "IriTemplateMapping"         );
 
-        HYDRA_description =        m.createProperty(HYDRA_URI, "description");
-        HYDRA_entrypoint =         m.createProperty(HYDRA_URI, "entrypoint");
-        HYDRA_mapping =            m.createProperty(HYDRA_URI, "mapping");
-        HYDRA_method =             m.createProperty(HYDRA_URI, "method");
-        HYDRA_property =           m.createProperty(HYDRA_URI, "property");
-        HYDRA_required =           m.createProperty(HYDRA_URI, "required");
-        HYDRA_supportedOperation = m.createProperty(HYDRA_URI, "supportedOperation");
-        HYDRA_template =           m.createProperty(HYDRA_URI, "template");
-        HYDRA_title =              m.createProperty(HYDRA_URI, "title");
-        HYDRA_variable =           m.createProperty(HYDRA_URI, "variable");
+        HYDRA_description        = m.createProperty(HYDRA_URI, "description"        );
+        HYDRA_entrypoint         = m.createProperty(HYDRA_URI, "entrypoint"         );
+        HYDRA_mapping            = m.createProperty(HYDRA_URI, "mapping"            );
+        HYDRA_method             = m.createProperty(HYDRA_URI, "method"             );
+        HYDRA_property           = m.createProperty(HYDRA_URI, "property"           );
+        HYDRA_required           = m.createProperty(HYDRA_URI, "required"           );
+        HYDRA_supportedOperation = m.createProperty(HYDRA_URI, "supportedOperation" );
+        HYDRA_template           = m.createProperty(HYDRA_URI, "template"           );
+        HYDRA_title              = m.createProperty(HYDRA_URI, "title"              );
+        HYDRA_variable           = m.createProperty(HYDRA_URI, "variable"           );
 
         // =======================================================================
         // QUDT
         // =======================================================================
-        QUDT_lowerBound   = m.createProperty(QUDT_URI, "lowerBound");
-        QUDT_upperBound   = m.createProperty(QUDT_URI, "upperBound");
+        QUDT_lowerBound = m.createProperty(QUDT_URI, "lowerBound" );
+        QUDT_upperBound = m.createProperty(QUDT_URI, "upperBound" );
 
         // =======================================================================
         // RDF related
@@ -357,88 +357,88 @@ public class RDFVocab {
         // =======================================================================
         // RDFS
         // =======================================================================
-        RDFS_comment = m.createProperty(RDFS_URI, "comment");
-        RDFS_label =   m.createProperty(RDFS_URI, "label");
-        RDFS_range =   m.createProperty(RDFS_URI, "range");
+        RDFS_comment = m.createProperty(RDFS_URI, "comment" );
+        RDFS_label   = m.createProperty(RDFS_URI, "label"   );
+        RDFS_range   = m.createProperty(RDFS_URI, "range"   );
 
         // =======================================================================
         // SCHEMA
         // =======================================================================
-        SCHEMA_CreativeWork = m.createResource(SCHEMA_URI + "CreativeWork");
+        SCHEMA_CreativeWork = m.createResource(SCHEMA_URI + "CreativeWork"          );
 
-        SCHEMA_defaultValue = m.createProperty(SCHEMA_URI, "defaultValue");
-        SCHEMA_hasPart = m.createProperty(SCHEMA_URI, "hasPart");
+        SCHEMA_defaultValue = m.createProperty(SCHEMA_URI, "defaultValue" );
+        SCHEMA_hasPart      = m.createProperty(SCHEMA_URI, "hasPart"      );
 
 
         // =======================================================================
         // Shacl
         // =======================================================================
-        SH_NodeShape =    m.createResource(SH_URI + "NodeShape");
+        SH_NodeShape    = m.createResource(SH_URI + "NodeShape"             );
 
-        SH_dataType =     m.createProperty(SH_URI,"dataType");
-        SH_maxCount =     m.createProperty(SH_URI,"maxCount");
-        SH_maxInclusive = m.createProperty(SH_URI,"maxInclusive");
-        SH_minCount =     m.createProperty(SH_URI,"minCount");
-        SH_minInclusive = m.createProperty(SH_URI,"minInclusive");
-        SH_path =         m.createProperty(SH_URI,"path");
-        SH_property =     m.createProperty(SH_URI,"property");
+        SH_dataType     = m.createProperty(SH_URI, "dataType"     );
+        SH_maxCount     = m.createProperty(SH_URI, "maxCount"     );
+        SH_maxInclusive = m.createProperty(SH_URI, "maxInclusive" );
+        SH_minCount     = m.createProperty(SH_URI, "minCount"     );
+        SH_minInclusive = m.createProperty(SH_URI, "minInclusive" );
+        SH_path         = m.createProperty(SH_URI, "path"         );
+        SH_property     = m.createProperty(SH_URI, "property"     );
 
         // =======================================================================
         // XSD:types
         // =======================================================================
-        XSD_AnyURI =             m.createResource(XSD_URI + "anyURI");
-        XSD_Base64Binary =       m.createResource(XSD_URI + "base64Binary");
-        XSD_Boolean =            m.createResource(XSD_URI + "boolean");
-        XSD_Byte =               m.createResource(XSD_URI + "byte");
-        XSD_Date =               m.createResource(XSD_URI + "date");
-        XSD_DateTime =           m.createResource(XSD_URI + "dateTime");
-        XSD_Decimal =            m.createResource(XSD_URI + "decimal");
-        XSD_Double =             m.createResource(XSD_URI + "double");
-        XSD_Float =              m.createResource(XSD_URI + "float");
-        XSD_GDay =               m.createResource(XSD_URI + "gDay");
-        XSD_GMonth =             m.createResource(XSD_URI + "gMonth");
-        XSD_GMonthDay =          m.createResource(XSD_URI + "gMonthDay");
-        XSD_GYear =              m.createResource(XSD_URI + "gYear");
-        XSD_GYearMonth =         m.createResource(XSD_URI + "gYearMonth");
-        XSD_HexBinary =          m.createResource(XSD_URI + "hexBinary");
-        XSD_Int =                m.createResource(XSD_URI + "int");
-        XSD_Integer =            m.createResource(XSD_URI + "integer");
-        XSD_Language =           m.createResource(XSD_URI + "language");
-        XSD_Long =               m.createResource(XSD_URI + "long");
-        XSD_Name =               m.createResource(XSD_URI + "Name");
-        XSD_NCName =             m.createResource(XSD_URI + "NCName");
-        XSD_NegativeInteger =    m.createResource(XSD_URI + "negativeInteger");
-        XSD_NMTOKEN =            m.createResource(XSD_URI + "NMTOKEN");
-        XSD_NonNegativeInteger = m.createResource(XSD_URI + "nonNegativeInteger");
-        XSD_NonPositiveInteger = m.createResource(XSD_URI + "nonPositiveInteger");
-        XSD_NormalizedString =   m.createResource(XSD_URI + "normalizedString");
-        XSD_PositiveInteger =    m.createResource(XSD_URI + "positiveInteger");
-        XSD_Short =              m.createResource(XSD_URI + "short");
-        XSD_String =             m.createResource(XSD_URI + "string");
-        XSD_Time =               m.createResource(XSD_URI + "time");
-        XSD_Token =              m.createResource(XSD_URI + "token");
-        XSD_UnsignedByte =       m.createResource(XSD_URI + "unsignedByte");
-        XSD_UnsignedInt =        m.createResource(XSD_URI + "unsignedInt");
-        XSD_UnsignedLong =       m.createResource(XSD_URI + "unsignedLong");
-        XSD_UnsignedShort =      m.createResource(XSD_URI + "unsignedShort");
+        XSD_AnyURI             = m.createResource(XSD_URI + "anyURI"             );
+        XSD_Base64Binary       = m.createResource(XSD_URI + "base64Binary"       );
+        XSD_Boolean            = m.createResource(XSD_URI + "boolean"            );
+        XSD_Byte               = m.createResource(XSD_URI + "byte"               );
+        XSD_Date               = m.createResource(XSD_URI + "date"               );
+        XSD_DateTime           = m.createResource(XSD_URI + "dateTime"           );
+        XSD_Decimal            = m.createResource(XSD_URI + "decimal"            );
+        XSD_Double             = m.createResource(XSD_URI + "double"             );
+        XSD_Float              = m.createResource(XSD_URI + "float"              );
+        XSD_GDay               = m.createResource(XSD_URI + "gDay"               );
+        XSD_GMonth             = m.createResource(XSD_URI + "gMonth"             );
+        XSD_GMonthDay          = m.createResource(XSD_URI + "gMonthDay"          );
+        XSD_GYear              = m.createResource(XSD_URI + "gYear"              );
+        XSD_GYearMonth         = m.createResource(XSD_URI + "gYearMonth"         );
+        XSD_HexBinary          = m.createResource(XSD_URI + "hexBinary"          );
+        XSD_Int                = m.createResource(XSD_URI + "int"                );
+        XSD_Integer            = m.createResource(XSD_URI + "integer"            );
+        XSD_Language           = m.createResource(XSD_URI + "language"           );
+        XSD_Long               = m.createResource(XSD_URI + "long"               );
+        XSD_Name               = m.createResource(XSD_URI + "Name"               );
+        XSD_NCName             = m.createResource(XSD_URI + "NCName"             );
+        XSD_NegativeInteger    = m.createResource(XSD_URI + "negativeInteger"    );
+        XSD_NMTOKEN            = m.createResource(XSD_URI + "NMTOKEN"            );
+        XSD_NonNegativeInteger = m.createResource(XSD_URI + "nonNegativeInteger" );
+        XSD_NonPositiveInteger = m.createResource(XSD_URI + "nonPositiveInteger" );
+        XSD_NormalizedString   = m.createResource(XSD_URI + "normalizedString"   );
+        XSD_PositiveInteger    = m.createResource(XSD_URI + "positiveInteger"    );
+        XSD_Short              = m.createResource(XSD_URI + "short"              );
+        XSD_String             = m.createResource(XSD_URI + "string"             );
+        XSD_Time               = m.createResource(XSD_URI + "time"               );
+        XSD_Token              = m.createResource(XSD_URI + "token"              );
+        XSD_UnsignedByte       = m.createResource(XSD_URI + "unsignedByte"       );
+        XSD_UnsignedInt        = m.createResource(XSD_URI + "unsignedInt"        );
+        XSD_UnsignedLong       = m.createResource(XSD_URI + "unsignedLong"       );
+        XSD_UnsignedShort      = m.createResource(XSD_URI + "unsignedShort"      );
 
         // =======================================================================
         // IANA
         // =======================================================================
-        IANA_CSV =    m.createResource(IANA_URI + "text/csv");
-        IANA_DODS =   m.createResource(IANA_URI + "application/octet-stream");
-        IANA_HTML =   m.createResource(IANA_URI + "text/html");
-        IANA_JSON =   m.createResource(IANA_URI + "application/json");
-        IANA_JSONLD = m.createResource(IANA_URI + "application/ld+json");
-        IANA_N3 =     m.createResource(IANA_URI + "text/n3");
-        IANA_NQ =     m.createResource(IANA_URI + "application/n-quads");
-        IANA_NT =     m.createResource(IANA_URI + "application/n-triples");
-        IANA_RDFXML = m.createResource(IANA_URI + "application/rdf+xml");
-        IANA_TRIG =   m.createResource(IANA_URI + "application/trig");
-        IANA_TSV =    m.createResource(IANA_URI + "text/tab-separated-values");
-        IANA_TURTLE = m.createResource(IANA_URI + "text/turtle");
-        IANA_XHTML =  m.createResource(IANA_URI + "application/xhtml+xml");
-        IANA_XML =    m.createResource(IANA_URI + "application/xml");
+        IANA_CSV    = m.createResource(IANA_URI + "text/csv"                  );
+        IANA_DODS   = m.createResource(IANA_URI + "application/octet-stream"  );
+        IANA_HTML   = m.createResource(IANA_URI + "text/html"                 );
+        IANA_JSON   = m.createResource(IANA_URI + "application/json"          );
+        IANA_JSONLD = m.createResource(IANA_URI + "application/ld+json"       );
+        IANA_N3     = m.createResource(IANA_URI + "text/n3"                   );
+        IANA_NQ     = m.createResource(IANA_URI + "application/n-quads"       );
+        IANA_NT     = m.createResource(IANA_URI + "application/n-triples"     );
+        IANA_RDFXML = m.createResource(IANA_URI + "application/rdf+xml"       );
+        IANA_TRIG   = m.createResource(IANA_URI + "application/trig"          );
+        IANA_TSV    = m.createResource(IANA_URI + "text/tab-separated-values" );
+        IANA_TURTLE = m.createResource(IANA_URI + "text/turtle"               );
+        IANA_XHTML  = m.createResource(IANA_URI + "application/xhtml+xml"     );
+        IANA_XML    = m.createResource(IANA_URI + "application/xml"           );
     }
 
 }

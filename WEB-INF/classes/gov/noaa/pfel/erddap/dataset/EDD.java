@@ -1057,7 +1057,6 @@ public abstract class EDD {
 
         try {
             if (!File2.isFile(HISTORY_FILEPATH)) {
-                System.out.println("------ File doesn't exist ------");
                 BufferedWriter writer = File2.getBufferedFileWriterUtf8(HISTORY_FILEPATH);
                 writer.write("{" + OpendapHelper.EOL + "}" + OpendapHelper.EOL);
                 writer.close();
@@ -1096,8 +1095,9 @@ public abstract class EDD {
             writer.close();
             if (reallyVerbose) String2.log("  EDD.writeDatasetEDDHistory done. fileName=" + HISTORY_FILEPATH +
                     " TIME=" + (System.currentTimeMillis() - time) + "ms");
-        } catch (Exception e){
-            System.out.println("Error an exception as occur in writeDatasetEDDHistory : " + e);
+        } catch (Throwable e){
+            String2.log(String2.ERROR + " in writeDatasetEDDHistory for " + datasetID() + ":\n" +
+                    MustBe.throwableToString(e));
         }
     }
 
